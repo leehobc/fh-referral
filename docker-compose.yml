@@ -1,0 +1,84 @@
+services:
+  db:
+    image: mariadb:10.11
+    container_name: fh-db
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_NAME:-fh_referral}
+      MARIADB_USER: ${DB_USER:-fh_user}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-fh_password}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_password}
+    volumes:
+      - fh_db_data:/var/lib/mysql
+    networks:
+      - fhnet
+    # Not published to the host by default. Uncomment to inspect with a
+    # DB client from your LAN (e.g. via phpMyAdmin / DBeaver).
+    # ports:
+    #   - "3307:3306"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+
+  api:
+    build: ./server
+    container_name: fh-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 3000
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-fh_referral}
+      DB_USER: ${DB_USER:-fh_user}
+      DB_PASSWORD: ${DB_PASSWORD:-fh_password}
+      JWT_SECRET: ${JWT_SECRET:-please-change-this-secret}
+      DEMO_CLINICIAN_ID: ${DEMO_CLINICIAN_ID:-DR-10567}
+      DEMO_PASSWORD: ${DEMO_PASSWORD:-changeme123}
+      # Set APP_URL to your public site, e.g. https://fh.yourdomain.com
+      APP_URL: ${APP_URL:-}
+      NODE_ENV: ${NODE_ENV:-production}
+    volumes:
+      # The frontend lives outside the image build context (./server), so it
+      # is served from this host mount. Edit files in ./public and refresh —
+      # no image rebuild needed.
+      - ./public:/public:ro
+    networks:
+      - fhnet
+    # Optional LAN access on the NAS. Not used by the tunnel and does NOT
+    # need to be 443 or forwarded. Remove this block for tunnel-only access.
+    ports:
+      - "${APP_PORT:-8098}:3000"
+
+  # ── Cloudflare Tunnel ───────────────────────────────────────────────
+  # Dials OUT to Cloudflare, so there is no inbound port to open and no
+  # 443 conflict with DSM. Reaches the app over the internal network at
+  # http://api:3000.  Public Hostname service value: http://api:3000
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: fh-tunnel
+    restart: unless-stopped
+    environment:
+      # Forces HTTP/2-over-TCP instead of QUIC-over-UDP. Use this if logs
+      # show "Failed to dial a quic connection" / "no recent network
+      # activity" — common when a firewall/router/ISP blocks outbound UDP.
+      # This env var is the documented, reliable way to set it (more
+      # reliable than a --protocol CLI flag, which some versions ignore).
+      TUNNEL_TRANSPORT_PROTOCOL: http2
+    command: tunnel --no-autoupdate run --token ${CF_TUNNEL_TOKEN}
+    depends_on:
+      - api
+    networks:
+      - fhnet
+
+networks:
+  fhnet:
+    driver: bridge
+
+volumes:
+  fh_db_data:

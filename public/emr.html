@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PolyHealth EMR — Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  /* Deliberately a different (steel/clinical) look from the teal referral tool. */
+  :root{
+    --bg:#eef1f4; --panel:#ffffff; --ink:#1c2733; --soft:#5c6b7a; --line:#dbe1e8;
+    --steel:#2b3d51; --steel-soft:#e7edf3; --accent:#1f6feb;
+    --amber:#b0761c; --amber-bg:#f8eed6; --red:#b23a3a; --red-bg:#f7e5e4;
+    --green:#2f7d52; --green-bg:#e6f1ea;
+    --shadow:0 1px 2px rgba(28,39,51,.05),0 8px 26px rgba(28,39,51,.07);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .topbar{background:var(--steel);color:#fff;padding:12px 22px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .topbar .brand{display:flex;align-items:center;gap:10px;font-weight:700}
+  .topbar .mark{width:30px;height:30px;border-radius:7px;background:rgba(255,255,255,.16);display:grid;place-items:center}
+  .topbar .who{font-size:13px;color:rgba(255,255,255,.8)}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 20px 80px}
+  .demo-note{background:var(--steel-soft);border:1px solid var(--line);border-radius:10px;
+    padding:10px 14px;font-size:13px;color:var(--soft);margin-bottom:18px}
+  .search{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);margin-bottom:20px}
+  .search label{display:block;font-size:13px;font-weight:600;color:var(--soft);margin-bottom:6px}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  input{flex:1 1 260px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;font-size:15px;font-family:inherit;outline:none}
+  button{font-family:inherit;cursor:pointer;border-radius:10px;font-weight:600;font-size:15px;padding:11px 18px;border:1px solid var(--steel);background:var(--steel);color:#fff}
+  button.ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+  button.launch{background:var(--accent);border-color:var(--accent)}
+  button.sm{padding:8px 12px;font-size:13px}
+  .hint{font-size:12px;color:var(--soft);margin-top:10px}
+  .err{color:var(--red);font-size:13px;margin-top:10px}
+  .chart{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+  .chart-head{background:#f6f8fb;border-bottom:1px solid var(--line);padding:18px 22px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .pname{font-size:22px;font-weight:700}
+  .pmeta{color:var(--soft);font-size:14px;margin-top:2px}
+  .badge{font-weight:600;font-size:12px;letter-spacing:.4px;padding:5px 11px;border-radius:999px;text-transform:uppercase;display:inline-block}
+  .badge.amber{background:var(--amber-bg);color:var(--amber)}
+  .badge.green{background:var(--green-bg);color:var(--green)}
+  .badge.grey{background:#eaeef2;color:var(--soft)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line)}
+  .cell{background:var(--panel);padding:14px 18px}
+  .cell .k{font-size:12px;color:var(--soft);font-weight:600}
+  .cell .v{font-size:17px;margin-top:3px}
+  .cell .v.hot{color:var(--amber);font-weight:700}
+  .section{padding:18px 22px;border-top:1px solid var(--line)}
+  .flags{display:flex;flex-wrap:wrap;gap:8px}
+  .callout{margin:0 22px 18px;padding:12px 16px;border-radius:10px;font-size:14px}
+  .callout.elig{background:var(--amber-bg);color:var(--amber)}
+  .callout.not{background:#eef1f4;color:var(--soft)}
+  .actions{padding:18px 22px;border-top:1px solid var(--line);display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  .empty{color:var(--soft);text-align:center;padding:40px 20px}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand"><span class="mark">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2 5 3-10 2 5h4"/></svg>
+    </span>PolyHealth EMR</div>
+    <div class="who">Demo EMR · Bukit Merah Polyclinic</div>
+  </div>
+
+  <div class="wrap">
+    <div class="demo-note">
+      This is a <b>mock EMR</b> standing in for the clinic system. Open a patient here, then launch the
+      FH Referral Assistant — it reads whoever is open via the EMR API (like a SMART-on-FHIR launch).
+    </div>
+
+    <div class="search">
+      <label>Open patient</label>
+      <div class="row">
+        <input id="q" placeholder="Patient ID (e.g. P0001), NRIC (e.g. S1234567A), or name" />
+        <button onclick="openPatient()">Open patient</button>
+      </div>
+      <div class="hint">Tip: try <b>P0001</b> (eligible) or any patient ID from the seeded database.</div>
+      <div class="err" id="err"></div>
+    </div>
+
+    <div id="chart"></div>
+  </div>
+
+<script>
+const yn = (v) => Number(v) ? "Yes" : "No";
+const el = (id) => document.getElementById(id);
+
+async function api(path, opts){
+  const res = await fetch(path, Object.assign({ headers:{ "Content-Type":"application/json" } }, opts||{}));
+  let data = {}; try { data = await res.json(); } catch(e){}
+  if(!res.ok) throw new Error(data.error || ("Request failed ("+res.status+")"));
+  return data;
+}
+
+function render(p){
+  if(!p){ el("chart").innerHTML = '<div class="chart"><div class="empty">No patient open. Search above to open one.</div></div>'; return; }
+  const eligible = Number(p.ldl) >= 5.5;
+  const flags = [
+    ["FH eligible", eligible, eligible?"amber":"grey"],
+    ["Family history CVD", Number(p.family_history_cvd), Number(p.family_history_cvd)?"amber":"grey"],
+    ["Diabetes", Number(p.diabetes), Number(p.diabetes)?"amber":"grey"],
+    ["Hypertension", Number(p.hypertension), Number(p.hypertension)?"amber":"grey"],
+  ];
+  el("chart").innerHTML = `
+    <div class="chart">
+      <div class="chart-head">
+        <div>
+          <div class="pname">${p.name}</div>
+          <div class="pmeta">${p.nric} · ${p.age}y · ${p.gender} · ${p.ethnicity} · ${p.patient_ref}</div>
+          <div class="pmeta">${p.clinic} · ${p.doctor}</div>
+        </div>
+        <div><span class="badge green">Active EMR context</span></div>
+      </div>
+
+      <div class="grid">
+        <div class="cell"><div class="k">LDL-C</div><div class="v ${eligible?'hot':''}">${Number(p.ldl).toFixed(1)} mmol/L</div></div>
+        <div class="cell"><div class="k">Nationality</div><div class="v">${p.nationality||'—'}</div></div>
+        <div class="cell"><div class="k">Contact</div><div class="v">${p.contact||'—'}</div></div>
+        <div class="cell"><div class="k">Smoking</div><div class="v">${p.smoking_status||'—'}</div></div>
+        <div class="cell"><div class="k">Risk score</div><div class="v">${p.risk_score}</div></div>
+        <div class="cell"><div class="k">Referral status</div><div class="v">${p.referral_status||'—'}</div></div>
+      </div>
+
+      <div class="section">
+        <div class="k" style="font-size:12px;color:var(--soft);font-weight:600;margin-bottom:8px">Clinical flags</div>
+        <div class="flags">
+          ${flags.map(f=>`<span class="badge ${f[2]}">${f[0]}: ${yn(f[1])}</span>`).join("")}
+          <span class="badge grey">Smoking: ${p.smoking_status}</span>
+        </div>
+      </div>
+
+      <div class="callout ${eligible?'elig':'not'}">
+        ${eligible
+          ? 'LDL-C ≥ 5.5 mmol/L — this patient may be eligible for FH genetic testing referral.'
+          : 'LDL-C below 5.5 mmol/L — does not meet the FH referral threshold on this result.'}
+      </div>
+
+      <div class="actions">
+        <button class="launch" onclick="launchReferral()">Launch FH Referral Assistant →</button>
+        <button class="ghost sm" onclick="closePatient()">Close patient</button>
+        <span class="hint" style="margin:0">The referral tool will read this patient from the EMR after consent.</span>
+      </div>
+    </div>`;
+}
+
+async function openPatient(){
+  el("err").textContent = "";
+  const identifier = el("q").value.trim();
+  if(!identifier){ el("err").textContent = "Enter a patient ID, NRIC, or name."; return; }
+  try{
+    const { patient } = await api("/api/emr/context", { method:"POST", body: JSON.stringify({ identifier }) });
+    render(patient);
+  }catch(e){ el("err").textContent = e.message; render(null); }
+}
+
+async function closePatient(){
+  try{ await api("/api/emr/context", { method:"DELETE" }); }catch(e){}
+  el("q").value = ""; render(null);
+}
+
+function launchReferral(){
+  // Open the referral tool. It will call GET /api/emr/current-patient and
+  // receive whoever is open here.
+  window.open("/", "_blank");
+}
+
+// On load, show whatever is currently open.
+api("/api/emr/context").then(({patient}) => render(patient)).catch(() => render(null));
+el("q").addEventListener("keydown", (e)=>{ if(e.key==="Enter") openPatient(); });
+</script>
+</body>
+</html>

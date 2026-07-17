@@ -1,0 +1,70 @@
+# HOST-NETWORK variant — use only if the normal bridge network on your
+# Synology keeps timing out (Docker internal DNS 127.0.0.11 i/o timeout,
+# container-to-container ETIMEDOUT). Here every service uses the NAS host
+# network directly, so there is NO Docker bridge and NO Docker DNS involved.
+#
+# Because there is no bridge, services talk over 127.0.0.1 (localhost), and
+# the app is reachable directly on the NAS at http://<NAS-IP>:<APP_PORT>.
+#
+# Run it explicitly with:
+#   sudo docker compose -f docker-compose.host.yml up -d --build
+#
+# NOTE: APP_PORT here is the ACTUAL port the app listens on (no mapping),
+# so pick a free one (e.g. 8098). The DB listens on 3306 on the host.
+
+services:
+  db:
+    image: mariadb:10.11
+    container_name: fh-db
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      MARIADB_DATABASE: ${DB_NAME:-fh_referral}
+      MARIADB_USER: ${DB_USER:-fh_user}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-fh_password}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_password}
+    volumes:
+      - fh_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 40s
+
+  api:
+    build: ./server
+    container_name: fh-api
+    restart: unless-stopped
+    network_mode: host
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # App listens directly on this port on the NAS (no port mapping).
+      PORT: ${APP_PORT:-8098}
+      # Host networking -> reach the DB over localhost, not the "db" name.
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-fh_referral}
+      DB_USER: ${DB_USER:-fh_user}
+      DB_PASSWORD: ${DB_PASSWORD:-fh_password}
+      JWT_SECRET: ${JWT_SECRET:-please-change-this-secret}
+      DEMO_CLINICIAN_ID: ${DEMO_CLINICIAN_ID:-DR-10567}
+      DEMO_PASSWORD: ${DEMO_PASSWORD:-changeme123}
+      APP_URL: ${APP_URL:-}
+      NODE_ENV: ${NODE_ENV:-production}
+    volumes:
+      - ./public:/public:ro
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: fh-tunnel
+    restart: unless-stopped
+    network_mode: host
+    command: tunnel --no-autoupdate --protocol http2 run --token ${CF_TUNNEL_TOKEN}
+    depends_on:
+      - api
+
+volumes:
+  fh_db_data:
