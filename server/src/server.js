@@ -14,6 +14,7 @@ const patientRoutes = require("./routes/patients");
 const referralRoutes = require("./routes/referrals");
 const statsRoutes = require("./routes/stats");
 const emrRoutes = require("./routes/emr");
+const chatRoutes = require("./routes/chat");
 
 const app = express();
 app.use(cors());
@@ -28,6 +29,7 @@ app.use("/api/patients", patientRoutes);
 app.use("/api/referrals", referralRoutes);
 app.use("/api/stats", statsRoutes);
 app.use("/api/emr", emrRoutes);
+app.use("/api/chat", chatRoutes);
 
 // Static frontend. The SPA uses hash routing, so any non-API path
 // returns index.html — except /emr, the standalone demo EMR page.

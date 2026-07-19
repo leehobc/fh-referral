@@ -42,6 +42,8 @@ services:
       DEMO_PASSWORD: ${DEMO_PASSWORD:-changeme123}
       # Set APP_URL to your public site, e.g. https://fh.yourdomain.com
       APP_URL: ${APP_URL:-}
+      # Google Gemini API key for the clinician AI assistant (Q&A step).
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       NODE_ENV: ${NODE_ENV:-production}
     volumes:
       # The frontend lives outside the image build context (./server), so it

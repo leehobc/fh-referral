@@ -68,5 +68,11 @@
       // Demo helper: simulate a different patient being opened in the EMR.
       nextPatient: () => request("/api/emr/current-patient/next", { method: "POST" }),
     },
+
+    chat: {
+      // AI assistant for clinicians (program Q&A, not patient-specific).
+      // history: [{ role: "user"|"model", text }] of prior turns in this conversation.
+      ask: (message, history) => request("/api/chat/ask", { method: "POST", body: { message, history } }),
+    },
   };
 })();

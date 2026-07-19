@@ -273,9 +273,25 @@ const FAQS = [
   ["Where do my results go?", "Into your National Electronic Health Record, viewable via HealthHub, with the GAC report filed under your referral notes."],
 ];
 
+const WIZARD_STEPS = ["Consent", "Checklist", "Q&A", "Referral", "Submit"];
 function Progress({ step }) {
-  const pct = Math.round(((step + 1) / 5) * 100);
-  return <div className="progress no-print"><div className="progress-fill" style={{ width: pct + "%" }} /></div>;
+  const n = WIZARD_STEPS.length;
+  const donePct = Math.max(0, Math.min(100, (step / (n - 1)) * 100));
+  return (
+    <div className="stepper no-print">
+      <div className="stepper-track">
+        <div className="stepper-track-fill" style={{ width: donePct + "%" }} />
+      </div>
+      <div className="stepper-items">
+        {WIZARD_STEPS.map((label, i) => (
+          <div key={label} className={"stepper-item" + (i === step ? " active" : i < step ? " done" : "")}>
+            <span className="stepper-dot">{i < step ? "✓" : i + 1}</span>
+            <span className="stepper-label">{label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 function Check({ label, hint, checked, onChange, disabled }) {
   return (
@@ -284,6 +300,65 @@ function Check({ label, hint, checked, onChange, disabled }) {
       <span><span style={{ fontSize: 15 }}>{label}</span>
         {hint && <span className="small muted" style={{ display: "block", marginTop: 2 }}>{hint}</span>}</span>
     </label>
+  );
+}
+
+/* AI assistant for the clinician — general program Q&A, no patient data. */
+function ChatWidget() {
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState([]); // { role: "user"|"model", text }
+  const [input, setInput] = useState("");
+  const [sending, setSending] = useState(false);
+  const [err, setErr] = useState("");
+
+  const send = async () => {
+    const text = input.trim();
+    if (!text || sending) return;
+    const history = messages;
+    setMessages((m) => [...m, { role: "user", text }]);
+    setInput(""); setErr(""); setSending(true);
+    try {
+      const { answer } = await API.chat.ask(text, history);
+      setMessages((m) => [...m, { role: "model", text: answer }]);
+    } catch (e) {
+      setErr(e.message || "Something went wrong — please try again.");
+    } finally {
+      setSending(false);
+    }
+  };
+
+  if (!open) {
+    return (
+      <button className="chatwidget-fab" onClick={() => setOpen(true)}>
+        {Ic.chat}<span>Ask AI assistant</span>
+      </button>
+    );
+  }
+  return (
+    <div className="chatwidget-panel">
+      <div className="chatwidget-head">
+        <b>Ask about the program</b>
+        <button className="chatwidget-close" aria-label="Close" onClick={() => setOpen(false)}>✕</button>
+      </div>
+      <p className="small muted" style={{ margin: "0 0 10px" }}>
+        For you, the clinician — eligibility, process, costs. Not for patient-specific advice;
+        AI-generated, so confirm anything clinically important with the GAC.
+      </p>
+      <div className="chatwidget-msgs">
+        {messages.length === 0 && (
+          <p className="small muted">e.g. "Does a historical LDL result before starting statins still count?"</p>
+        )}
+        {messages.map((m, i) => <div key={i} className={"chatwidget-msg " + m.role}>{m.text}</div>)}
+        {sending && <div className="chatwidget-msg model">…</div>}
+      </div>
+      {err && <p className="small" style={{ color: "var(--red)", margin: "6px 0 0" }}>{err}</p>}
+      <div className="chatwidget-input">
+        <input className="input" value={input} placeholder="Type a question…" disabled={sending}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && send()} />
+        <button className="btn btn-sm" onClick={send} disabled={sending || !input.trim()}>Ask</button>
+      </div>
+    </div>
   );
 }
 
@@ -317,15 +392,15 @@ function ReferralWizard({ user }) {
 
   return (
     <div>
-      <div className="topbar"><Progress step={step} /><span className="small muted no-print">Step {step + 1} of 5</span></div>
+      <div className="topbar"><Progress step={step} /></div>
 
       {step === 0 && (
         <div>
           <h2 className="title">Record consent</h2>
-          <p className="sub">Confirm the patient agrees to be referred to the Genetic Assessment Centre.</p>
+          <p className="sub">Confirm the patient agrees to proceed for the GAC referral and personal data will be collected from EMR when referral is made.</p>
           <div className="card">
             <p style={{ fontSize: 15, lineHeight: 1.6, marginTop: 0 }}>
-              The patient has had FH and the genetic testing pathway explained, and has had the chance to ask questions. Do they agree to be referred?
+              Please record the patient's consent before proceeding. Do they agree to proceed?
             </p>
             <p style={{ background: "var(--teal-soft)", borderRadius: 10, padding: "10px 14px" }} className="small muted">
               The patient's record is retrieved from the EMR only after consent is recorded.
@@ -378,9 +453,16 @@ function ReferralWizard({ user }) {
             ))}
           </div>
           <p className="small muted" style={{ marginTop: 14 }}>Figures are based on public MOH / GAC program information and may change — confirm current details with the GAC.</p>
+
+          <div style={{ marginTop: 22 }}>
+            <b>Unsure about something yourself?</b>
+            <p className="sub" style={{ margin: "4px 0 12px" }}>Ask the AI assistant about the program — eligibility, process, costs.</p>
+            <ChatWidget />
+          </div>
+
           <div className="row-actions" style={{ marginTop: 18 }}>
             <button className="btn-ghost" onClick={() => setStep(1)}>Back</button>
-            <button className="btn" onClick={() => setStep(3)}>Record consent</button>
+            <button className="btn" onClick={() => setStep(3)}>Retrieve patient record</button>
           </div>
         </div>
       )}
@@ -498,6 +580,7 @@ function Submitted({ referral, onRestart }) {
   }
   return (
     <div>
+      <div className="topbar no-print" style={{ marginBottom: 18 }}><Progress step={4} /></div>
       <div className="card no-print" style={{ marginBottom: 18 }}>
         <Badge tone="green">Referral submitted</Badge>
         <h2 className="title" style={{ marginTop: 14 }}>Sent to the Genetic Assessment Centre</h2>
@@ -685,3 +768,4 @@ function App() {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+
