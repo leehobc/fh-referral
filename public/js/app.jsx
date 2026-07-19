@@ -273,9 +273,25 @@ const FAQS = [
   ["Where do my results go?", "Into your National Electronic Health Record, viewable via HealthHub, with the GAC report filed under your referral notes."],
 ];
 
+const WIZARD_STEPS = ["Consent", "Checklist", "Q&A", "Referral", "Submit"];
 function Progress({ step }) {
-  const pct = Math.round(((step + 1) / 5) * 100);
-  return <div className="progress no-print"><div className="progress-fill" style={{ width: pct + "%" }} /></div>;
+  const n = WIZARD_STEPS.length;
+  const donePct = Math.max(0, Math.min(100, (step / (n - 1)) * 100));
+  return (
+    <div className="stepper no-print">
+      <div className="stepper-track">
+        <div className="stepper-track-fill" style={{ width: donePct + "%" }} />
+      </div>
+      <div className="stepper-items">
+        {WIZARD_STEPS.map((label, i) => (
+          <div key={label} className={"stepper-item" + (i === step ? " active" : i < step ? " done" : "")}>
+            <span className="stepper-dot">{i < step ? "✓" : i + 1}</span>
+            <span className="stepper-label">{label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 function Check({ label, hint, checked, onChange, disabled }) {
   return (
@@ -317,15 +333,15 @@ function ReferralWizard({ user }) {
 
   return (
     <div>
-      <div className="topbar"><Progress step={step} /><span className="small muted no-print">Step {step + 1} of 5</span></div>
+      <div className="topbar"><Progress step={step} /></div>
 
       {step === 0 && (
         <div>
           <h2 className="title">Record consent</h2>
-          <p className="sub">Confirm the patient agrees to be referred to the Genetic Assessment Centre.</p>
+          <p className="sub">Confirm the patient agrees to proceed for the GAC referral and personal data will be collected from EMR when referral is made.</p>
           <div className="card">
             <p style={{ fontSize: 15, lineHeight: 1.6, marginTop: 0 }}>
-              The patient has had FH and the genetic testing pathway explained, and has had the chance to ask questions. Do they agree to be referred?
+              Please record the patient's consent before proceeding. Do they agree to proceed?
             </p>
             <p style={{ background: "var(--teal-soft)", borderRadius: 10, padding: "10px 14px" }} className="small muted">
               The patient's record is retrieved from the EMR only after consent is recorded.
@@ -498,6 +514,7 @@ function Submitted({ referral, onRestart }) {
   }
   return (
     <div>
+      <div className="topbar no-print" style={{ marginBottom: 18 }}><Progress step={4} /></div>
       <div className="card no-print" style={{ marginBottom: 18 }}>
         <Badge tone="green">Referral submitted</Badge>
         <h2 className="title" style={{ marginTop: 14 }}>Sent to the Genetic Assessment Centre</h2>
