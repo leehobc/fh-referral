@@ -40,6 +40,22 @@ const navigate = (to) => { location.hash = to; };
 const Badge = ({ tone = "teal", children }) => <span className={`badge ${tone}`}>{children}</span>;
 const fmtDate = (d) => (d ? new Date(d).toLocaleString() : "—");
 
+function ImageModal({ src, alt, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+  return (
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+        <button className="modal-close" aria-label="Close" onClick={onClose}>✕</button>
+        <img src={src} alt={alt} />
+      </div>
+    </div>
+  );
+}
+
 function Field({ label, value, onChange, bad, type = "text", placeholder }) {
   return (
     <div>
@@ -305,6 +321,26 @@ function ReferralWizard({ user }) {
 
       {step === 0 && (
         <div>
+          <h2 className="title">Record consent</h2>
+          <p className="sub">Confirm the patient agrees to be referred to the Genetic Assessment Centre.</p>
+          <div className="card">
+            <p style={{ fontSize: 15, lineHeight: 1.6, marginTop: 0 }}>
+              The patient has had FH and the genetic testing pathway explained, and has had the chance to ask questions. Do they agree to be referred?
+            </p>
+            <p style={{ background: "var(--teal-soft)", borderRadius: 10, padding: "10px 14px" }} className="small muted">
+              The patient's record is retrieved from the EMR only after consent is recorded.
+            </p>
+            <div className="row-actions">
+              <button className="btn" onClick={() => setStep(1)}>Patient consents — continue</button>
+              <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines</button>
+            </div>
+          </div>
+          <div style={{ marginTop: 18 }}><button className="btn-ghost" onClick={() => setStep(1)}>Back</button></div>
+        </div>
+      )}
+
+      {step === 1 && (
+        <div>
           <h2 className="title">Confirm eligibility</h2>
           <p className="sub">Confirm the program criteria for this patient before starting a referral.</p>
           <div className="card" style={{ marginBottom: 18 }}>
@@ -321,13 +357,13 @@ function ReferralWizard({ user }) {
             {SUPPORTING.map((f, i) => <Check key={i} label={f} checked={support[i]} onChange={(v) => setSupport(s => s.map((x, j) => j === i ? v : x))} />)}
           </div>
           <div className="row-actions">
-            <button className="btn" disabled={!allReq} onClick={() => setStep(1)}>Continue to patient Q&amp;A</button>
+            <button className="btn" disabled={!allReq} onClick={() => setStep(2)}>Continue to patient Q&amp;A</button>
             {!allReq && <span className="small muted">Confirm all required criteria to continue.</span>}
           </div>
         </div>
       )}
 
-      {step === 1 && (
+      {step === 2 && (
         <div>
           <h2 className="title">Explain to the patient</h2>
           <p className="sub">Use these to answer common questions and keep messaging consistent.</p>
@@ -343,31 +379,12 @@ function ReferralWizard({ user }) {
           </div>
           <p className="small muted" style={{ marginTop: 14 }}>Figures are based on public MOH / GAC program information and may change — confirm current details with the GAC.</p>
           <div className="row-actions" style={{ marginTop: 18 }}>
-            <button className="btn-ghost" onClick={() => setStep(0)}>Back</button>
-            <button className="btn" onClick={() => setStep(2)}>Record consent</button>
+            <button className="btn-ghost" onClick={() => setStep(1)}>Back</button>
+            <button className="btn" onClick={() => setStep(3)}>Record consent</button>
           </div>
         </div>
       )}
 
-      {step === 2 && (
-        <div>
-          <h2 className="title">Record consent</h2>
-          <p className="sub">Confirm the patient agrees to be referred to the Genetic Assessment Centre.</p>
-          <div className="card">
-            <p style={{ fontSize: 15, lineHeight: 1.6, marginTop: 0 }}>
-              The patient has had FH and the genetic testing pathway explained, and has had the chance to ask questions. Do they agree to be referred?
-            </p>
-            <p style={{ background: "var(--teal-soft)", borderRadius: 10, padding: "10px 14px" }} className="small muted">
-              The patient's record is retrieved from the EMR only after consent is recorded.
-            </p>
-            <div className="row-actions">
-              <button className="btn" onClick={() => setStep(3)}>Patient consents — continue</button>
-              <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines</button>
-            </div>
-          </div>
-          <div style={{ marginTop: 18 }}><button className="btn-ghost" onClick={() => setStep(1)}>Back</button></div>
-        </div>
-      )}
 
       {step === 3 && !patient && (
         <div>
@@ -458,13 +475,24 @@ function ReferralForm({ patient, user, onBack, onDone }) {
 }
 
 function Submitted({ referral, onRestart }) {
+  const [showInfo, setShowInfo] = useState(false);
   if (referral.declined) {
     return (
       <div className="card" style={{ textAlign: "center" }}>
         <Badge tone="red">Referral not made</Badge>
         <h2 className="title" style={{ marginTop: 14 }}>Patient declined referral</h2>
         <p className="sub">No referral was submitted and no records were retrieved.</p>
-        <button className="btn" onClick={onRestart}>Start a new patient</button>
+        <div className="row-actions-center">
+          <button className="btn" onClick={onRestart}>Start a new patient</button>
+          <button className="btn" onClick={() => setShowInfo(true)}>More Information</button>
+        </div>
+        {showInfo && (
+          <ImageModal
+            src="/images/QR1.png"
+            alt="More information"
+            onClose={() => setShowInfo(false)}
+          />
+        )}
       </div>
     );
   }
