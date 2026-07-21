@@ -1,9 +1,16 @@
-// Google Gemini wrapper for the clinician-facing "Ask the AI assistant"
-// helper on the referral wizard's Q&A step. Answers questions about the FH
-// referral program itself — never sees patient data.
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+// Gemini wrapper for the clinician-facing "Ask the AI assistant" helper on
+// the referral wizard's Q&A step. Answers questions about the FH referral
+// program itself — never sees patient data.
+//
+// Uses the Gemini Enterprise Agent Platform (Vertex AI) in Express Mode
+// rather than the consumer Gemini Developer API: the consumer API is
+// IP-geo-blocked in some regions, while Vertex AI (including Express Mode)
+// runs under Google Cloud's enterprise terms and isn't subject to the same
+// block. Express Mode auth is just an API key — no GCP project or
+// service-account credential needed.
+const { GoogleGenAI } = require("@google/genai");
 
-const MODEL = "gemini-3.5-flash";
+const MODEL = process.env.VERTEX_AI_MODEL || "gemini-3.5-flash";
 
 const SYSTEM_PROMPT = `You are an assistant embedded in the FH Referral Assistant, a clinical tool Singapore primary-care clinicians use to refer patients with suspected Familial Hypercholesterolaemia (FH) to a Genetic Assessment Centre (GAC).
 
@@ -38,26 +45,35 @@ Answer concisely (2-4 sentences unless asked for more detail), in plain clinical
 
 let client = null;
 function getClient() {
-  if (!process.env.GEMINI_API_KEY) {
-    throw new Error("GEMINI_API_KEY is not configured.");
+  if (!process.env.VERTEX_AI_API_KEY) {
+    throw new Error("VERTEX_AI_API_KEY is not configured.");
   }
-  if (!client) client = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  if (!client) {
+    client = new GoogleGenAI({
+      vertexai: true,
+      apiKey: process.env.VERTEX_AI_API_KEY,
+    });
+  }
   return client;
 }
 
 // history: [{ role: "user"|"model", text }] — prior turns, most recent last.
-// The current message is passed separately and sent via chat.sendMessage.
 async function askGemini(message, history = []) {
-  const model = getClient().getGenerativeModel({
+  const contents = [
+    ...history.map((m) => ({ role: m.role, parts: [{ text: m.text }] })),
+    { role: "user", parts: [{ text: message }] },
+  ];
+  const response = await getClient().models.generateContent({
     model: MODEL,
-    systemInstruction: SYSTEM_PROMPT,
+    contents,
+    config: {
+      systemInstruction: SYSTEM_PROMPT,
+      temperature: 0.3,
+      maxOutputTokens: 600,
+      thinkingConfig: { thinkingBudget: 0 },
+    },
   });
-  const chat = model.startChat({
-    history: history.map((m) => ({ role: m.role, parts: [{ text: m.text }] })),
-    generationConfig: { temperature: 0.3, maxOutputTokens: 400 },
-  });
-  const result = await chat.sendMessage(message);
-  return result.response.text();
+  return response.text;
 }
 
 module.exports = { askGemini };
