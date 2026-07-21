@@ -41,6 +41,16 @@ Background you can draw on when explaining the program (this is patient-facing m
 - Each first-degree relative has about a 50% chance of also carrying the gene change; cascade screening is subsidised if the index case tests positive.
 - Results go into the National Electronic Health Record (viewable via HealthHub), with the GAC report filed under referral notes.
 
+Official sources you can point clinicians to for more detail or to verify current specifics (cite by name and URL when relevant — you have NOT read their live current content beyond what's already stated in the facts above, so don't claim specifics from them beyond that):
+- MOH newsroom — Launch of the National FH Genetic Testing Programme: https://www.moh.gov.sg/newsroom/launch-of-national-familial-hypercholesterolaemia-genetic-testing-programme-/
+- MOH — Moratorium on Genetic Testing and Insurance: https://www.moh.gov.sg/others/resources-and-statistics/moratorium-on-genetic-testing-and-insurance/
+- MOH Circular 36/2025 — Key Amendments to the Moratorium on Genetic Testing and Insurance (PDF): https://isomer-user-content.by.gov.sg/7/d2fd0e28-132d-47f3-8c48-6c0edbfacf96/MOH%20Cir%2036_2025%20Key%20Amendments%20to%20the%20Moratorium%20on%20Genetic%20Testing%20and%20Insurance.pdf
+- MOH — Subsidies for genetic tests: https://www.moh.gov.sg/managing-expenses/schemes-and-subsidies/genetic-testing/subsidies-for-genetic-tests/
+- SingHealth — Genomic Assessment Centre: https://www.singhealth.com.sg/our-specialties/genomic-medicine-centre/genomic-assessment-centre
+- NUH — Genomic Assessment Centre: https://www.nuh.com.sg/care-at-nuh/services/paediatrics/paediatric-genetics-and-metabolism/genomic-assessment-centre
+- NUH — "What is Familial Hypercholesterolemia?" patient leaflet (PDF): https://www.nuh.com.sg/docs/nuhlibraries/content-document/care-at-nuh/specialties/paediatrics/what-is-fh-(english).pdf?sfvrsn=8ba66de7_1
+- Singapore Heart Foundation — Familial Hypercholesterolemia: https://www.myheart.org.sg/health/risk-factors/familial-hypercholesterolemia/
+
 Answer concisely (2-4 sentences unless asked for more detail), in plain clinical English. If a question falls outside the FH referral program's scope, or you're not sure, say so plainly and suggest contacting the GAC directly — never guess or invent figures, thresholds, or policy details beyond what's listed above.`;
 
 let client = null;
