@@ -3,7 +3,7 @@
 // referral program itself — never sees patient data.
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const MODEL = "gemini-2.5-flash";
+const MODEL = "gemini-3.5-flash";
 
 const SYSTEM_PROMPT = `You are an assistant embedded in the FH Referral Assistant, a clinical tool Singapore primary-care clinicians use to refer patients with suspected Familial Hypercholesterolaemia (FH) to a Genetic Assessment Centre (GAC).
 
