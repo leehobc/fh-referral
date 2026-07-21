@@ -15,43 +15,67 @@ is only one port to expose and no CORS to configure.
 
 ---
 
-## 1. Which Synology packages to install
+## 1. What you need
 
-**Recommended path — Docker (simplest, self-contained):**
+**Recommended path — Docker (simplest, self-contained, works the same on any OS):**
 
-| Package | Why |
+| Requirement | Why |
 |---|---|
-| **Container Manager** | Runs the whole stack (API + MariaDB) from `docker-compose.yml`. The Node and MariaDB images are pulled automatically, so you do **not** need the separate Node.js or MariaDB packages on this path. |
+| **Docker Engine + Docker Compose v2** (the `docker compose` plugin, not the old standalone `docker-compose`) | Runs the whole stack (API + MariaDB) from `docker-compose.yml`. The Node and MariaDB images are pulled automatically, so you do **not** need Node or MariaDB installed on the host for this path. |
 
-That is the only package you must install for the recommended path.
+How you get Docker depends on where you're hosting:
+
+| Host | How to install Docker |
+|---|---|
+| Synology NAS | Install **Container Manager** from Package Center (bundles Docker + Compose). |
+| QNAP NAS | Install **Container Station** from App Center. |
+| Linux server / VPS (Ubuntu, Debian, etc.) | Follow [docs.docker.com/engine/install](https://docs.docker.com/engine/install/) — installs Docker Engine + the Compose plugin. |
+| Windows / macOS (dev machine) | Install [Docker Desktop](https://www.docker.com/products/docker-desktop/). |
+| Unraid | Install the **Compose Manager** plugin from Community Applications. |
+
+That's the only thing you must install for the recommended path.
 
 **Alternative path — native packages (no Docker):**
 
-| Package | Why |
+| Requirement | Why |
 |---|---|
 | **Node.js v20** | Runs the API/host. |
-| **MariaDB 10** | Database. |
-| **phpMyAdmin** (optional) | Browse the database in a UI. |
-| **Web Station** (optional) | Only if you want Web Station to serve the `public/` folder instead of Node. Not required — Node already serves it. |
+| **MariaDB 10** (or MySQL 8) | Database. |
+| A DB admin UI (optional) | e.g. phpMyAdmin, Adminer, DBeaver — to browse the database. |
+| A reverse proxy (optional) | e.g. nginx, Caddy, Traefik, or your NAS's built-in one (Web Station on Synology) — only needed if you want TLS/a domain in front of Node. Not required; Node already serves the app directly. |
 
-Install packages from **DSM → Package Center**.
+Install these however your OS/NAS normally installs packages (Package Center, apt, your platform's app store, etc.).
 
 ---
 
 ## 2. Setup — Docker path (recommended)
 
-1. Install **Container Manager** from Package Center.
-2. Copy this whole `fh-referral/` folder to your NAS (e.g. `/volume1/docker/fh-referral`).
-   - File Station, or drag-and-drop over SMB, both work.
+1. Install Docker for your platform (see the table above).
+2. Copy this whole `fh-referral/` folder to the server, e.g.:
+   - Synology: `/volume1/docker/fh-referral` (via File Station or SMB).
+   - QNAP: `/share/Container/fh-referral`.
+   - Linux server: anywhere convenient, e.g. `/opt/fh-referral` (`git clone` or `scp`/`rsync`).
+   - Windows/Mac with Docker Desktop: anywhere on disk.
 3. In the folder, copy `.env.example` to `.env` and edit the values
    (**change every password and `JWT_SECRET`**).
-4. Open **Container Manager → Project → Create**:
-   - **Path**: the `fh-referral` folder.
-   - It will detect `docker-compose.yml`. Click through to build and start.
-   - (Equivalent CLI, if you use SSH: `cd /volume1/docker/fh-referral && docker compose up -d --build`.)
+4. Build and start it:
+   - **CLI (works everywhere, including over SSH):**
+     ```
+     cd fh-referral
+     docker compose up -d --build
+     ```
+   - **Synology GUI:** Container Manager → Project → Create → point **Path** at the
+     `fh-referral` folder. It detects `docker-compose.yml`; click through to build and start.
+   - **QNAP GUI:** Container Station → Create → Create Application, and import/paste
+     `docker-compose.yml`.
+   - If your Docker's default bridge network has trouble resolving container names
+     (DNS timeouts between containers — occasionally seen on some NAS Docker builds),
+     use the host-network variant instead:
+     `docker compose -f docker-compose.host.yml up -d --build`. See the comments at
+     the top of that file for details.
 5. Wait ~1 minute on first run (it builds the image, starts MariaDB, creates the
    tables, and seeds the 200 patients + a demo login).
-6. Open `http://<NAS-IP>:8098` (or whatever `APP_PORT` you set).
+6. Open `http://<server-IP>:8098` (or whatever `APP_PORT` you set).
 
 **First login (auto-created on first run):**
 - Clinician ID: `DR-10567`
@@ -63,15 +87,15 @@ Change it under **Settings → Change password** after signing in.
 
 ## 3. Setup — native path (Node + MariaDB, no Docker)
 
-1. Install **Node.js v20** and **MariaDB 10** from Package Center.
-2. In MariaDB, create a database and user (via phpMyAdmin or CLI):
+1. Install **Node.js v20** and **MariaDB 10** on the server.
+2. In MariaDB, create a database and user (via phpMyAdmin, a CLI client, or `mysql`):
    ```sql
    CREATE DATABASE fh_referral CHARACTER SET utf8mb4;
    CREATE USER 'fh_user'@'%' IDENTIFIED BY 'your_password';
    GRANT ALL PRIVILEGES ON fh_referral.* TO 'fh_user'@'%';
    FLUSH PRIVILEGES;
    ```
-3. SSH into the NAS, go to `fh-referral/server`, and create a `.env` file:
+3. On the server, go to `fh-referral/server`, and create a `.env` file:
    ```
    PORT=3000
    DB_HOST=127.0.0.1
@@ -90,9 +114,10 @@ Change it under **Settings → Change password** after signing in.
    npm start
    ```
    The server creates tables and seeds data on first start.
-5. Open `http://<NAS-IP>:3000`.
-   - To run it permanently, wrap it with pm2, or point Web Station's reverse
-     proxy at `127.0.0.1:3000`.
+5. Open `http://<server-IP>:3000`.
+   - To keep it running permanently, use a process manager (e.g. `pm2`, `systemd`,
+     or the NAS's equivalent), and optionally put a reverse proxy (nginx, Caddy,
+     Web Station on Synology, etc.) in front of `127.0.0.1:3000` for TLS/a domain.
 
 ---
 
@@ -116,7 +141,7 @@ open.
 
 ## 4a. Demo EMR page (SMART-on-FHIR-style launch)
 
-A standalone **mock EMR** is served at `http://<NAS-IP>:<APP_PORT>/emr`.
+A standalone **mock EMR** is served at `http://<server-IP>:<APP_PORT>/emr`.
 
 Flow that mirrors real EMR integration:
 1. Open the EMR page and enter a **patient ID** (`P0001`), **NRIC**, or **name**,

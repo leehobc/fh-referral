@@ -463,6 +463,7 @@ function ReferralWizard({ user }) {
           <div className="row-actions" style={{ marginTop: 18 }}>
             <button className="btn-ghost" onClick={() => setStep(1)}>Back</button>
             <button className="btn" onClick={() => setStep(3)}>Retrieve patient record</button>
+            <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines</button>
           </div>
         </div>
       )}
@@ -570,7 +571,7 @@ function Submitted({ referral, onRestart }) {
         </div>
         {showInfo && (
           <ImageModal
-            src="/images/QR1.png"
+            src="/images/QR2.png"
             alt="More information"
             onClose={() => setShowInfo(false)}
           />

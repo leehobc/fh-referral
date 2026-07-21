@@ -32,10 +32,11 @@ app.use("/api/emr", emrRoutes);
 app.use("/api/chat", chatRoutes);
 
 // Static frontend. The SPA uses hash routing, so any non-API path
-// returns index.html — except /emr, the standalone demo EMR page.
+// returns index.html — except /emr and /resources, the standalone pages.
 const publicDir = path.join(__dirname, "..", "..", "public");
 app.use(express.static(publicDir));
 app.get("/emr", (req, res) => res.sendFile(path.join(publicDir, "emr.html")));
+app.get("/resources", (req, res) => res.sendFile(path.join(publicDir, "resources.html")));
 app.get(/^(?!\/api).*/, (req, res) => res.sendFile(path.join(publicDir, "index.html")));
 
 const PORT = Number(process.env.PORT || 3000);
