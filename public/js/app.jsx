@@ -45,7 +45,18 @@ const fmtDMY = (d) => {
   const mm = String(dt.getUTCMonth() + 1).padStart(2, "0");
   return `${dd}/${mm}/${dt.getUTCFullYear()}`;
 };
-const fmtDate = (d) => (d ? new Date(d).toLocaleString() : "—");
+// Timestamps (e.g. referral created_at) - fixed DD/MM/YYYY 24-hour format,
+// local time (unlike fmtDMY, these carry a real time-of-day, so local time
+// is what should be shown, not UTC).
+const fmtDMYHM = (d) => {
+  if (!d) return "—";
+  const dt = new Date(d);
+  const dd = String(dt.getDate()).padStart(2, "0");
+  const mm = String(dt.getMonth() + 1).padStart(2, "0");
+  const hh = String(dt.getHours()).padStart(2, "0");
+  const min = String(dt.getMinutes()).padStart(2, "0");
+  return `${dd}/${mm}/${dt.getFullYear()} ${hh}:${min}`;
+};
 
 function ImageModal({ src, alt, onClose }) {
   useEffect(() => {
@@ -655,21 +666,9 @@ function ReferralPrint({ r }) {
    REFERRALS
    ══════════════════════════════════════════════════════════════ */
 function Referrals() {
-  const [q, setQ] = useState(""); const [list, setList] = useState([]); const [sel, setSel] = useState(null); const [err, setErr] = useState("");
+  const [q, setQ] = useState(""); const [list, setList] = useState([]); const [err, setErr] = useState("");
   const load = useCallback(() => { API.referrals.list(q).then((d) => setList(d.referrals)).catch((e) => setErr(e.message)); }, [q]);
   useEffect(() => { load(); }, [load]);
-  const open = async (ref) => { try { const { referral } = await API.referrals.get(ref); setSel(referral); } catch (e) { setErr(e.message); } };
-
-  if (sel) return (
-    <div>
-      <div className="row-actions no-print" style={{ marginBottom: 16 }}>
-        <button className="btn-ghost" onClick={() => setSel(null)}>← Back to referrals</button>
-        <button className="btn" onClick={() => window.print()}>Print copy</button>
-      </div>
-      <ReferralPrint r={sel} />
-    </div>
-  );
-
   return (
     <div>
       <div className="page-head"><div>
@@ -680,12 +679,12 @@ function Referrals() {
       {err && <p className="err">{err}</p>}
       {list.length === 0 ? <p className="muted">No referrals yet.</p> : (
         <table className="table">
-          <thead><tr><th>Reference</th><th>Patient</th><th>NRIC</th><th>LDL</th><th>Status</th><th>When</th></tr></thead>
+          <thead><tr><th>Reference</th><th>Patient</th><th>NRIC</th><th>Status</th><th>When</th></tr></thead>
           <tbody>
             {list.map((r) => (
-              <tr key={r.reference} className="clickable" onClick={() => open(r.reference)}>
+              <tr key={r.reference}>
                 <td>{r.reference}</td><td>{r.patient_name}</td><td>{r.patient_nric}</td>
-                <td>{r.ldl}</td><td><Badge tone="green">{r.status}</Badge></td><td>{fmtDate(r.created_at)}</td>
+                <td><Badge tone="green">{r.status}</Badge></td><td>{fmtDMYHM(r.created_at)}</td>
               </tr>
             ))}
           </tbody>
