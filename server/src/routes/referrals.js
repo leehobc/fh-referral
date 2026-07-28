@@ -12,7 +12,7 @@ const makeRef = () => "FH-" + crypto.randomBytes(3).toString("hex").toUpperCase(
 // POST /api/referrals
 router.post("/", async (req, res) => {
   const b = req.body || {};
-  const required = ["patient_nric", "patient_name", "contact", "ldl"];
+  const required = ["patient_nric", "patient_name", "contact", "ldl", "ldl_test_date"];
   const missing = required.filter((k) => !String(b[k] ?? "").trim());
   if (missing.length) return res.status(400).json({ error: `Missing required fields: ${missing.join(", ")}` });
 
@@ -20,12 +20,12 @@ router.post("/", async (req, res) => {
   try {
     await query(
       `INSERT INTO referrals
-        (reference,patient_nric,patient_name,age,sex,nationality,contact,ldl,total_chol,
+        (reference,patient_nric,patient_name,age,sex,nationality,contact,ldl,ldl_test_date,total_chol,
          on_statin,notes,referrer_id,referrer_label,clinic,status)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?, 'Submitted')`,
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, 'Submitted')`,
       [
         reference, b.patient_nric, b.patient_name, b.age || null, b.sex || null,
-        b.nationality || null, b.contact, b.ldl, b.total_chol || null,
+        b.nationality || null, b.contact, b.ldl, b.ldl_test_date, b.total_chol || null,
         b.on_statin || null, b.notes || null, req.user.id,
         b.referrer_label || req.user.clinician_id, b.clinic || null,
       ]

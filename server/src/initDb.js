@@ -44,7 +44,7 @@ const SCHEMA = [
      referral_date DATE NULL,
      appointment_status VARCHAR(30) NULL,
      risk_score INT,
-     genetic_test_date DATE NULL,
+     ldl_test_date DATE NULL,
      INDEX idx_nric (nric),
      INDEX idx_eligible (fh_eligible),
      INDEX idx_clinic (clinic)
@@ -60,6 +60,7 @@ const SCHEMA = [
      nationality VARCHAR(40),
      contact VARCHAR(40),
      ldl DECIMAL(4,1),
+     ldl_test_date DATE NULL,
      total_chol DECIMAL(4,1) NULL,
      on_statin VARCHAR(5),
      notes TEXT,
@@ -94,7 +95,7 @@ async function seedPatients() {
   const sql = `INSERT INTO patients
     (patient_ref,nric,name,age,gender,ethnicity,nationality,contact,ldl,fh_eligible,
      family_history_cvd,diabetes,hypertension,smoking_status,clinic,doctor,
-     referral_status,referral_date,appointment_status,risk_score,genetic_test_date)
+     referral_status,referral_date,appointment_status,risk_score,ldl_test_date)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
   const conn = await pool.getConnection();
   try {
@@ -104,7 +105,7 @@ async function seedPatients() {
         p.patient_ref, p.nric, p.name, p.age, p.gender, p.ethnicity, p.nationality,
         p.contact, p.ldl, p.fh_eligible, p.family_history_cvd, p.diabetes, p.hypertension,
         p.smoking_status, p.clinic, p.doctor, p.referral_status, p.referral_date,
-        p.appointment_status, p.risk_score, p.genetic_test_date || null,
+        p.appointment_status, p.risk_score, p.ldl_test_date || null,
       ]);
     }
     await conn.commit();
@@ -120,22 +121,23 @@ async function seedPatients() {
 // Adds columns introduced after a deployment's first run (CREATE TABLE IF NOT
 // EXISTS above only helps fresh databases — existing tables need an ALTER).
 async function migrateSchema() {
-  await query("ALTER TABLE patients ADD COLUMN IF NOT EXISTS genetic_test_date DATE NULL");
+  await query("ALTER TABLE patients ADD COLUMN IF NOT EXISTS ldl_test_date DATE NULL");
+  await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS ldl_test_date DATE NULL");
 }
 
-// Backfills genetic_test_date for patients seeded before that column existed
+// Backfills ldl_test_date for patients seeded before that column existed
 // (seedPatients() only inserts once, so already-seeded rows never got it).
-async function backfillGeneticTestDates() {
+async function backfillLdlTestDates() {
   const file = path.join(__dirname, "patients.json");
   const data = JSON.parse(fs.readFileSync(file, "utf8"));
   const conn = await pool.getConnection();
   try {
     await conn.beginTransaction();
     for (const p of data) {
-      if (!p.genetic_test_date) continue;
+      if (!p.ldl_test_date) continue;
       await conn.execute(
-        "UPDATE patients SET genetic_test_date = ? WHERE patient_ref = ? AND genetic_test_date IS NULL",
-        [p.genetic_test_date, p.patient_ref]
+        "UPDATE patients SET ldl_test_date = ? WHERE patient_ref = ? AND ldl_test_date IS NULL",
+        [p.ldl_test_date, p.patient_ref]
       );
     }
     await conn.commit();
@@ -165,7 +167,7 @@ async function initDb() {
   for (const stmt of SCHEMA) await query(stmt);
   await migrateSchema();
   await seedPatients();
-  await backfillGeneticTestDates();
+  await backfillLdlTestDates();
   await seedDemoUser();
 }
 

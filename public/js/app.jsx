@@ -502,13 +502,14 @@ function ReferralForm({ patient, user, onBack, onDone }) {
   const [form, setForm] = useState({
     patient_name: patient.name, patient_nric: patient.nric, age: patient.age,
     sex: patient.gender, nationality: patient.nationality, contact: patient.contact,
-    ldl: patient.ldl, total_chol: patient.total_chol ?? "",
+    ldl: patient.ldl, ldl_test_date: patient.ldl_test_date ? patient.ldl_test_date.slice(0, 10) : "",
+    total_chol: patient.total_chol ?? "",
     on_statin: patient.on_statin == null ? "" : (patient.on_statin ? "Yes" : "No"),
     referrer_label: user.clinician_id, clinic: user.clinic || patient.clinic, notes: "",
   });
   const [tried, setTried] = useState(false); const [busy, setBusy] = useState(false); const [err, setErr] = useState("");
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
-  const required = ["patient_name", "patient_nric", "contact", "ldl", "referrer_label", "clinic"];
+  const required = ["patient_name", "patient_nric", "contact", "ldl", "ldl_test_date", "referrer_label", "clinic"];
   const missing = required.filter((k) => !String(form[k]).trim());
   const below = !(parseFloat(form.ldl) >= LDL_THRESHOLD);
 
@@ -529,11 +530,6 @@ function ReferralForm({ patient, user, onBack, onDone }) {
           <Badge tone="green">Autofilled from EMR</Badge>
           {tried && missing.length > 0 && <span className="err">{missing.length} required field(s) missing</span>}
         </div>
-        {patient.genetic_test_date && (
-          <p style={{ background: "var(--teal-soft)", color: "var(--teal-deep)", borderRadius: 10, padding: "10px 14px", fontSize: 14, margin: "0 0 16px" }}>
-            Prior genetic test on file: <b>{new Date(patient.genetic_test_date).toLocaleDateString()}</b>. Confirm whether this referral is still needed.
-          </p>
-        )}
         {below && <p style={{ background: "var(--amber-bg)", color: "var(--amber)", borderRadius: 10, padding: "10px 14px", fontSize: 14, margin: "0 0 16px" }}>
           Recorded LDL is below {LDL_THRESHOLD} mmol/L. Confirm a documented past result ≥ {LDL_THRESHOLD} before referring.
         </p>}
@@ -545,6 +541,7 @@ function ReferralForm({ patient, user, onBack, onDone }) {
           <Field label="Sex" value={form.sex} onChange={(v) => set("sex", v)} />
           <Field label="Nationality" value={form.nationality} onChange={(v) => set("nationality", v)} />
           <Field label="LDL (mmol/L) *" value={form.ldl} onChange={(v) => set("ldl", v)} bad={tried && !String(form.ldl).trim()} />
+          <Field label="LDL test date *" type="date" value={form.ldl_test_date} onChange={(v) => set("ldl_test_date", v)} bad={tried && !form.ldl_test_date} />
           <Field label="Total cholesterol" value={form.total_chol} onChange={(v) => set("total_chol", v)} />
           <Field label="On statin" value={form.on_statin} onChange={(v) => set("on_statin", v)} />
           <Field label="Referring clinician *" value={form.referrer_label} onChange={(v) => set("referrer_label", v)} bad={tried && !form.referrer_label} />
@@ -619,6 +616,7 @@ function ReferralPrint({ r }) {
       <Row k="Nationality" v={r.nationality ?? "—"} />
       <Row k="Contact" v={r.contact} />
       <Row k="LDL" v={`${r.ldl} mmol/L`} />
+      <Row k="LDL test date" v={r.ldl_test_date ? new Date(r.ldl_test_date).toLocaleDateString() : "—"} />
       <Row k="Total cholesterol" v={r.total_chol ? `${r.total_chol} mmol/L` : "—"} />
       <Row k="On statin" v={r.on_statin || "—"} />
       <Row k="Referring clinician" v={r.referrer_label} />
