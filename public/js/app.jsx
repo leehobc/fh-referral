@@ -529,6 +529,11 @@ function ReferralForm({ patient, user, onBack, onDone }) {
           <Badge tone="green">Autofilled from EMR</Badge>
           {tried && missing.length > 0 && <span className="err">{missing.length} required field(s) missing</span>}
         </div>
+        {patient.genetic_test_date && (
+          <p style={{ background: "var(--teal-soft)", color: "var(--teal-deep)", borderRadius: 10, padding: "10px 14px", fontSize: 14, margin: "0 0 16px" }}>
+            Prior genetic test on file: <b>{new Date(patient.genetic_test_date).toLocaleDateString()}</b>. Confirm whether this referral is still needed.
+          </p>
+        )}
         {below && <p style={{ background: "var(--amber-bg)", color: "var(--amber)", borderRadius: 10, padding: "10px 14px", fontSize: 14, margin: "0 0 16px" }}>
           Recorded LDL is below {LDL_THRESHOLD} mmol/L. Confirm a documented past result ≥ {LDL_THRESHOLD} before referring.
         </p>}
