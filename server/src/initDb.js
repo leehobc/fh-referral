@@ -61,6 +61,7 @@ const SCHEMA = [
      contact VARCHAR(40),
      ldl DECIMAL(4,1),
      ldl_test_date DATE NULL,
+     ldl_test_location VARCHAR(120) NULL,
      total_chol DECIMAL(4,1) NULL,
      on_statin VARCHAR(5),
      notes TEXT,
@@ -123,6 +124,7 @@ async function seedPatients() {
 async function migrateSchema() {
   await query("ALTER TABLE patients ADD COLUMN IF NOT EXISTS ldl_test_date DATE NULL");
   await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS ldl_test_date DATE NULL");
+  await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS ldl_test_location VARCHAR(120) NULL");
 }
 
 // Backfills ldl_test_date for patients seeded before that column existed

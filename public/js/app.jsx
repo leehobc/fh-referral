@@ -38,6 +38,13 @@ const navigate = (to) => { location.hash = to; };
 
 /* ── small helpers ─────────────────────────────────────────── */
 const Badge = ({ tone = "teal", children }) => <span className={`badge ${tone}`}>{children}</span>;
+const fmtDMY = (d) => {
+  if (!d) return "—";
+  const dt = new Date(d);
+  const dd = String(dt.getUTCDate()).padStart(2, "0");
+  const mm = String(dt.getUTCMonth() + 1).padStart(2, "0");
+  return `${dd}/${mm}/${dt.getUTCFullYear()}`;
+};
 const fmtDate = (d) => (d ? new Date(d).toLocaleString() : "—");
 
 function ImageModal({ src, alt, onClose }) {
@@ -371,6 +378,7 @@ function ReferralWizard({ user }) {
   const [fetching, setFetching] = useState(false);
   const [fetchErr, setFetchErr] = useState("");
   const [result, setResult] = useState(null);
+  const [showChecklistWarning, setShowChecklistWarning] = useState(false);
 
   const allReq = REQUIRED.every((c) => checks[c.key]);
 
@@ -432,9 +440,24 @@ function ReferralWizard({ user }) {
             {SUPPORTING.map((f, i) => <Check key={i} label={f} checked={support[i]} onChange={(v) => setSupport(s => s.map((x, j) => j === i ? v : x))} />)}
           </div>
           <div className="row-actions">
-            <button className="btn" disabled={!allReq} onClick={() => setStep(2)}>Continue to patient Q&amp;A</button>
+            <button className="btn" onClick={() => allReq ? setStep(2) : setShowChecklistWarning(true)}>Continue to patient Q&amp;A</button>
             {!allReq && <span className="small muted">Confirm all required criteria to continue.</span>}
           </div>
+          {showChecklistWarning && (
+            <div className="modal-overlay" onClick={() => setShowChecklistWarning(false)}>
+              <div className="modal-box" style={{ maxWidth: 420, textAlign: "left" }} onClick={(e) => e.stopPropagation()}>
+                <button className="modal-close" aria-label="Close" onClick={() => setShowChecklistWarning(false)}>✕</button>
+                <h3 style={{ margin: "0 0 8px", fontSize: 18 }}>Confirm all required criteria first</h3>
+                <p className="sub" style={{ margin: "0 0 12px" }}>All four required criteria must be confirmed before continuing. Still missing:</p>
+                <ul style={{ margin: "0 0 18px", paddingLeft: 20 }}>
+                  {REQUIRED.filter((c) => !checks[c.key]).map((c) => (
+                    <li key={c.key} style={{ marginBottom: 6, fontSize: 14 }}>{c.label}</li>
+                  ))}
+                </ul>
+                <button className="btn" onClick={() => setShowChecklistWarning(false)}>Got it</button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -503,7 +526,7 @@ function ReferralForm({ patient, user, onBack, onDone }) {
     patient_name: patient.name, patient_nric: patient.nric, age: patient.age,
     sex: patient.gender, nationality: patient.nationality, contact: patient.contact,
     ldl: patient.ldl, ldl_test_date: patient.ldl_test_date ? patient.ldl_test_date.slice(0, 10) : "",
-    total_chol: patient.total_chol ?? "",
+    ldl_test_location: "", total_chol: patient.total_chol ?? "",
     on_statin: patient.on_statin == null ? "" : (patient.on_statin ? "Yes" : "No"),
     referrer_label: user.clinician_id, clinic: user.clinic || patient.clinic, notes: "",
   });
@@ -542,6 +565,7 @@ function ReferralForm({ patient, user, onBack, onDone }) {
           <Field label="Nationality" value={form.nationality} onChange={(v) => set("nationality", v)} />
           <Field label="LDL (mmol/L) *" value={form.ldl} onChange={(v) => set("ldl", v)} bad={tried && !String(form.ldl).trim()} />
           <Field label="LDL test date *" type="date" value={form.ldl_test_date} onChange={(v) => set("ldl_test_date", v)} bad={tried && !form.ldl_test_date} />
+          <Field label="Testing location" value={form.ldl_test_location} onChange={(v) => set("ldl_test_location", v)} />
           <Field label="Total cholesterol" value={form.total_chol} onChange={(v) => set("total_chol", v)} />
           <Field label="On statin" value={form.on_statin} onChange={(v) => set("on_statin", v)} />
           <Field label="Referring clinician *" value={form.referrer_label} onChange={(v) => set("referrer_label", v)} bad={tried && !form.referrer_label} />
@@ -616,7 +640,8 @@ function ReferralPrint({ r }) {
       <Row k="Nationality" v={r.nationality ?? "—"} />
       <Row k="Contact" v={r.contact} />
       <Row k="LDL" v={`${r.ldl} mmol/L`} />
-      <Row k="LDL test date" v={r.ldl_test_date ? new Date(r.ldl_test_date).toLocaleDateString() : "—"} />
+      <Row k="LDL test date" v={fmtDMY(r.ldl_test_date)} />
+      <Row k="Testing location" v={r.ldl_test_location || "—"} />
       <Row k="Total cholesterol" v={r.total_chol ? `${r.total_chol} mmol/L` : "—"} />
       <Row k="On statin" v={r.on_statin || "—"} />
       <Row k="Referring clinician" v={r.referrer_label} />
