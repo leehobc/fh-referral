@@ -691,7 +691,6 @@ function Profile({ user }) {
       <div className="card" style={{ maxWidth: 520 }}>
         <Field label="Clinician ID" value={user.clinician_id} onChange={() => { }} disabled />
         <Field label="Full name" value={user.name} onChange={() => { }} disabled />
-        <Field label="Email" value={user.email || ""} onChange={() => { }} disabled />
         <Field label="Clinic" value={user.clinic || ""} onChange={() => { }} disabled />
         <p className="small muted" style={{ marginTop: 14 }}>Contact your system administrator to update these details.</p>
       </div>
