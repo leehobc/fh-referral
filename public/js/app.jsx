@@ -84,6 +84,19 @@ function Field({ label, value, onChange, bad, type = "text", placeholder, disabl
   );
 }
 
+function Select({ label, value, onChange, options, bad, disabled }) {
+  return (
+    <div>
+      <label className="label">{label}</label>
+      <select className={"input" + (bad ? " bad" : "")} value={value ?? ""} disabled={disabled}
+        onChange={(e) => onChange(e.target.value)}>
+        <option value="">Select…</option>
+        {options.map((o) => <option key={o} value={o}>{o}</option>)}
+      </select>
+    </div>
+  );
+}
+
 /* ══════════════════════════════════════════════════════════════
    AUTH PAGES
    ══════════════════════════════════════════════════════════════ */
@@ -507,13 +520,16 @@ function ReferralForm({ patient, user, onBack, onDone }) {
     patient_name: patient.name, patient_nric: patient.nric, age: patient.age,
     sex: patient.gender, nationality: patient.nationality, contact: patient.contact,
     ldl: patient.ldl, ldl_test_date: patient.ldl_test_date ? patient.ldl_test_date.slice(0, 10) : "",
-    ldl_test_location: "", total_chol: patient.total_chol ?? "",
+    // No source data for testing location — default to Singapore rather than
+    // leave blank; this is a referral-time default only, never written back
+    // to the patient record.
+    ldl_test_location: "Singapore", total_chol: patient.total_chol ?? "",
     on_statin: patient.on_statin == null ? "" : (patient.on_statin ? "Yes" : "No"),
     referrer_label: user.clinician_id, clinic: user.clinic || patient.clinic, notes: "",
   });
   const [tried, setTried] = useState(false); const [busy, setBusy] = useState(false); const [err, setErr] = useState("");
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
-  const required = ["patient_name", "patient_nric", "contact", "ldl", "ldl_test_date", "referrer_label", "clinic"];
+  const required = ["patient_name", "patient_nric", "contact", "ldl", "ldl_test_date", "on_statin", "referrer_label", "clinic"];
   const missing = required.filter((k) => !String(form[k]).trim());
   const below = !(parseFloat(form.ldl) >= LDL_THRESHOLD);
 
@@ -538,19 +554,19 @@ function ReferralForm({ patient, user, onBack, onDone }) {
           Recorded LDL is below {LDL_THRESHOLD} mmol/L. Confirm a documented past result ≥ {LDL_THRESHOLD} before referring.
         </p>}
         <div className="grid-2">
-          <Field label="Patient name *" value={form.patient_name} onChange={(v) => set("patient_name", v)} bad={tried && !form.patient_name} />
-          <Field label="NRIC *" value={form.patient_nric} onChange={(v) => set("patient_nric", v)} bad={tried && !form.patient_nric} />
-          <Field label="Contact *" value={form.contact} onChange={(v) => set("contact", v)} bad={tried && !form.contact} />
-          <Field label="Age" value={form.age} onChange={(v) => set("age", v)} />
-          <Field label="Sex" value={form.sex} onChange={(v) => set("sex", v)} />
-          <Field label="Nationality" value={form.nationality} onChange={(v) => set("nationality", v)} />
+          <Field label="Patient name *" value={form.patient_name} onChange={(v) => set("patient_name", v)} disabled />
+          <Field label="NRIC *" value={form.patient_nric} onChange={(v) => set("patient_nric", v)} disabled />
+          <Field label="Contact *" value={form.contact} onChange={(v) => set("contact", v)} disabled />
+          <Field label="Age" value={form.age} onChange={(v) => set("age", v)} disabled />
+          <Field label="Sex" value={form.sex} onChange={(v) => set("sex", v)} disabled />
+          <Field label="Nationality" value={form.nationality} onChange={(v) => set("nationality", v)} disabled />
           <Field label="LDL (mmol/L) *" value={form.ldl} onChange={(v) => set("ldl", v)} bad={tried && !String(form.ldl).trim()} />
           <Field label="LDL test date *" type="date" value={form.ldl_test_date} onChange={(v) => set("ldl_test_date", v)} bad={tried && !form.ldl_test_date} />
           <Field label="Testing location" value={form.ldl_test_location} onChange={(v) => set("ldl_test_location", v)} />
           <Field label="Total cholesterol" value={form.total_chol} onChange={(v) => set("total_chol", v)} />
-          <Field label="On statin" value={form.on_statin} onChange={(v) => set("on_statin", v)} />
-          <Field label="Referring clinician *" value={form.referrer_label} onChange={(v) => set("referrer_label", v)} bad={tried && !form.referrer_label} />
-          <Field label="Clinic *" value={form.clinic} onChange={(v) => set("clinic", v)} bad={tried && !form.clinic} />
+          <Select label="On statin *" value={form.on_statin} onChange={(v) => set("on_statin", v)} options={["Yes", "No"]} bad={tried && !form.on_statin} />
+          <Field label="Referring clinician *" value={form.referrer_label} onChange={(v) => set("referrer_label", v)} disabled />
+          <Field label="Clinic *" value={form.clinic} onChange={(v) => set("clinic", v)} disabled />
         </div>
         <label className="label" style={{ marginTop: 14 }}>Clinical notes (optional)</label>
         <textarea className="input" value={form.notes} onChange={(e) => set("notes", e.target.value)} placeholder="Family history, supporting features, relevant findings…" />
