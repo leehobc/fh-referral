@@ -74,11 +74,11 @@ function ImageModal({ src, alt, onClose }) {
   );
 }
 
-function Field({ label, value, onChange, bad, type = "text", placeholder }) {
+function Field({ label, value, onChange, bad, type = "text", placeholder, disabled }) {
   return (
     <div>
       <label className="label">{label}</label>
-      <input className={"input" + (bad ? " bad" : "")} type={type} value={value ?? ""}
+      <input className={"input" + (bad ? " bad" : "")} type={type} value={value ?? ""} disabled={disabled}
         placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
     </div>
   );
@@ -667,27 +667,17 @@ function Referrals() {
 /* ══════════════════════════════════════════════════════════════
    PROFILE & SETTINGS
    ══════════════════════════════════════════════════════════════ */
-function Profile({ user, setUser }) {
-  const [f, setF] = useState({ name: user.name, email: user.email || "", clinic: user.clinic || "" });
-  const [msg, setMsg] = useState(""); const [err, setErr] = useState(""); const [busy, setBusy] = useState(false);
-  const set = (k, v) => setF((s) => ({ ...s, [k]: v }));
-  const save = async () => {
-    setMsg(""); setErr(""); setBusy(true);
-    try { const { user: u } = await API.me.update(f); setUser(u); setMsg("Profile saved."); }
-    catch (e) { setErr(e.message); } finally { setBusy(false); }
-  };
+function Profile({ user }) {
   return (
     <div>
       <h2 className="title">Profile</h2>
-      <p className="sub">Your clinician details, used to populate referrals.</p>
+      <p className="sub">Your clinician details. These are set by your administrator and cannot be changed here.</p>
       <div className="card" style={{ maxWidth: 520 }}>
-        <Field label="Clinician ID" value={user.clinician_id} onChange={() => { }} />
-        <p className="small muted" style={{ marginTop: -10, marginBottom: 14 }}>Clinician ID cannot be changed.</p>
-        <Field label="Full name" value={f.name} onChange={(v) => set("name", v)} />
-        <Field label="Email" value={f.email} onChange={(v) => set("email", v)} />
-        <Field label="Clinic" value={f.clinic} onChange={(v) => set("clinic", v)} />
-        {msg && <p className="ok">{msg}</p>}{err && <p className="err">{err}</p>}
-        <button className="btn" disabled={busy} onClick={save}>{busy ? "Saving…" : "Save profile"}</button>
+        <Field label="Clinician ID" value={user.clinician_id} onChange={() => { }} disabled />
+        <Field label="Full name" value={user.name} onChange={() => { }} disabled />
+        <Field label="Email" value={user.email || ""} onChange={() => { }} disabled />
+        <Field label="Clinic" value={user.clinic || ""} onChange={() => { }} disabled />
+        <p className="small muted" style={{ marginTop: 14 }}>Contact your system administrator to update these details.</p>
       </div>
     </div>
   );
@@ -758,7 +748,7 @@ function App() {
   const seg = route.path.split("/");
   if (seg[1] === "refer" || route.path === "/" || route.path === "") page = <ReferralWizard user={user} key="new" />;
   else if (seg[1] === "referrals") page = <Referrals />;
-  else if (seg[1] === "profile") page = <Profile user={user} setUser={setUser} />;
+  else if (seg[1] === "profile") page = <Profile user={user} />;
   else if (seg[1] === "settings") page = <Settings user={user} />;
   else page = <ReferralWizard user={user} key="new" />;
 

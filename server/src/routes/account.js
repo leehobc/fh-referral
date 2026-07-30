@@ -15,26 +15,11 @@ router.get("/", async (req, res) => {
   res.json({ user: publicUser(u) });
 });
 
-// PUT /api/me  — update name, email, clinic, prefs
-router.put("/", async (req, res) => {
-  const { name, email, clinic, prefs } = req.body || {};
-  try {
-    await query(
-      "UPDATE users SET name = COALESCE(?,name), email = ?, clinic = ?, prefs = ? WHERE id = ?",
-      [
-        name || null,
-        email || null,
-        clinic || null,
-        prefs ? JSON.stringify(prefs) : null,
-        req.user.id,
-      ]
-    );
-    const [u] = await query("SELECT * FROM users WHERE id = ?", [req.user.id]);
-    res.json({ user: publicUser(u) });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Could not update profile." });
-  }
+// PUT /api/me — disabled. Profile fields (name, email, clinic) are set by an
+// administrator, not self-editable, so the UI has no form for this — this
+// route stays in place only to reject any direct call that bypasses the UI.
+router.put("/", (req, res) => {
+  res.status(403).json({ error: "Profile fields are managed by an administrator and cannot be changed here." });
 });
 
 // POST /api/me/change-password

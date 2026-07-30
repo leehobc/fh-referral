@@ -39,7 +39,6 @@
 
     me: {
       get: () => request("/api/me"),
-      update: (payload) => request("/api/me", { method: "PUT", body: payload }),
       changePassword: (current, next) =>
         request("/api/me/change-password", { method: "POST", body: { current, next } }),
     },
