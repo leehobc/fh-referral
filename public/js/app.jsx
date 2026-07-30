@@ -123,48 +123,18 @@ function Login({ onAuthed }) {
           <h2 className="title" style={{ fontSize: 22 }}>Sign in</h2>
           <p className="sub">Secure clinician access only.</p>
           <label className="label">Clinician ID</label>
-          <input className="input" value={id} onChange={(e) => setId(e.target.value)} placeholder="e.g. DR-10567" />
+          <input className="input" value={id} onChange={(e) => setId(e.target.value)} />
           <label className="label">Password</label>
           <input className="input" type="password" value={pw} onChange={(e) => setPw(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && submit()} placeholder="••••••••" />
+            onKeyDown={(e) => e.key === "Enter" && submit()} />
           {err && <p className="err">{err}</p>}
           <button className="btn btn-full" disabled={busy} onClick={submit}>{busy ? "Signing in…" : "Sign in"}</button>
           <p style={{ textAlign: "center", margin: "14px 0 0" }}>
             <a href="#/forgot">Forgot password?</a>
           </p>
-          <p className="small muted" style={{ textAlign: "center", marginTop: 10 }}>
-            New here? <a href="#/register">Create an account</a>
-          </p>
         </div>
       </div>
     </div>
-  );
-}
-
-function Register({ onAuthed }) {
-  const [f, setF] = useState({ clinician_id: "", name: "", email: "", clinic: "", password: "" });
-  const [err, setErr] = useState(""); const [busy, setBusy] = useState(false);
-  const set = (k, v) => setF((s) => ({ ...s, [k]: v }));
-  const submit = async () => {
-    setErr(""); setBusy(true);
-    try {
-      const { token, user } = await API.auth.register(f);
-      API.setToken(token); onAuthed(user); navigate("/");
-    } catch (e) { setErr(e.message); } finally { setBusy(false); }
-  };
-  return (
-    <div className="auth-wrap"><div className="auth-card card">
-      <h2 className="title" style={{ fontSize: 22 }}>Create clinician account</h2>
-      <p className="sub">Register to start referring patients.</p>
-      <Field label="Clinician ID *" value={f.clinician_id} onChange={(v) => set("clinician_id", v)} placeholder="e.g. DR-20481" />
-      <Field label="Full name *" value={f.name} onChange={(v) => set("name", v)} placeholder="Dr …" />
-      <Field label="Email" value={f.email} onChange={(v) => set("email", v)} />
-      <Field label="Clinic" value={f.clinic} onChange={(v) => set("clinic", v)} />
-      <Field label="Password * (min 8 chars)" type="password" value={f.password} onChange={(v) => set("password", v)} />
-      {err && <p className="err">{err}</p>}
-      <button className="btn btn-full" disabled={busy} onClick={submit}>{busy ? "Creating…" : "Create account"}</button>
-      <p className="small muted" style={{ textAlign: "center", marginTop: 12 }}><a href="#/login">Back to sign in</a></p>
-    </div></div>
   );
 }
 
