@@ -556,7 +556,7 @@ function ReferralForm({ patient, user, onBack, onDone }) {
 
   const submit = async () => {
     setTried(true); setErr("");
-    if (missing.length) return;
+    if (missing.length || below) return;
     setBusy(true);
     try { const { referral } = await API.referrals.create(form); onDone(referral); }
     catch (e) { setErr(e.message); } finally { setBusy(false); }
@@ -571,8 +571,8 @@ function ReferralForm({ patient, user, onBack, onDone }) {
           <Badge tone="green">Autofilled from EMR</Badge>
           {tried && missing.length > 0 && <span className="err">{missing.length} required field(s) missing</span>}
         </div>
-        {below && <p style={{ background: "var(--amber-bg)", color: "var(--amber)", borderRadius: 10, padding: "10px 14px", fontSize: 14, margin: "0 0 16px" }}>
-          Recorded LDL is below {LDL_THRESHOLD} mmol/L. Confirm a documented past result ≥ {LDL_THRESHOLD} before referring.
+        {below && <p style={{ background: "var(--red-bg)", color: "var(--red)", borderRadius: 10, padding: "10px 14px", fontSize: 14, margin: "0 0 16px" }}>
+          LDL is below {LDL_THRESHOLD} mmol/L — this referral cannot be submitted. If a documented past result was ≥ {LDL_THRESHOLD} mmol/L, enter that value above.
         </p>}
         <div className="grid-2">
           <Field label="Patient name *" value={form.patient_name} onChange={(v) => set("patient_name", v)} disabled />
@@ -594,7 +594,7 @@ function ReferralForm({ patient, user, onBack, onDone }) {
         {err && <p className="err">{err}</p>}
         <div className="row-actions">
           <button className="btn-ghost" onClick={onBack}>Back</button>
-          <button className="btn" disabled={busy} onClick={submit}>{busy ? "Submitting…" : "Submit referral to GAC"}</button>
+          <button className="btn" disabled={busy || below} onClick={submit}>{busy ? "Submitting…" : "Submit referral to GAC"}</button>
         </div>
       </div>
     </div>
