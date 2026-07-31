@@ -216,6 +216,7 @@ function ResetPassword({ token }) {
 const NAV = [
   { path: "/refer", label: "New referral", icon: Ic.refer },
   { path: "/referrals", label: "Referrals", icon: Ic.list },
+  { path: "/consulting", label: "Consulting", icon: Ic.chat },
   { path: "/profile", label: "Profile", icon: Ic.user },
   { path: "/settings", label: "Settings", icon: Ic.gear },
 ];
@@ -363,11 +364,47 @@ function ChatWidget() {
   );
 }
 
+/* FAQ accordion + AI assistant — shared by the referral wizard's Q&A step
+   and the standalone Consulting page. */
+function FaqAndAssistant() {
+  const [openFaq, setOpenFaq] = useState(0);
+  return (
+    <>
+      <div className="card">
+        {FAQS.map(([q, a], i) => (
+          <div key={i} style={{ borderBottom: "1px solid var(--line)" }}>
+            <button onClick={() => setOpenFaq(openFaq === i ? -1 : i)} style={{ width: "100%", textAlign: "left", background: "none", border: "none", padding: "14px 0", fontSize: 16, fontWeight: 600, display: "flex", justifyContent: "space-between", gap: 12, color: "var(--ink)" }}>
+              {q}<span style={{ color: "var(--teal)", fontSize: 20 }}>{openFaq === i ? "–" : "+"}</span>
+            </button>
+            {openFaq === i && <p className="muted" style={{ margin: "0 0 16px", fontSize: 15, lineHeight: 1.55 }}>{a}</p>}
+          </div>
+        ))}
+      </div>
+      <p className="small muted" style={{ marginTop: 14 }}>Figures are based on public MOH / GAC program information and may change — confirm current details with the GAC.</p>
+
+      <div style={{ marginTop: 22 }}>
+        <b>Unsure about something yourself?</b>
+        <p className="sub" style={{ margin: "4px 0 12px" }}>Ask the AI assistant about the program — eligibility, process, costs.</p>
+        <ChatWidget />
+      </div>
+    </>
+  );
+}
+
+function Consulting() {
+  return (
+    <div>
+      <h2 className="title">Consulting</h2>
+      <p className="sub">Look up common questions or ask the AI assistant about the FH referral program — outside of an active referral.</p>
+      <FaqAndAssistant />
+    </div>
+  );
+}
+
 function ReferralWizard({ user }) {
   const [step, setStep] = useState(0);
   const [checks, setChecks] = useState({ resident: false, ldl: false, secondary: false, adult: false });
   const [support, setSupport] = useState(SUPPORTING.map(() => false));
-  const [openFaq, setOpenFaq] = useState(0);
   const [patient, setPatient] = useState(null);
   const [fetching, setFetching] = useState(false);
   const [fetchErr, setFetchErr] = useState("");
@@ -459,23 +496,7 @@ function ReferralWizard({ user }) {
         <div>
           <h2 className="title">Explain to the patient</h2>
           <p className="sub">Use these to answer common questions and keep messaging consistent.</p>
-          <div className="card">
-            {FAQS.map(([q, a], i) => (
-              <div key={i} style={{ borderBottom: "1px solid var(--line)" }}>
-                <button onClick={() => setOpenFaq(openFaq === i ? -1 : i)} style={{ width: "100%", textAlign: "left", background: "none", border: "none", padding: "14px 0", fontSize: 16, fontWeight: 600, display: "flex", justifyContent: "space-between", gap: 12, color: "var(--ink)" }}>
-                  {q}<span style={{ color: "var(--teal)", fontSize: 20 }}>{openFaq === i ? "–" : "+"}</span>
-                </button>
-                {openFaq === i && <p className="muted" style={{ margin: "0 0 16px", fontSize: 15, lineHeight: 1.55 }}>{a}</p>}
-              </div>
-            ))}
-          </div>
-          <p className="small muted" style={{ marginTop: 14 }}>Figures are based on public MOH / GAC program information and may change — confirm current details with the GAC.</p>
-
-          <div style={{ marginTop: 22 }}>
-            <b>Unsure about something yourself?</b>
-            <p className="sub" style={{ margin: "4px 0 12px" }}>Ask the AI assistant about the program — eligibility, process, costs.</p>
-            <ChatWidget />
-          </div>
+          <FaqAndAssistant />
 
           <div className="row-actions" style={{ marginTop: 18 }}>
             <button className="btn-ghost" onClick={() => setStep(1)}>Back</button>
@@ -763,6 +784,7 @@ function App() {
   const seg = route.path.split("/");
   if (seg[1] === "refer" || route.path === "/" || route.path === "") page = <ReferralWizard user={user} key="new" />;
   else if (seg[1] === "referrals") page = <Referrals />;
+  else if (seg[1] === "consulting") page = <Consulting />;
   else if (seg[1] === "profile") page = <Profile user={user} />;
   else if (seg[1] === "settings") page = <Settings user={user} />;
   else page = <ReferralWizard user={user} key="new" />;
