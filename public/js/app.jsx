@@ -439,7 +439,7 @@ function ReferralWizard({ user }) {
             </p>
             <div className="row-actions">
               <button className="btn" onClick={() => setStep(1)}>Patient consents — continue</button>
-              <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines</button>
+              <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines or defers</button>
             </div>
           </div>
           <div style={{ marginTop: 18 }}><button className="btn-ghost" onClick={() => setStep(1)}>Back</button></div>
@@ -489,7 +489,7 @@ function ReferralWizard({ user }) {
           <div className="row-actions" style={{ marginTop: 18 }}>
             <button className="btn-ghost" onClick={() => setStep(1)}>Back</button>
             <button className="btn" onClick={() => setStep(3)}>Retrieve patient record</button>
-            <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines</button>
+            <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines or defers</button>
           </div>
         </div>
       )}
@@ -595,11 +595,11 @@ function Submitted({ referral, onRestart }) {
     return (
       <div className="card" style={{ textAlign: "center" }}>
         <Badge tone="red">Referral not made</Badge>
-        <h2 className="title" style={{ marginTop: 14 }}>Patient declined referral</h2>
+        <h2 className="title" style={{ marginTop: 14 }}>Patient declined or deferred referral</h2>
         <p className="sub">No referral was submitted and no records were retrieved.</p>
         <div className="row-actions-center">
           <button className="btn" onClick={onRestart}>Start a new patient</button>
-          <button className="btn" onClick={() => setShowInfo(true)}>More Information</button>
+          <button className="btn" onClick={() => setShowInfo(true)}>More information for patients</button>
         </div>
         {showInfo && (
           <ImageModal
