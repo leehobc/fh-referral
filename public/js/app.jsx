@@ -257,12 +257,6 @@ const REQUIRED = [
   { key: "secondary", label: "Secondary causes considered or excluded", hint: "e.g. hypothyroidism, nephrotic syndrome, certain drugs, or diet." },
   { key: "adult", label: "Patient is an adult able to give informed consent", hint: "Required before any referral proceeds." },
 ];
-const SUPPORTING = [
-  "Family history of premature coronary heart disease (men < 55, women < 60)",
-  "Family history of very high cholesterol or known FH",
-  "Personal history of premature cardiovascular disease",
-  "Physical signs: tendon xanthomata or corneal arcus before age 45",
-];
 const FAQS = [
   ["What is familial hypercholesterolaemia (FH)?", "FH is an inherited condition that raises LDL cholesterol from birth. In Singapore about 1 in 140 people carry a gene change that can cause it, and it is usually silent — no symptoms — so it is often missed."],
   ["How serious is it if untreated?", "Untreated FH can raise the risk of early heart disease by up to around 20 times. It responds well to treatment and lifestyle changes."],
@@ -404,7 +398,6 @@ function Consulting() {
 function ReferralWizard({ user }) {
   const [step, setStep] = useState(0);
   const [checks, setChecks] = useState({ resident: false, ldl: false, secondary: false, adult: false });
-  const [support, setSupport] = useState(SUPPORTING.map(() => false));
   const [patient, setPatient] = useState(null);
   const [fetching, setFetching] = useState(false);
   const [fetchErr, setFetchErr] = useState("");
@@ -464,11 +457,6 @@ function ReferralWizard({ user }) {
             </div>
             <p className="sub" style={{ margin: "6px 0 10px" }}>All four must be confirmed to refer.</p>
             {REQUIRED.map((c) => <Check key={c.key} {...c} checked={checks[c.key]} onChange={(v) => setChecks(s => ({ ...s, [c.key]: v }))} />)}
-          </div>
-          <div className="card" style={{ marginBottom: 18 }}>
-            <b>Supporting clinical features <span className="muted small">(optional)</span></b>
-            <p className="sub" style={{ margin: "4px 0 12px" }}>These raise suspicion of FH but are not required. Tick any that apply.</p>
-            {SUPPORTING.map((f, i) => <Check key={i} label={f} checked={support[i]} onChange={(v) => setSupport(s => s.map((x, j) => j === i ? v : x))} />)}
           </div>
           <div className="row-actions">
             <button className="btn" onClick={() => allReq ? setStep(2) : setShowChecklistWarning(true)}>Continue to patient Q&amp;A</button>
