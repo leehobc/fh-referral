@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
   try {
     const [{ total }] = await query(`SELECT COUNT(*) AS total FROM patients ${whereSql}`, params);
     const rows = await query(
-      `SELECT id,patient_ref,nric,name,age,gender,ethnicity,ldl,fh_eligible,
+      `SELECT id,patient_ref,nric,name,dob,gender,ethnicity,ldl,fh_eligible,
               risk_score,clinic,doctor,referral_status,appointment_status
        FROM patients ${whereSql}
        ORDER BY fh_eligible DESC, risk_score DESC

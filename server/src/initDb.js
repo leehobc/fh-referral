@@ -25,7 +25,7 @@ const SCHEMA = [
      patient_ref VARCHAR(20),
      nric VARCHAR(20) NOT NULL UNIQUE,
      name VARCHAR(120) NOT NULL,
-     age INT,
+     dob DATE,
      gender VARCHAR(10),
      ethnicity VARCHAR(30),
      nationality VARCHAR(40),
@@ -55,7 +55,7 @@ const SCHEMA = [
      reference VARCHAR(20) NOT NULL UNIQUE,
      patient_nric VARCHAR(20) NOT NULL,
      patient_name VARCHAR(120),
-     age INT,
+     dob DATE,
      sex VARCHAR(10),
      nationality VARCHAR(40),
      contact VARCHAR(40),
@@ -94,7 +94,7 @@ async function seedPatients() {
   const file = path.join(__dirname, "patients.json");
   const data = JSON.parse(fs.readFileSync(file, "utf8"));
   const sql = `INSERT INTO patients
-    (patient_ref,nric,name,age,gender,ethnicity,nationality,contact,ldl,fh_eligible,
+    (patient_ref,nric,name,dob,gender,ethnicity,nationality,contact,ldl,fh_eligible,
      family_history_cvd,diabetes,hypertension,smoking_status,clinic,doctor,
      referral_status,referral_date,appointment_status,risk_score,ldl_test_date)
     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
@@ -103,7 +103,7 @@ async function seedPatients() {
     await conn.beginTransaction();
     for (const p of data) {
       await conn.execute(sql, [
-        p.patient_ref, p.nric, p.name, p.age, p.gender, p.ethnicity, p.nationality,
+        p.patient_ref, p.nric, p.name, p.dob || null, p.gender, p.ethnicity, p.nationality,
         p.contact, p.ldl, p.fh_eligible, p.family_history_cvd, p.diabetes, p.hypertension,
         p.smoking_status, p.clinic, p.doctor, p.referral_status, p.referral_date,
         p.appointment_status, p.risk_score, p.ldl_test_date || null,
@@ -125,21 +125,25 @@ async function migrateSchema() {
   await query("ALTER TABLE patients ADD COLUMN IF NOT EXISTS ldl_test_date DATE NULL");
   await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS ldl_test_date DATE NULL");
   await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS ldl_test_location VARCHAR(120) NULL");
+  await query("ALTER TABLE patients ADD COLUMN IF NOT EXISTS dob DATE NULL");
+  await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS dob DATE NULL");
 }
 
-// Backfills ldl_test_date for patients seeded before that column existed
+// Backfills a column for patients seeded before that column existed
 // (seedPatients() only inserts once, so already-seeded rows never got it).
-async function backfillLdlTestDates() {
+// `column` is always a hardcoded literal passed from initDb() below, never
+// request input, so interpolating it into the SQL is safe.
+async function backfillPatientColumn(column) {
   const file = path.join(__dirname, "patients.json");
   const data = JSON.parse(fs.readFileSync(file, "utf8"));
   const conn = await pool.getConnection();
   try {
     await conn.beginTransaction();
     for (const p of data) {
-      if (!p.ldl_test_date) continue;
+      if (!p[column]) continue;
       await conn.execute(
-        "UPDATE patients SET ldl_test_date = ? WHERE patient_ref = ? AND ldl_test_date IS NULL",
-        [p.ldl_test_date, p.patient_ref]
+        `UPDATE patients SET ${column} = ? WHERE patient_ref = ? AND ${column} IS NULL`,
+        [p[column], p.patient_ref]
       );
     }
     await conn.commit();
@@ -169,7 +173,8 @@ async function initDb() {
   for (const stmt of SCHEMA) await query(stmt);
   await migrateSchema();
   await seedPatients();
-  await backfillLdlTestDates();
+  await backfillPatientColumn("ldl_test_date");
+  await backfillPatientColumn("dob");
   await seedDemoUser();
 }
 

@@ -538,7 +538,7 @@ function ReferralWizard({ user }) {
 
 function ReferralForm({ patient, user, onBack, onDone }) {
   const [form, setForm] = useState({
-    patient_name: patient.name, patient_nric: patient.nric, age: patient.age,
+    patient_name: patient.name, patient_nric: patient.nric, dob: patient.dob ? patient.dob.slice(0, 10) : "",
     sex: patient.gender, nationality: patient.nationality, contact: patient.contact,
     ldl: patient.ldl, ldl_test_date: patient.ldl_test_date ? patient.ldl_test_date.slice(0, 10) : "",
     // No source data for testing location — default to Singapore rather than
@@ -578,7 +578,7 @@ function ReferralForm({ patient, user, onBack, onDone }) {
           <Field label="Patient name *" value={form.patient_name} onChange={(v) => set("patient_name", v)} disabled />
           <Field label="NRIC *" value={form.patient_nric} onChange={(v) => set("patient_nric", v)} disabled />
           <Field label="Contact *" value={form.contact} onChange={(v) => set("contact", v)} disabled />
-          <Field label="Age" value={form.age} onChange={(v) => set("age", v)} disabled />
+          <Field label="Date of birth" type="date" value={form.dob} onChange={(v) => set("dob", v)} disabled />
           <Field label="Sex" value={form.sex} onChange={(v) => set("sex", v)} disabled />
           <Field label="Nationality" value={form.nationality} onChange={(v) => set("nationality", v)} disabled />
           <Field label="LDL (mmol/L) *" value={form.ldl} onChange={(v) => set("ldl", v)} bad={tried && !String(form.ldl).trim()} />
@@ -654,7 +654,7 @@ function ReferralPrint({ r }) {
         <div className="small muted">Genetic Assessment Centre · Reference {r.reference}</div>
       </div>
       <Row k="Patient" v={`${r.patient_name} (${r.patient_nric})`} />
-      <Row k="Age / Sex" v={`${r.age ?? "—"} · ${r.sex ?? "—"}`} />
+      <Row k="Date of birth / Sex" v={`${fmtDMY(r.dob)} · ${r.sex ?? "—"}`} />
       <Row k="Nationality" v={r.nationality ?? "—"} />
       <Row k="Contact" v={r.contact} />
       <Row k="LDL" v={`${r.ldl} mmol/L`} />
