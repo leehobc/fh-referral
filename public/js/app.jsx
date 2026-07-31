@@ -419,7 +419,7 @@ function ReferralWizard({ user }) {
 
   if (result) return <Submitted referral={result} onRestart={() => {
     setStep(0); setChecks({ resident: false, ldl: false, secondary: false, adult: false });
-    setSupport(SUPPORTING.map(() => false)); setPatient(null); setResult(null);
+    setPatient(null); setResult(null);
   }} />;
 
   return (
