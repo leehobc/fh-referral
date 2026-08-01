@@ -58,6 +58,9 @@
       // patient first — there's no plain "get" anymore.
       requestViewOtp: (reference) => request("/api/referrals/" + encodeURIComponent(reference) + "/request-otp", { method: "POST" }),
       verifyViewOtp: (reference, otp) => request("/api/referrals/" + encodeURIComponent(reference) + "/verify-otp", { method: "POST", body: { otp } }),
+      // Patients seen through the wizard who did NOT end up referred (declined/deferred, or not suggested by the system).
+      logNotMade: (payload) => request("/api/referrals/not-made", { method: "POST", body: payload }),
+      listNotMade: () => request("/api/referrals/not-made"),
     },
 
     stats: {

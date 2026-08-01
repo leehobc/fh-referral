@@ -67,6 +67,50 @@ router.get("/", async (req, res) => {
   }
 });
 
+// POST /api/referrals/not-made — logs a wizard run that ended without a
+// referral (patient declined/deferred, or the assessment did not suggest one
+// and the clinician agreed). These never touch the referrals table itself —
+// there's no referral — so without this they'd be invisible on the history
+// page even though a patient was actually seen.
+router.post("/not-made", async (req, res) => {
+  const b = req.body || {};
+  const reason = b.reason === "not_suggested" ? "not_suggested" : "declined";
+  try {
+    await query("INSERT INTO audit_log (user_id,action,meta) VALUES (?,?,?)", [
+      req.user.id,
+      "referral_not_made",
+      JSON.stringify({ patient_nric: b.patient_nric || null, patient_name: b.patient_name || null, reason }),
+    ]);
+    res.status(201).json({ ok: true });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Could not record outcome." });
+  }
+});
+
+// GET /api/referrals/not-made — the same history, for the Referrals page.
+router.get("/not-made", async (req, res) => {
+  const where = req.user.role !== "admin"
+    ? "WHERE user_id = ? AND action = 'referral_not_made'"
+    : "WHERE action = 'referral_not_made'";
+  const params = req.user.role !== "admin" ? [req.user.id] : [];
+  try {
+    const rows = await query(
+      `SELECT id, meta, created_at FROM audit_log ${where} ORDER BY created_at DESC LIMIT 200`,
+      params
+    );
+    const entries = rows.map((r) => {
+      let meta = {};
+      try { meta = typeof r.meta === "string" ? JSON.parse(r.meta) : (r.meta || {}); } catch { /* malformed, skip */ }
+      return { id: r.id, patient_nric: meta.patient_nric, patient_name: meta.patient_name, reason: meta.reason, created_at: r.created_at };
+    });
+    res.json({ entries });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Could not list outcomes." });
+  }
+});
+
 // Fixed fallback code for demoing this flow where the real one only ever
 // reaches a Docker log line (e.g. grading/course demo on the NAS deployment,
 // no SSH access to tail logs mid-demo). Real per-request codes still work

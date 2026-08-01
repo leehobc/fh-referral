@@ -497,6 +497,19 @@ function ReferralWizard({ user }) {
     catch (e) { setPatient(null); setFetchErr(e.message); } finally { setFetching(false); }
   };
 
+  // Ends the wizard without a referral (declined/deferred, or not suggested
+  // by the system). Nothing is written to the referrals table for these —
+  // logged separately so the patient still shows up in the history list.
+  const endWithoutReferral = (outcome) => {
+    if (patient) {
+      API.referrals.logNotMade({
+        patient_nric: patient.nric, patient_name: patient.name,
+        reason: outcome.notSuggested ? "not_suggested" : "declined",
+      }).catch(() => {});
+    }
+    setResult(outcome);
+  };
+
   if (result) return <Submitted referral={result} onRestart={() => {
     setStep(0); setPatient(null); setResult(null); setConfirmOverride(false);
   }} />;
@@ -518,7 +531,7 @@ function ReferralWizard({ user }) {
             </p>
             <div className="row-actions">
               <button className="btn" onClick={() => setStep(1)}>Patient consents — continue</button>
-              <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines or defers</button>
+              <button className="btn-danger" onClick={() => endWithoutReferral({ declined: true })}>Patient declines or defers</button>
             </div>
           </div>
         </div>
@@ -569,10 +582,10 @@ function ReferralWizard({ user }) {
               {suggested
                 ? <button className="btn" onClick={() => setStep(3)}>Continue to patient Q&amp;A</button>
                 : <>
-                    <button className="btn-danger" onClick={() => setResult({ notSuggested: true })}>Not suggested by system — do not refer</button>
+                    <button className="btn-danger" onClick={() => endWithoutReferral({ notSuggested: true })}>Not suggested by system — do not refer</button>
                     <button className="btn-ghost" onClick={() => setConfirmOverride(true)}>Override — refer anyway</button>
                   </>}
-              <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines or defers</button>
+              <button className="btn-danger" onClick={() => endWithoutReferral({ declined: true })}>Patient declines or defers</button>
             </div>
 
             {confirmOverride && (
@@ -605,7 +618,7 @@ function ReferralWizard({ user }) {
           <div className="row-actions" style={{ marginTop: 18 }}>
             <button className="btn-ghost" onClick={() => setStep(2)}>Back</button>
             <button className="btn" onClick={() => setStep(4)}>Continue to referral form</button>
-            <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines or defers</button>
+            <button className="btn-danger" onClick={() => endWithoutReferral({ declined: true })}>Patient declines or defers</button>
           </div>
         </div>
       )}
@@ -881,27 +894,46 @@ function ReferralStageBar({ status }) {
 
 function Referrals() {
   const [q, setQ] = useState(""); const [list, setList] = useState([]); const [err, setErr] = useState("");
-  const load = useCallback(() => { API.referrals.list(q).then((d) => setList(d.referrals)).catch((e) => setErr(e.message)); }, [q]);
+  const load = useCallback(() => {
+    setErr("");
+    const s = q.trim().toLowerCase();
+    const matches = (name, nric) => !s || (name || "").toLowerCase().includes(s) || (nric || "").toLowerCase().includes(s);
+    Promise.all([API.referrals.list(q), API.referrals.listNotMade()])
+      .then(([referred, notMade]) => {
+        const referredRows = referred.referrals.map((r) => ({ ...r, outcome: "referred" }));
+        const notMadeRows = notMade.entries
+          .filter((e) => matches(e.patient_name, e.patient_nric))
+          .map((e) => ({ ...e, outcome: e.reason }));
+        const merged = [...referredRows, ...notMadeRows]
+          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        setList(merged);
+      })
+      .catch((e) => setErr(e.message));
+  }, [q]);
   useEffect(() => { load(); }, [load]);
   return (
     <div>
       <div className="page-head"><div>
         <h2 className="title">Referrals</h2>
-        <p className="sub">Referrals you have submitted through the tool.</p>
+        <p className="sub">Patients seen through the referral tool — submitted, declined/deferred, or not suggested by the system.</p>
       </div></div>
       <input className="input" placeholder="Search reference, patient name, or NRIC" value={q} onChange={(e) => setQ(e.target.value)} />
       {err && <p className="err">{err}</p>}
       {list.length === 0 ? <p className="muted">No referrals yet.</p> : (
         <table className="table">
-          <thead><tr><th>Reference</th><th>Patient</th><th>NRIC</th><th>Progress</th><th>System</th><th>When</th><th>Details</th></tr></thead>
+          <thead><tr><th>Reference</th><th>Patient</th><th>NRIC</th><th>Outcome</th><th>System</th><th>When</th><th>Details</th></tr></thead>
           <tbody>
             {list.map((r) => (
-              <tr key={r.reference}>
-                <td>{r.reference}</td><td>{r.patient_name}</td><td>{r.patient_nric}</td>
-                <td><ReferralStageBar status={r.status} /></td>
-                <td>{r.system_suggested != null && Number(r.system_suggested) === 0 && <Badge tone="amber">Not suggested</Badge>}</td>
+              <tr key={r.reference || `nm-${r.id}`}>
+                <td>{r.reference || "—"}</td><td>{r.patient_name}</td><td>{r.patient_nric}</td>
+                <td>
+                  {r.outcome === "referred"
+                    ? <ReferralStageBar status={r.status} />
+                    : <Badge tone="red">{r.outcome === "not_suggested" ? "Not suggested — not referred" : "Declined / deferred"}</Badge>}
+                </td>
+                <td>{r.outcome === "referred" && r.system_suggested != null && Number(r.system_suggested) === 0 && <Badge tone="amber">Not suggested</Badge>}</td>
                 <td>{fmtDMYHM(r.created_at)}</td>
-                <td><ViewReferralButton reference={r.reference} patientName={r.patient_name} /></td>
+                <td>{r.outcome === "referred" && <ViewReferralButton reference={r.reference} patientName={r.patient_name} />}</td>
               </tr>
             ))}
           </tbody>
