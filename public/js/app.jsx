@@ -283,7 +283,6 @@ function ResetPassword({ token }) {
 const NAV = [
   { path: "/refer", label: "New referral", icon: Ic.refer },
   { path: "/referrals", label: "Referrals", icon: Ic.list },
-  { path: "/consulting", label: "Consulting", icon: Ic.chat },
   { path: "/profile", label: "Profile", icon: Ic.user },
   { path: "/settings", label: "Settings", icon: Ic.gear },
 ];
@@ -343,7 +342,7 @@ function assessFH(patient) {
   let recommendation, tone;
   if (highLdl && (firstDegreeFH || personalCad)) { recommendation = "Strong indication for referral"; tone = "green"; }
   else if (elevatedLdl && (firstDegreeFH || familyCvd || personalCad)) { recommendation = "Referral recommended"; tone = "green"; }
-  else if (elevatedLdl) { recommendation = "Meets LDL threshold — referral appropriate"; tone = "amber"; }
+  else if (elevatedLdl) { recommendation = "Meets LDL threshold — referral appropriate"; tone = "green"; }
   else if (firstDegreeFH || personalCad) { recommendation = "History present despite lower LDL — use clinical judgement"; tone = "amber"; }
   else { recommendation = "Low likelihood from available data"; tone = "teal"; }
 
