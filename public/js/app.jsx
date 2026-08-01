@@ -1,4 +1,4 @@
-const { useState, useEffect, useCallback } = React;
+const { useState, useEffect, useCallback, useRef } = React;
 const API = window.API;
 const LDL_THRESHOLD = 5.5;
 
@@ -58,7 +58,7 @@ const fmtDMYHM = (d) => {
   return `${dd}/${mm}/${dt.getFullYear()} ${hh}:${min}`;
 };
 
-function ImageModal({ src, alt, onClose }) {
+function ImageModal({ src, alt, onClose, children }) {
   useEffect(() => {
     const onKey = (e) => e.key === "Escape" && onClose();
     document.addEventListener("keydown", onKey);
@@ -69,8 +69,76 @@ function ImageModal({ src, alt, onClose }) {
       <div className="modal-box" onClick={(e) => e.stopPropagation()}>
         <button className="modal-close" aria-label="Close" onClick={onClose}>✕</button>
         <img src={src} alt={alt} />
+        {children}
       </div>
     </div>
+  );
+}
+
+// Official NUH "What is FH?" patient leaflet, in each of Singapore's four
+// languages — verified as real PDFs (HTTP 200, application/pdf) before adding.
+// Served from our own public/leaflets/ folder (same-origin), not linked
+// directly to NUH — needed so contentWindow.print() below is allowed to
+// run. See public/leaflets/README.md for the exact filenames expected here.
+const FH_LEAFLETS = [
+  ["English", "/leaflets/what-is-fh-english.pdf"],
+  ["Malay", "/leaflets/what-is-fh-malay.pdf"],
+  ["Tamil", "/leaflets/what-is-fh-tamil.pdf"],
+  ["Chinese", "/leaflets/what-is-fh-chinese.pdf"],
+];
+
+// Language picker + "Print leaflet" button — auto-prints the chosen
+// language's PDF via a hidden iframe. This has been unreliable specifically
+// for the Malay file (wrong/blank content, even printing the parent app page
+// once) while English/Tamil/Chinese print fine — a "open in new tab instead"
+// fallback link sits alongside it so there's always a manual escape hatch,
+// since a "printed the wrong thing" failure doesn't throw a catchable error.
+function PrintLeafletButton() {
+  const [open, setOpen] = useState(false);
+  const [lang, setLang] = useState(FH_LEAFLETS[0][0]);
+  const [err, setErr] = useState("");
+  const [printSrc, setPrintSrc] = useState(null);
+  const printKeyRef = useRef(0);
+  const currentUrl = (FH_LEAFLETS.find(([label]) => label === lang) || [])[1];
+
+  const print = () => {
+    setErr("");
+    if (!currentUrl) return;
+    printKeyRef.current += 1;
+    setPrintSrc(currentUrl);
+  };
+  const onIframeLoad = (e) => {
+    // The iframe's load event fires once the PDF viewer shell has
+    // initialised, not once it has actually finished rendering — a short
+    // delay gives the renderer time to finish before print() is called.
+    const win = e.target.contentWindow;
+    setTimeout(() => {
+      try {
+        win.focus();
+        win.print();
+      } catch (err) {
+        setErr("Could not open the print dialog — try \"open in a new tab\" instead.");
+      }
+    }, 700);
+  };
+
+  if (!open) {
+    return <button className="btn" onClick={() => setOpen(true)}>Print leaflet</button>;
+  }
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+      <select className="input" style={{ width: "auto", marginBottom: 0 }} value={lang} onChange={(e) => setLang(e.target.value)}>
+        {FH_LEAFLETS.map(([label]) => <option key={label} value={label}>{label}</option>)}
+      </select>
+      <button className="btn-ghost btn-sm" onClick={print}>Print</button>
+      {currentUrl && (
+        <a className="small" href={currentUrl} target="_blank" rel="noopener">or open in a new tab</a>
+      )}
+      {err && <span className="small" style={{ color: "var(--red)" }}>{err}</span>}
+      {printSrc && (
+        <iframe key={printKeyRef.current} src={printSrc} title="leaflet-print" style={{ display: "none" }} onLoad={onIframeLoad} />
+      )}
+    </span>
   );
 }
 
@@ -596,6 +664,7 @@ function Submitted({ referral, onRestart }) {
         <div className="row-actions-center">
           <button className="btn" onClick={onRestart}>Start a new patient</button>
           <button className="btn" onClick={() => setShowInfo(true)}>More information for patients</button>
+          <PrintLeafletButton />
         </div>
         {showInfo && (
           <ImageModal
