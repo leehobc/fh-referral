@@ -21,13 +21,14 @@ router.post("/", async (req, res) => {
     await query(
       `INSERT INTO referrals
         (reference,patient_nric,patient_name,dob,sex,nationality,contact,ldl,ldl_test_date,ldl_test_location,total_chol,
-         on_statin,notes,referrer_id,referrer_label,clinic,status)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, 'Submitted')`,
+         on_statin,notes,referrer_id,referrer_label,clinic,status,system_suggested)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, 'Submitted', ?)`,
       [
         reference, b.patient_nric, b.patient_name, b.dob || null, b.sex || null,
         b.nationality || null, b.contact, b.ldl, b.ldl_test_date, b.ldl_test_location || null, b.total_chol || null,
         b.on_statin || null, b.notes || null, req.user.id,
         b.referrer_label || req.user.clinician_id, b.clinic || null,
+        typeof b.system_suggested === "boolean" ? (b.system_suggested ? 1 : 0) : null,
       ]
     );
     // Reflect the referral back onto the patient record where we can match it.
@@ -55,7 +56,7 @@ router.get("/", async (req, res) => {
   const whereSql = where.length ? `WHERE ${where.join(" AND ")}` : "";
   try {
     const rows = await query(
-      `SELECT id,reference,patient_nric,patient_name,ldl,clinic,status,created_at
+      `SELECT id,reference,patient_nric,patient_name,ldl,clinic,status,system_suggested,created_at
        FROM referrals ${whereSql} ORDER BY created_at DESC LIMIT 200`,
       params
     );

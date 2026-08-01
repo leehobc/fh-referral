@@ -484,6 +484,7 @@ function ReferralWizard({ user }) {
   const [fetching, setFetching] = useState(false);
   const [fetchErr, setFetchErr] = useState("");
   const [result, setResult] = useState(null);
+  const [confirmOverride, setConfirmOverride] = useState(false);
 
   const getCurrent = async () => {
     setFetchErr(""); setFetching(true);
@@ -497,7 +498,7 @@ function ReferralWizard({ user }) {
   };
 
   if (result) return <Submitted referral={result} onRestart={() => {
-    setStep(0); setPatient(null); setResult(null);
+    setStep(0); setPatient(null); setResult(null); setConfirmOverride(false);
   }} />;
 
   return (
@@ -545,6 +546,7 @@ function ReferralWizard({ user }) {
 
       {step === 2 && patient && (() => {
         const a = assessFH(patient);
+        const suggested = a.tone === "green";
         return (
           <div>
             <h2 className="title">Assessment</h2>
@@ -564,9 +566,32 @@ function ReferralWizard({ user }) {
             </div>
             <div className="row-actions">
               <button className="btn-ghost" onClick={() => { setPatient(null); setStep(1); }}>Back</button>
-              <button className="btn" onClick={() => setStep(3)}>Continue to patient Q&amp;A</button>
+              {suggested
+                ? <button className="btn" onClick={() => setStep(3)}>Continue to patient Q&amp;A</button>
+                : <>
+                    <button className="btn-danger" onClick={() => setResult({ notSuggested: true })}>Not suggested by system — do not refer</button>
+                    <button className="btn-ghost" onClick={() => setConfirmOverride(true)}>Override — refer anyway</button>
+                  </>}
               <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines or defers</button>
             </div>
+
+            {confirmOverride && (
+              <div className="modal-overlay" onClick={() => setConfirmOverride(false)}>
+                <div className="modal-box" style={{ maxWidth: 420, textAlign: "left" }} onClick={(e) => e.stopPropagation()}>
+                  <button className="modal-close" aria-label="Close" onClick={() => setConfirmOverride(false)}>✕</button>
+                  <h3 style={{ margin: "0 0 8px", fontSize: 18 }}>Confirm manual override</h3>
+                  <p className="sub" style={{ margin: "0 0 12px" }}>
+                    The automated assessment does not suggest a referral for {patient.name} based on the available
+                    EMR data. Please confirm you are proceeding on your own clinical judgement — this will be
+                    recorded against the referral.
+                  </p>
+                  <div className="row-actions">
+                    <button className="btn-ghost" onClick={() => setConfirmOverride(false)}>Cancel</button>
+                    <button className="btn" onClick={() => { setConfirmOverride(false); setStep(3); }}>Confirm — continue to Q&amp;A</button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         );
       })()}
@@ -595,6 +620,7 @@ function ReferralWizard({ user }) {
 }
 
 function ReferralForm({ patient, user, onBack, onDone }) {
+  const systemSuggested = assessFH(patient).tone === "green";
   const [form, setForm] = useState({
     patient_name: patient.name, patient_nric: patient.nric, dob: patient.dob ? patient.dob.slice(0, 10) : "",
     sex: patient.gender, nationality: patient.nationality, contact: patient.contact,
@@ -615,7 +641,7 @@ function ReferralForm({ patient, user, onBack, onDone }) {
     setTried(true); setErr("");
     if (missing.length) return;
     setBusy(true);
-    try { const { referral } = await API.referrals.create(form); onDone(referral); }
+    try { const { referral } = await API.referrals.create({ ...form, system_suggested: systemSuggested }); onDone(referral); }
     catch (e) { setErr(e.message); } finally { setBusy(false); }
   };
 
@@ -625,7 +651,10 @@ function ReferralForm({ patient, user, onBack, onDone }) {
       <p className="sub">Fields pre-filled from the EMR. Review, add notes, then submit.</p>
       <div className="card">
         <div className="row-actions" style={{ justifyContent: "space-between", marginBottom: 14 }}>
-          <Badge tone="green">Autofilled from EMR</Badge>
+          <div className="row-actions">
+            <Badge tone="green">Autofilled from EMR</Badge>
+            {!systemSuggested && <Badge tone="amber">Not suggested by system</Badge>}
+          </div>
           {tried && missing.length > 0 && <span className="err">{missing.length} required field(s) missing</span>}
         </div>
         <div className="grid-2">
@@ -657,12 +686,18 @@ function ReferralForm({ patient, user, onBack, onDone }) {
 
 function Submitted({ referral, onRestart }) {
   const [showInfo, setShowInfo] = useState(false);
-  if (referral.declined) {
+  if (referral.declined || referral.notSuggested) {
     return (
       <div className="card" style={{ textAlign: "center" }}>
         <Badge tone="red">Referral not made</Badge>
-        <h2 className="title" style={{ marginTop: 14 }}>Patient declined or deferred referral</h2>
-        <p className="sub">No referral was submitted and no records were retrieved.</p>
+        <h2 className="title" style={{ marginTop: 14 }}>
+          {referral.notSuggested ? "Not suggested by the automated assessment" : "Patient declined or deferred referral"}
+        </h2>
+        <p className="sub">
+          {referral.notSuggested
+            ? "Based on the EMR data available, the assessment did not find enough criteria met to suggest a referral for this patient. No referral was submitted."
+            : "No referral was submitted."}
+        </p>
         <div className="row-actions-center">
           <button className="btn" onClick={onRestart}>Start a new patient</button>
           <button className="btn" onClick={() => setShowInfo(true)}>More information for patients</button>
@@ -858,12 +893,13 @@ function Referrals() {
       {err && <p className="err">{err}</p>}
       {list.length === 0 ? <p className="muted">No referrals yet.</p> : (
         <table className="table">
-          <thead><tr><th>Reference</th><th>Patient</th><th>NRIC</th><th>Progress</th><th>When</th><th>Details</th></tr></thead>
+          <thead><tr><th>Reference</th><th>Patient</th><th>NRIC</th><th>Progress</th><th>System</th><th>When</th><th>Details</th></tr></thead>
           <tbody>
             {list.map((r) => (
               <tr key={r.reference}>
                 <td>{r.reference}</td><td>{r.patient_name}</td><td>{r.patient_nric}</td>
                 <td><ReferralStageBar status={r.status} /></td>
+                <td>{r.system_suggested != null && Number(r.system_suggested) === 0 && <Badge tone="amber">Not suggested</Badge>}</td>
                 <td>{fmtDMYHM(r.created_at)}</td>
                 <td><ViewReferralButton reference={r.reference} patientName={r.patient_name} /></td>
               </tr>

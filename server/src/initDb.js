@@ -71,6 +71,7 @@ const SCHEMA = [
      referrer_label VARCHAR(60),
      clinic VARCHAR(120),
      status VARCHAR(30) NOT NULL DEFAULT 'Submitted',
+     system_suggested TINYINT(1) NULL,
      view_otp VARCHAR(10) NULL,
      view_otp_expires DATETIME NULL,
      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -136,6 +137,7 @@ async function migrateSchema() {
   await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS view_otp_expires DATETIME NULL");
   await query("ALTER TABLE patients ADD COLUMN IF NOT EXISTS coronary_stent_or_bypass TINYINT DEFAULT 0");
   await query("ALTER TABLE patients ADD COLUMN IF NOT EXISTS first_degree_relative_fh TINYINT DEFAULT 0");
+  await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS system_suggested TINYINT(1) NULL");
 }
 
 // Backfills a column for patients seeded before that column existed
