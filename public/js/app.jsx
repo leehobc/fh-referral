@@ -540,11 +540,10 @@ function ReferralForm({ patient, user, onBack, onDone }) {
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
   const required = ["patient_name", "patient_nric", "contact", "ldl", "ldl_test_date", "on_statin", "referrer_label", "clinic"];
   const missing = required.filter((k) => !String(form[k]).trim());
-  const below = !(parseFloat(form.ldl) >= LDL_THRESHOLD);
 
   const submit = async () => {
     setTried(true); setErr("");
-    if (missing.length || below) return;
+    if (missing.length) return;
     setBusy(true);
     try { const { referral } = await API.referrals.create(form); onDone(referral); }
     catch (e) { setErr(e.message); } finally { setBusy(false); }
@@ -559,30 +558,27 @@ function ReferralForm({ patient, user, onBack, onDone }) {
           <Badge tone="green">Autofilled from EMR</Badge>
           {tried && missing.length > 0 && <span className="err">{missing.length} required field(s) missing</span>}
         </div>
-        {below && <p style={{ background: "var(--red-bg)", color: "var(--red)", borderRadius: 10, padding: "10px 14px", fontSize: 14, margin: "0 0 16px" }}>
-          LDL is below {LDL_THRESHOLD} mmol/L — this referral cannot be submitted. If a documented past result was ≥ {LDL_THRESHOLD} mmol/L, enter that value above.
-        </p>}
         <div className="grid-2">
-          <Field label="Patient name *" value={form.patient_name} onChange={(v) => set("patient_name", v)} disabled />
-          <Field label="NRIC *" value={form.patient_nric} onChange={(v) => set("patient_nric", v)} disabled />
-          <Field label="Contact *" value={form.contact} onChange={(v) => set("contact", v)} disabled />
+          <Field label="Patient name" value={form.patient_name} onChange={(v) => set("patient_name", v)} disabled />
+          <Field label="NRIC" value={form.patient_nric} onChange={(v) => set("patient_nric", v)} disabled />
+          <Field label="Contact" value={form.contact} onChange={(v) => set("contact", v)} disabled />
           <Field label="Date of birth" type="date" value={form.dob} onChange={(v) => set("dob", v)} disabled />
           <Field label="Sex" value={form.sex} onChange={(v) => set("sex", v)} disabled />
           <Field label="Nationality" value={form.nationality} onChange={(v) => set("nationality", v)} disabled />
           <Field label="LDL (mmol/L) *" value={form.ldl} onChange={(v) => set("ldl", v)} bad={tried && !String(form.ldl).trim()} />
           <Field label="LDL test date *" type="date" value={form.ldl_test_date} onChange={(v) => set("ldl_test_date", v)} bad={tried && !form.ldl_test_date} />
           <Field label="Testing location" value={form.ldl_test_location} onChange={(v) => set("ldl_test_location", v)} />
-          <Field label="Total cholesterol" value={form.total_chol} onChange={(v) => set("total_chol", v)} />
           <Select label="On statin *" value={form.on_statin} onChange={(v) => set("on_statin", v)} options={["Yes", "No"]} bad={tried && !form.on_statin} />
-          <Field label="Referring clinician *" value={form.referrer_label} onChange={(v) => set("referrer_label", v)} disabled />
-          <Field label="Clinic *" value={form.clinic} onChange={(v) => set("clinic", v)} disabled />
+          <Field label="Total cholesterol" value={form.total_chol} onChange={(v) => set("total_chol", v)} />
+          <Field label="Referring clinician" value={form.referrer_label} onChange={(v) => set("referrer_label", v)} disabled />
+          <Field label="Clinic" value={form.clinic} onChange={(v) => set("clinic", v)} disabled />
         </div>
         <label className="label" style={{ marginTop: 14 }}>Clinical notes (optional)</label>
         <textarea className="input" value={form.notes} onChange={(e) => set("notes", e.target.value)} placeholder="Family history, supporting features, relevant findings…" />
         {err && <p className="err">{err}</p>}
         <div className="row-actions">
           <button className="btn-ghost" onClick={onBack}>Back</button>
-          <button className="btn" disabled={busy || below} onClick={submit}>{busy ? "Submitting…" : "Submit referral to GAC"}</button>
+          <button className="btn" disabled={busy} onClick={submit}>{busy ? "Submitting…" : "Submit referral to GAC"}</button>
         </div>
       </div>
     </div>

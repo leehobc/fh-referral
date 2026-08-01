@@ -39,6 +39,7 @@ h1,h2,h3{letter-spacing:-.01em}
   border-radius:10px;font-size:15px;font-family:inherit;color:var(--ink);background:#fff;
   outline:none;margin-bottom:16px}
 .input.bad{border-color:var(--red)}
+.input:disabled{background:var(--line);color:var(--ink-soft);cursor:not-allowed}
 textarea.input{min-height:80px;resize:vertical}
 
 /* card */
