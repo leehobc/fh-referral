@@ -11,16 +11,11 @@
     "ldl": 6.0,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Tan",
-    "referral_status": "Referred",
-    "referral_date": "2026-02-17",
-    "appointment_status": "Completed",
-    "risk_score": 88,
-    "ldl_test_date": "2026-02-05"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0002",
@@ -34,16 +29,11 @@
     "ldl": 2.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 45,
-    "ldl_test_date": "2026-02-25"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0003",
@@ -57,16 +47,11 @@
     "ldl": 4.9,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Clementi",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 69,
-    "ldl_test_date": "2025-04-19"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0004",
@@ -80,16 +65,11 @@
     "ldl": 4.6,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Geylang",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 82,
-    "ldl_test_date": "2025-07-01"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0005",
@@ -103,16 +83,11 @@
     "ldl": 2.7,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Bedok",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 48,
-    "ldl_test_date": "2025-03-11"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0006",
@@ -126,16 +101,11 @@
     "ldl": 2.9,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Tampines",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 37,
-    "ldl_test_date": "2025-04-29"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0007",
@@ -149,16 +119,11 @@
     "ldl": 6.7,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Punggol",
-    "doctor": "Dr Lim",
-    "referral_status": "Referred",
-    "referral_date": "2026-04-27",
-    "appointment_status": "Scheduled",
-    "risk_score": 75,
-    "ldl_test_date": "2025-10-27"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0008",
@@ -172,16 +137,11 @@
     "ldl": 3.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 51,
-    "ldl_test_date": "2025-12-07"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0009",
@@ -195,16 +155,11 @@
     "ldl": 5.9,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Toa Payoh",
-    "doctor": "Dr Ong",
-    "referral_status": "Referred",
-    "referral_date": "2026-01-22",
-    "appointment_status": "Scheduled",
-    "risk_score": 79,
-    "ldl_test_date": "2025-01-02"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0010",
@@ -218,16 +173,11 @@
     "ldl": 7.0,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Bedok",
-    "doctor": "Dr Tan",
-    "referral_status": "Pending",
-    "referral_date": "2026-05-27",
-    "appointment_status": "Awaiting GAC",
-    "risk_score": 97,
-    "ldl_test_date": "2025-03-27"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0011",
@@ -241,16 +191,11 @@
     "ldl": 4.7,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Pasir Ris",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 84,
-    "ldl_test_date": "2025-12-20"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0012",
@@ -264,16 +209,11 @@
     "ldl": 4.9,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Yishun",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 96,
-    "ldl_test_date": "2025-12-20"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0013",
@@ -287,16 +227,11 @@
     "ldl": 4.3,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Outram",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 76,
-    "ldl_test_date": "2025-10-31"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0014",
@@ -310,16 +245,11 @@
     "ldl": 4.1,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Hougang",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 67,
-    "ldl_test_date": "2025-07-27"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0015",
@@ -333,16 +263,11 @@
     "ldl": 5.1,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Jurong",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 84,
-    "ldl_test_date": "2025-05-06"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0016",
@@ -356,16 +281,11 @@
     "ldl": 5.9,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Yishun",
-    "doctor": "Dr Chua",
-    "referral_status": "Referred",
-    "referral_date": "2026-02-22",
-    "appointment_status": "Scheduled",
-    "risk_score": 93,
-    "ldl_test_date": "2025-07-09"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0017",
@@ -379,16 +299,11 @@
     "ldl": 3.3,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Jurong",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 78,
-    "ldl_test_date": "2025-03-07"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0018",
@@ -402,16 +317,11 @@
     "ldl": 3.1,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Hougang",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 80,
-    "ldl_test_date": "2025-12-27"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0019",
@@ -425,16 +335,11 @@
     "ldl": 3.8,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Geylang",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 55,
-    "ldl_test_date": "2026-01-26"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0020",
@@ -448,16 +353,11 @@
     "ldl": 7.7,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Tan",
-    "referral_status": "Referred",
-    "referral_date": "2026-02-14",
-    "appointment_status": "Completed",
-    "risk_score": 100,
-    "ldl_test_date": "2026-05-04"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0021",
@@ -471,16 +371,11 @@
     "ldl": 3.1,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Geylang",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 43,
-    "ldl_test_date": "2026-06-05"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0022",
@@ -494,16 +389,11 @@
     "ldl": 2.0,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Clementi",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 53,
-    "ldl_test_date": "2025-07-13"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0023",
@@ -517,16 +407,11 @@
     "ldl": 5.1,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Queenstown",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 81,
-    "ldl_test_date": "2026-05-17"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0024",
@@ -540,16 +425,11 @@
     "ldl": 2.5,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 52,
-    "ldl_test_date": "2025-11-07"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0025",
@@ -563,16 +443,11 @@
     "ldl": 2.1,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Outram",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 55,
-    "ldl_test_date": "2026-02-19"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0026",
@@ -586,16 +461,11 @@
     "ldl": 3.5,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 77,
-    "ldl_test_date": "2025-04-19"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0027",
@@ -609,16 +479,11 @@
     "ldl": 7.1,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Jurong",
-    "doctor": "Dr Lee",
-    "referral_status": "Pending",
-    "referral_date": "2026-06-23",
-    "appointment_status": "Awaiting GAC",
-    "risk_score": 100,
-    "ldl_test_date": "2025-02-26"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0028",
@@ -632,16 +497,11 @@
     "ldl": 4.9,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Jurong",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 60,
-    "ldl_test_date": "2026-04-15"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0029",
@@ -655,16 +515,11 @@
     "ldl": 2.9,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Tampines",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 59,
-    "ldl_test_date": "2025-02-13"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0030",
@@ -678,16 +533,11 @@
     "ldl": 6.2,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Hougang",
-    "doctor": "Dr Tan",
-    "referral_status": "Referred",
-    "referral_date": "2026-02-03",
-    "appointment_status": "Scheduled",
-    "risk_score": 71,
-    "ldl_test_date": "2025-09-09"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0031",
@@ -701,16 +551,11 @@
     "ldl": 3.9,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Outram",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 74,
-    "ldl_test_date": "2025-08-30"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0032",
@@ -724,16 +569,11 @@
     "ldl": 3.8,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Clementi",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 85,
-    "ldl_test_date": "2025-12-12"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0033",
@@ -747,16 +587,11 @@
     "ldl": 2.6,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 59,
-    "ldl_test_date": "2025-12-09"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0034",
@@ -770,16 +605,11 @@
     "ldl": 5.1,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 95,
-    "ldl_test_date": "2025-07-15"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0035",
@@ -793,16 +623,11 @@
     "ldl": 3.0,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Queenstown",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 53,
-    "ldl_test_date": "2025-09-28"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0036",
@@ -816,16 +641,11 @@
     "ldl": 4.8,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 58,
-    "ldl_test_date": "2025-09-11"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0037",
@@ -839,16 +659,11 @@
     "ldl": 4.9,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Punggol",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 68,
-    "ldl_test_date": "2025-09-10"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0038",
@@ -862,16 +677,11 @@
     "ldl": 6.0,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Toa Payoh",
-    "doctor": "Dr Tan",
-    "referral_status": "Referred",
-    "referral_date": "2026-03-09",
-    "appointment_status": "Scheduled",
-    "risk_score": 88,
-    "ldl_test_date": "2025-11-25"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0039",
@@ -885,16 +695,11 @@
     "ldl": 7.3,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Queenstown",
-    "doctor": "Dr Ng",
-    "referral_status": "Pending",
-    "referral_date": "2026-03-18",
-    "appointment_status": "Awaiting GAC",
-    "risk_score": 100,
-    "ldl_test_date": "2025-03-17"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0040",
@@ -908,16 +713,11 @@
     "ldl": 3.6,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Tampines",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 70,
-    "ldl_test_date": "2025-01-08"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0041",
@@ -931,16 +731,11 @@
     "ldl": 3.1,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Tampines",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 73,
-    "ldl_test_date": "2025-12-12"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0042",
@@ -954,16 +749,11 @@
     "ldl": 5.0,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Tampines",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 59,
-    "ldl_test_date": "2026-05-03"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0043",
@@ -977,16 +767,11 @@
     "ldl": 3.7,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Former",
-    "clinic": "Hougang",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 64,
-    "ldl_test_date": "2025-10-22"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0044",
@@ -1000,16 +785,11 @@
     "ldl": 7.3,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Woodlands",
-    "doctor": "Dr Ong",
-    "referral_status": "Pending",
-    "referral_date": "2026-02-16",
-    "appointment_status": "Awaiting GAC",
-    "risk_score": 95,
-    "ldl_test_date": "2025-11-26"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0045",
@@ -1023,16 +803,11 @@
     "ldl": 4.0,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Geylang",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 66,
-    "ldl_test_date": "2025-11-21"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0046",
@@ -1046,16 +821,11 @@
     "ldl": 4.6,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Yishun",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 84,
-    "ldl_test_date": "2025-02-03"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0047",
@@ -1069,16 +839,11 @@
     "ldl": 2.3,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Pasir Ris",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 68,
-    "ldl_test_date": "2025-06-07"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0048",
@@ -1092,16 +857,11 @@
     "ldl": 5.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 68,
-    "ldl_test_date": "2025-03-22"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0049",
@@ -1115,16 +875,11 @@
     "ldl": 5.7,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Clementi",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Referred",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 66,
-    "ldl_test_date": "2025-03-30"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0050",
@@ -1138,16 +893,11 @@
     "ldl": 4.8,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Former",
-    "clinic": "Geylang",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 77,
-    "ldl_test_date": "2025-07-14"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0051",
@@ -1161,16 +911,11 @@
     "ldl": 7.6,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Toa Payoh",
-    "doctor": "Dr Ng",
-    "referral_status": "Referred",
-    "referral_date": "2026-07-18",
-    "appointment_status": "Scheduled",
-    "risk_score": 100,
-    "ldl_test_date": "2025-10-26"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0052",
@@ -1184,16 +929,11 @@
     "ldl": 5.5,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Lee",
-    "referral_status": "Pending",
-    "referral_date": "2026-05-04",
-    "appointment_status": "Awaiting GAC",
-    "risk_score": 71,
-    "ldl_test_date": "2026-05-19"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0053",
@@ -1207,16 +947,11 @@
     "ldl": 2.2,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Yishun",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 32,
-    "ldl_test_date": "2025-12-23"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0054",
@@ -1230,16 +965,11 @@
     "ldl": 3.5,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Queenstown",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 69,
-    "ldl_test_date": "2025-05-25"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0055",
@@ -1253,16 +983,11 @@
     "ldl": 8.5,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Tampines",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Referred",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 100,
-    "ldl_test_date": "2025-03-09"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0056",
@@ -1276,16 +1001,11 @@
     "ldl": 7.7,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Toa Payoh",
-    "doctor": "Dr Goh",
-    "referral_status": "Pending",
-    "referral_date": "2026-07-14",
-    "appointment_status": "Awaiting GAC",
-    "risk_score": 100,
-    "ldl_test_date": "2025-05-02"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0057",
@@ -1299,16 +1019,11 @@
     "ldl": 3.4,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Former",
-    "clinic": "Geylang",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 57,
-    "ldl_test_date": "2025-05-04"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0058",
@@ -1322,16 +1037,11 @@
     "ldl": 5.8,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Geylang",
-    "doctor": "Dr Lim",
-    "referral_status": "Referred",
-    "referral_date": "2026-01-10",
-    "appointment_status": "Completed",
-    "risk_score": 73,
-    "ldl_test_date": "2025-12-14"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0059",
@@ -1345,16 +1055,11 @@
     "ldl": 2.4,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Geylang",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 42,
-    "ldl_test_date": "2026-04-15"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0060",
@@ -1368,16 +1073,11 @@
     "ldl": 5.3,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Jurong",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 96,
-    "ldl_test_date": "2025-12-28"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0061",
@@ -1391,16 +1091,11 @@
     "ldl": 7.6,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Woodlands",
-    "doctor": "Dr Lee",
-    "referral_status": "Referred",
-    "referral_date": "2026-02-09",
-    "appointment_status": "Scheduled",
-    "risk_score": 95,
-    "ldl_test_date": "2026-05-30"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0062",
@@ -1414,16 +1109,11 @@
     "ldl": 7.0,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Hougang",
-    "doctor": "Dr Kumar",
-    "referral_status": "Referred",
-    "referral_date": "2026-01-12",
-    "appointment_status": "Completed",
-    "risk_score": 100,
-    "ldl_test_date": "2025-11-11"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0063",
@@ -1437,16 +1127,11 @@
     "ldl": 2.5,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 1,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Tampines",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 70,
-    "ldl_test_date": "2025-06-17"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0064",
@@ -1460,16 +1145,11 @@
     "ldl": 4.6,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Jurong",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 72,
-    "ldl_test_date": "2025-03-11"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0065",
@@ -1483,16 +1163,11 @@
     "ldl": 4.3,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Queenstown",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 73,
-    "ldl_test_date": "2025-08-03"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0066",
@@ -1506,16 +1181,11 @@
     "ldl": 2.5,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Tampines",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 65,
-    "ldl_test_date": "2025-03-20"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0067",
@@ -1529,16 +1199,11 @@
     "ldl": 5.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Geylang",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 63,
-    "ldl_test_date": "2026-06-12"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0068",
@@ -1552,16 +1217,11 @@
     "ldl": 6.3,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Woodlands",
-    "doctor": "Dr Lim",
-    "referral_status": "Referred",
-    "referral_date": "2026-07-06",
-    "appointment_status": "Scheduled",
-    "risk_score": 79,
-    "ldl_test_date": "2026-01-11"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0069",
@@ -1575,16 +1235,11 @@
     "ldl": 3.3,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Toa Payoh",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 81,
-    "ldl_test_date": "2026-06-05"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0070",
@@ -1598,16 +1253,11 @@
     "ldl": 4.5,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 65,
-    "ldl_test_date": "2025-11-15"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0071",
@@ -1621,16 +1271,11 @@
     "ldl": 6.7,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Jurong",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Referred",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 87,
-    "ldl_test_date": "2026-02-10"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0072",
@@ -1644,16 +1289,11 @@
     "ldl": 2.4,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Jurong",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 35,
-    "ldl_test_date": "2026-05-06"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0073",
@@ -1667,16 +1307,11 @@
     "ldl": 5.4,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Jurong",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 64,
-    "ldl_test_date": "2026-05-14"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0074",
@@ -1690,16 +1325,11 @@
     "ldl": 4.7,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Pasir Ris",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 90,
-    "ldl_test_date": "2025-06-22"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0075",
@@ -1713,16 +1343,11 @@
     "ldl": 3.2,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Bedok",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 67,
-    "ldl_test_date": "2025-02-21"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0076",
@@ -1736,16 +1361,11 @@
     "ldl": 4.1,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Punggol",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 67,
-    "ldl_test_date": "2025-12-19"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0077",
@@ -1759,16 +1379,11 @@
     "ldl": 3.5,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Bedok",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 62,
-    "ldl_test_date": "2026-05-10"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0078",
@@ -1782,16 +1397,11 @@
     "ldl": 4.2,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Clementi",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 65,
-    "ldl_test_date": "2025-01-27"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0079",
@@ -1805,16 +1415,11 @@
     "ldl": 3.6,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Jurong",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 47,
-    "ldl_test_date": "2026-01-10"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0080",
@@ -1828,16 +1433,11 @@
     "ldl": 8.6,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Bedok",
-    "doctor": "Dr Goh",
-    "referral_status": "Referred",
-    "referral_date": "2026-05-09",
-    "appointment_status": "Scheduled",
-    "risk_score": 100,
-    "ldl_test_date": "2025-10-22"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0081",
@@ -1851,16 +1451,11 @@
     "ldl": 5.7,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Tan",
-    "referral_status": "Referred",
-    "referral_date": "2026-06-18",
-    "appointment_status": "Scheduled",
-    "risk_score": 82,
-    "ldl_test_date": "2025-08-21"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0082",
@@ -1874,16 +1469,11 @@
     "ldl": 3.1,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Clementi",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 73,
-    "ldl_test_date": "2026-03-02"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0083",
@@ -1897,16 +1487,11 @@
     "ldl": 4.1,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Punggol",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 68,
-    "ldl_test_date": "2025-05-06"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0084",
@@ -1920,16 +1505,11 @@
     "ldl": 6.7,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Outram",
-    "doctor": "Dr Goh",
-    "referral_status": "Referred",
-    "referral_date": "2026-07-04",
-    "appointment_status": "Scheduled",
-    "risk_score": 100,
-    "ldl_test_date": "2025-01-04"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0085",
@@ -1943,16 +1523,11 @@
     "ldl": 3.9,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Bedok",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 61,
-    "ldl_test_date": "2025-06-27"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0086",
@@ -1966,16 +1541,11 @@
     "ldl": 3.8,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Jurong",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 72,
-    "ldl_test_date": "2025-11-07"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0087",
@@ -1989,16 +1559,11 @@
     "ldl": 5.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 85,
-    "ldl_test_date": "2025-05-17"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0088",
@@ -2012,16 +1577,11 @@
     "ldl": 2.6,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Pasir Ris",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 46,
-    "ldl_test_date": "2025-09-03"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0089",
@@ -2035,16 +1595,11 @@
     "ldl": 4.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Hougang",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 78,
-    "ldl_test_date": "2025-01-06"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0090",
@@ -2058,16 +1613,11 @@
     "ldl": 3.2,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 1,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Bedok",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 56,
-    "ldl_test_date": "2025-12-03"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0091",
@@ -2081,16 +1631,11 @@
     "ldl": 3.8,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Bedok",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 51,
-    "ldl_test_date": "2026-05-15"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0092",
@@ -2104,16 +1649,11 @@
     "ldl": 7.9,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Woodlands",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Referred",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 89,
-    "ldl_test_date": "2025-12-18"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0093",
@@ -2127,16 +1667,11 @@
     "ldl": 3.8,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Toa Payoh",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 62,
-    "ldl_test_date": "2025-04-13"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0094",
@@ -2150,16 +1685,11 @@
     "ldl": 7.7,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Hougang",
-    "doctor": "Dr Ong",
-    "referral_status": "Referred",
-    "referral_date": "2026-07-09",
-    "appointment_status": "No Show",
-    "risk_score": 100,
-    "ldl_test_date": "2026-05-18"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0095",
@@ -2173,16 +1703,11 @@
     "ldl": 5.2,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Outram",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 80,
-    "ldl_test_date": "2025-12-06"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0096",
@@ -2196,16 +1721,11 @@
     "ldl": 8.2,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Woodlands",
-    "doctor": "Dr Kumar",
-    "referral_status": "Referred",
-    "referral_date": "2026-02-23",
-    "appointment_status": "Completed",
-    "risk_score": 100,
-    "ldl_test_date": "2026-06-21"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0097",
@@ -2219,16 +1739,11 @@
     "ldl": 4.8,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Bedok",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 79,
-    "ldl_test_date": "2025-02-13"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0098",
@@ -2242,16 +1757,11 @@
     "ldl": 5.0,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 100,
-    "ldl_test_date": "2025-08-01"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0099",
@@ -2265,16 +1775,11 @@
     "ldl": 8.4,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Yishun",
-    "doctor": "Dr Tan",
-    "referral_status": "Referred",
-    "referral_date": "2026-01-04",
-    "appointment_status": "Completed",
-    "risk_score": 100,
-    "ldl_test_date": "2025-09-18"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0100",
@@ -2288,16 +1793,11 @@
     "ldl": 4.0,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Yishun",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 54,
-    "ldl_test_date": "2025-07-07"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0101",
@@ -2311,16 +1811,11 @@
     "ldl": 4.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 76,
-    "ldl_test_date": "2025-11-15"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0102",
@@ -2334,16 +1829,11 @@
     "ldl": 7.6,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Former",
-    "clinic": "Geylang",
-    "doctor": "Dr Tan",
-    "referral_status": "Referred",
-    "referral_date": "2026-06-20",
-    "appointment_status": "Completed",
-    "risk_score": 90,
-    "ldl_test_date": "2025-04-05"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0103",
@@ -2357,16 +1847,11 @@
     "ldl": 3.3,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Queenstown",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 80,
-    "ldl_test_date": "2026-03-25"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0104",
@@ -2380,16 +1865,11 @@
     "ldl": 4.5,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Hougang",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 84,
-    "ldl_test_date": "2026-06-03"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0105",
@@ -2403,16 +1883,11 @@
     "ldl": 2.6,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Queenstown",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 58,
-    "ldl_test_date": "2025-01-29"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0106",
@@ -2426,16 +1901,11 @@
     "ldl": 4.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Pasir Ris",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 61,
-    "ldl_test_date": "2025-01-13"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0107",
@@ -2449,16 +1919,11 @@
     "ldl": 4.8,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Punggol",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 78,
-    "ldl_test_date": "2025-02-20"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0108",
@@ -2472,16 +1937,11 @@
     "ldl": 4.2,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Yishun",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 75,
-    "ldl_test_date": "2026-06-12"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0109",
@@ -2495,16 +1955,11 @@
     "ldl": 4.6,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Geylang",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 70,
-    "ldl_test_date": "2025-10-27"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0110",
@@ -2518,16 +1973,11 @@
     "ldl": 4.0,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Outram",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 51,
-    "ldl_test_date": "2025-01-03"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0111",
@@ -2541,16 +1991,11 @@
     "ldl": 4.7,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Hougang",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 73,
-    "ldl_test_date": "2025-06-19"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0112",
@@ -2564,16 +2009,11 @@
     "ldl": 2.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 51,
-    "ldl_test_date": "2026-05-22"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0113",
@@ -2587,16 +2027,11 @@
     "ldl": 3.6,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Former",
-    "clinic": "Punggol",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 62,
-    "ldl_test_date": "2025-06-28"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0114",
@@ -2610,16 +2045,11 @@
     "ldl": 5.3,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Jurong",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 92,
-    "ldl_test_date": "2025-07-20"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0115",
@@ -2633,16 +2063,11 @@
     "ldl": 4.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Outram",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 56,
-    "ldl_test_date": "2026-01-15"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0116",
@@ -2656,16 +2081,11 @@
     "ldl": 5.1,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Tampines",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 91,
-    "ldl_test_date": "2025-06-11"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0117",
@@ -2679,16 +2099,11 @@
     "ldl": 3.8,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Toa Payoh",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 46,
-    "ldl_test_date": "2026-02-26"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0118",
@@ -2702,16 +2117,11 @@
     "ldl": 3.2,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 72,
-    "ldl_test_date": "2026-05-02"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0119",
@@ -2725,16 +2135,11 @@
     "ldl": 2.6,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Former",
-    "clinic": "Geylang",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 55,
-    "ldl_test_date": "2025-11-01"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0120",
@@ -2748,16 +2153,11 @@
     "ldl": 2.9,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Punggol",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 46,
-    "ldl_test_date": "2026-05-29"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0121",
@@ -2771,16 +2171,11 @@
     "ldl": 2.6,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 40,
-    "ldl_test_date": "2025-01-01"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0122",
@@ -2794,16 +2189,11 @@
     "ldl": 2.7,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Outram",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 37,
-    "ldl_test_date": "2025-10-11"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0123",
@@ -2817,16 +2207,11 @@
     "ldl": 4.6,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Pasir Ris",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 68,
-    "ldl_test_date": "2025-05-23"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0124",
@@ -2840,16 +2225,11 @@
     "ldl": 8.4,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Former",
-    "clinic": "Tampines",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Referred",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 100,
-    "ldl_test_date": "2025-08-29"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0125",
@@ -2863,16 +2243,11 @@
     "ldl": 3.0,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Bedok",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 67,
-    "ldl_test_date": "2025-05-21"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0126",
@@ -2886,16 +2261,11 @@
     "ldl": 2.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Tampines",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 38,
-    "ldl_test_date": "2026-02-06"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0127",
@@ -2909,16 +2279,11 @@
     "ldl": 3.1,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Toa Payoh",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 74,
-    "ldl_test_date": "2025-10-29"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0128",
@@ -2932,16 +2297,11 @@
     "ldl": 5.0,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Queenstown",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 68,
-    "ldl_test_date": "2025-06-14"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0129",
@@ -2955,16 +2315,11 @@
     "ldl": 2.0,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Outram",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 49,
-    "ldl_test_date": "2025-01-28"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0130",
@@ -2978,16 +2333,11 @@
     "ldl": 7.6,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Referred",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 91,
-    "ldl_test_date": "2025-03-06"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0131",
@@ -3001,16 +2351,11 @@
     "ldl": 4.5,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Yishun",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 92,
-    "ldl_test_date": "2025-05-13"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0132",
@@ -3024,16 +2369,11 @@
     "ldl": 5.4,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Jurong",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 87,
-    "ldl_test_date": "2026-03-25"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0133",
@@ -3047,16 +2387,11 @@
     "ldl": 3.4,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Hougang",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 67,
-    "ldl_test_date": "2025-03-20"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0134",
@@ -3070,16 +2405,11 @@
     "ldl": 2.4,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Clementi",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 44,
-    "ldl_test_date": "2025-12-30"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0135",
@@ -3093,16 +2423,11 @@
     "ldl": 8.5,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Punggol",
-    "doctor": "Dr Lim",
-    "referral_status": "Referred",
-    "referral_date": "2026-05-12",
-    "appointment_status": "Scheduled",
-    "risk_score": 100,
-    "ldl_test_date": "2025-06-20"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0136",
@@ -3116,16 +2441,11 @@
     "ldl": 3.3,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Yishun",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 58,
-    "ldl_test_date": "2025-09-12"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0137",
@@ -3139,16 +2459,11 @@
     "ldl": 2.2,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Hougang",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 32,
-    "ldl_test_date": "2025-01-11"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0138",
@@ -3162,16 +2477,11 @@
     "ldl": 4.6,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 92,
-    "ldl_test_date": "2025-09-17"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0139",
@@ -3185,16 +2495,11 @@
     "ldl": 8.8,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Pasir Ris",
-    "doctor": "Dr Ong",
-    "referral_status": "Pending",
-    "referral_date": "2026-03-15",
-    "appointment_status": "Awaiting GAC",
-    "risk_score": 100,
-    "ldl_test_date": "2025-06-26"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0140",
@@ -3208,16 +2513,11 @@
     "ldl": 5.1,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Geylang",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 65,
-    "ldl_test_date": "2026-03-12"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0141",
@@ -3231,16 +2531,11 @@
     "ldl": 4.9,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Former",
-    "clinic": "Punggol",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 90,
-    "ldl_test_date": "2026-03-10"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0142",
@@ -3254,16 +2549,11 @@
     "ldl": 3.9,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 1,
-    "smoking_status": "Former",
-    "clinic": "Bedok",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 55,
-    "ldl_test_date": "2025-08-06"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0143",
@@ -3277,16 +2567,11 @@
     "ldl": 4.8,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Outram",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 71,
-    "ldl_test_date": "2025-05-27"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0144",
@@ -3300,16 +2585,11 @@
     "ldl": 2.1,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Pasir Ris",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 38,
-    "ldl_test_date": "2026-02-21"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0145",
@@ -3323,16 +2603,11 @@
     "ldl": 3.2,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Punggol",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 59,
-    "ldl_test_date": "2025-01-27"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0146",
@@ -3346,16 +2621,11 @@
     "ldl": 4.5,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 75,
-    "ldl_test_date": "2025-02-04"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0147",
@@ -3369,16 +2639,11 @@
     "ldl": 5.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Punggol",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 68,
-    "ldl_test_date": "2025-09-26"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0148",
@@ -3392,16 +2657,11 @@
     "ldl": 2.5,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Tampines",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 50,
-    "ldl_test_date": "2026-04-10"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0149",
@@ -3415,16 +2675,11 @@
     "ldl": 3.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Tampines",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 59,
-    "ldl_test_date": "2026-01-10"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0150",
@@ -3438,16 +2693,11 @@
     "ldl": 2.6,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Yishun",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 50,
-    "ldl_test_date": "2025-02-26"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0151",
@@ -3461,16 +2711,11 @@
     "ldl": 5.0,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Outram",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 77,
-    "ldl_test_date": "2026-02-20"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0152",
@@ -3484,16 +2729,11 @@
     "ldl": 8.6,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Tampines",
-    "doctor": "Dr Tan",
-    "referral_status": "Referred",
-    "referral_date": "2026-06-06",
-    "appointment_status": "Completed",
-    "risk_score": 100,
-    "ldl_test_date": "2025-08-14"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0153",
@@ -3507,16 +2747,11 @@
     "ldl": 7.4,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Hougang",
-    "doctor": "Dr Kumar",
-    "referral_status": "Referred",
-    "referral_date": "2026-01-07",
-    "appointment_status": "Scheduled",
-    "risk_score": 96,
-    "ldl_test_date": "2026-01-30"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0154",
@@ -3530,16 +2765,11 @@
     "ldl": 2.6,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Punggol",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 78,
-    "ldl_test_date": "2026-01-11"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0155",
@@ -3553,16 +2783,11 @@
     "ldl": 5.2,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Woodlands",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 79,
-    "ldl_test_date": "2025-12-16"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0156",
@@ -3576,16 +2801,11 @@
     "ldl": 5.4,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Yishun",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 93,
-    "ldl_test_date": "2025-12-24"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0157",
@@ -3599,16 +2819,11 @@
     "ldl": 7.4,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Bedok",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Referred",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 100,
-    "ldl_test_date": "2026-06-04"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0158",
@@ -3622,16 +2837,11 @@
     "ldl": 3.4,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Outram",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 62,
-    "ldl_test_date": "2026-03-15"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0159",
@@ -3645,16 +2855,11 @@
     "ldl": 4.2,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Toa Payoh",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 87,
-    "ldl_test_date": "2025-10-13"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0160",
@@ -3668,16 +2873,11 @@
     "ldl": 5.7,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Jurong",
-    "doctor": "Dr Kumar",
-    "referral_status": "Referred",
-    "referral_date": "2026-06-04",
-    "appointment_status": "Completed",
-    "risk_score": 88,
-    "ldl_test_date": "2025-11-18"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0161",
@@ -3691,16 +2891,11 @@
     "ldl": 3.0,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Woodlands",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 56,
-    "ldl_test_date": "2025-12-05"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0162",
@@ -3714,16 +2909,11 @@
     "ldl": 5.2,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Woodlands",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 78,
-    "ldl_test_date": "2025-12-26"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0163",
@@ -3737,16 +2927,11 @@
     "ldl": 3.0,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Jurong",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 64,
-    "ldl_test_date": "2025-12-08"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0164",
@@ -3760,16 +2945,11 @@
     "ldl": 5.4,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Tampines",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 93,
-    "ldl_test_date": "2025-02-16"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0165",
@@ -3783,16 +2963,11 @@
     "ldl": 3.9,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Geylang",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 71,
-    "ldl_test_date": "2025-03-20"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0166",
@@ -3806,16 +2981,11 @@
     "ldl": 5.9,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Clementi",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Referred",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 79,
-    "ldl_test_date": "2025-07-19"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0167",
@@ -3829,16 +2999,11 @@
     "ldl": 8.1,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Clementi",
-    "doctor": "Dr Ong",
-    "referral_status": "Pending",
-    "referral_date": "2026-04-14",
-    "appointment_status": "Awaiting GAC",
-    "risk_score": 91,
-    "ldl_test_date": "2025-05-08"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0168",
@@ -3852,16 +3017,11 @@
     "ldl": 7.8,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Clementi",
-    "doctor": "Dr Lim",
-    "referral_status": "Not Referred",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 100,
-    "ldl_test_date": "2025-01-09"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0169",
@@ -3875,16 +3035,11 @@
     "ldl": 4.8,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 89,
-    "ldl_test_date": "2026-01-10"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0170",
@@ -3898,16 +3053,11 @@
     "ldl": 7.0,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Queenstown",
-    "doctor": "Dr Tan",
-    "referral_status": "Referred",
-    "referral_date": "2026-06-04",
-    "appointment_status": "Completed",
-    "risk_score": 98,
-    "ldl_test_date": "2025-05-26"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0171",
@@ -3921,16 +3071,11 @@
     "ldl": 4.8,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Pasir Ris",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 81,
-    "ldl_test_date": "2025-09-23"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0172",
@@ -3944,16 +3089,11 @@
     "ldl": 6.3,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Bedok",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Referred",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 90,
-    "ldl_test_date": "2025-04-30"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0173",
@@ -3967,16 +3107,11 @@
     "ldl": 4.5,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Outram",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 71,
-    "ldl_test_date": "2025-08-29"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0174",
@@ -3990,16 +3125,11 @@
     "ldl": 3.2,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Clementi",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 89,
-    "ldl_test_date": "2025-05-25"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0175",
@@ -4013,16 +3143,11 @@
     "ldl": 4.1,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Queenstown",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 60,
-    "ldl_test_date": "2025-01-17"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0176",
@@ -4036,16 +3161,11 @@
     "ldl": 3.7,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Outram",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 61,
-    "ldl_test_date": "2025-03-13"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0177",
@@ -4059,16 +3179,11 @@
     "ldl": 4.2,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Jurong",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 50,
-    "ldl_test_date": "2026-03-28"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0178",
@@ -4082,16 +3197,11 @@
     "ldl": 4.2,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Yishun",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 54,
-    "ldl_test_date": "2025-04-28"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0179",
@@ -4105,16 +3215,11 @@
     "ldl": 6.9,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Outram",
-    "doctor": "Dr Kumar",
-    "referral_status": "Pending",
-    "referral_date": "2026-05-05",
-    "appointment_status": "Awaiting GAC",
-    "risk_score": 100,
-    "ldl_test_date": "2025-09-05"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0180",
@@ -4128,16 +3233,11 @@
     "ldl": 5.0,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Toa Payoh",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 74,
-    "ldl_test_date": "2026-03-10"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0181",
@@ -4151,16 +3251,11 @@
     "ldl": 3.0,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Clementi",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 69,
-    "ldl_test_date": "2025-09-07"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0182",
@@ -4174,16 +3269,11 @@
     "ldl": 5.7,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Clementi",
-    "doctor": "Dr Tan",
-    "referral_status": "Pending",
-    "referral_date": "2026-03-07",
-    "appointment_status": "Awaiting GAC",
-    "risk_score": 85,
-    "ldl_test_date": "2025-01-28"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0183",
@@ -4197,16 +3287,11 @@
     "ldl": 6.8,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Tan",
-    "referral_status": "Pending",
-    "referral_date": "2026-02-20",
-    "appointment_status": "Awaiting GAC",
-    "risk_score": 100,
-    "ldl_test_date": "2026-06-04"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0184",
@@ -4220,16 +3305,11 @@
     "ldl": 2.4,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Never",
-    "clinic": "Woodlands",
-    "doctor": "Dr Goh",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 50,
-    "ldl_test_date": "2025-05-09"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0185",
@@ -4243,16 +3323,11 @@
     "ldl": 2.2,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Toa Payoh",
-    "doctor": "Dr Lee",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 45,
-    "ldl_test_date": "2025-03-06"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0186",
@@ -4266,16 +3341,11 @@
     "ldl": 5.3,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Punggol",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 96,
-    "ldl_test_date": "2025-08-14"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0187",
@@ -4289,16 +3359,11 @@
     "ldl": 4.2,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 1,
     "hypertension": 1,
-    "smoking_status": "Current",
-    "clinic": "Toa Payoh",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 93,
-    "ldl_test_date": "2025-12-17"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0188",
@@ -4312,16 +3377,11 @@
     "ldl": 6.1,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 1,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Ong",
-    "referral_status": "Referred",
-    "referral_date": "2026-04-14",
-    "appointment_status": "Scheduled",
-    "risk_score": 100,
-    "ldl_test_date": "2025-06-27"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0189",
@@ -4335,16 +3395,11 @@
     "ldl": 4.1,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Kumar",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 99,
-    "ldl_test_date": "2025-12-18"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0190",
@@ -4358,16 +3413,11 @@
     "ldl": 3.3,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 1,
     "hypertension": 1,
-    "smoking_status": "Former",
-    "clinic": "Tampines",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 48,
-    "ldl_test_date": "2026-03-22"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0191",
@@ -4381,16 +3431,11 @@
     "ldl": 7.7,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Jurong",
-    "doctor": "Dr Lee",
-    "referral_status": "Pending",
-    "referral_date": "2026-02-04",
-    "appointment_status": "Awaiting GAC",
-    "risk_score": 100,
-    "ldl_test_date": "2026-01-01"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0192",
@@ -4404,16 +3449,11 @@
     "ldl": 2.6,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Former",
-    "clinic": "Hougang",
-    "doctor": "Dr Chua",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 56,
-    "ldl_test_date": "2026-02-21"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0193",
@@ -4427,16 +3467,11 @@
     "ldl": 2.5,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Bedok",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 41,
-    "ldl_test_date": "2026-05-21"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0194",
@@ -4450,16 +3485,11 @@
     "ldl": 8.0,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Chua",
-    "referral_status": "Referred",
-    "referral_date": "2026-06-08",
-    "appointment_status": "Completed",
-    "risk_score": 100,
-    "ldl_test_date": "2025-03-03"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0195",
@@ -4473,16 +3503,11 @@
     "ldl": 8.0,
     "fh_eligible": 1,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Former",
-    "clinic": "Pasir Ris",
-    "doctor": "Dr Chua",
-    "referral_status": "Referred",
-    "referral_date": "2026-04-02",
-    "appointment_status": "Scheduled",
-    "risk_score": 100,
-    "ldl_test_date": "2025-06-12"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0196",
@@ -4496,16 +3521,11 @@
     "ldl": 3.8,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Punggol",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 49,
-    "ldl_test_date": "2026-02-05"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0197",
@@ -4519,16 +3539,11 @@
     "ldl": 4.2,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 1,
-    "smoking_status": "Former",
-    "clinic": "Outram",
-    "doctor": "Dr Ng",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 58,
-    "ldl_test_date": "2025-04-24"
+    "smoking_status": "Former"
   },
   {
     "patient_ref": "P0198",
@@ -4542,16 +3557,11 @@
     "ldl": 6.0,
     "fh_eligible": 1,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Current",
-    "clinic": "Queenstown",
-    "doctor": "Dr Tan",
-    "referral_status": "Not Referred",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 100,
-    "ldl_test_date": "2025-03-16"
+    "smoking_status": "Current"
   },
   {
     "patient_ref": "P0199",
@@ -4565,16 +3575,11 @@
     "ldl": 2.6,
     "fh_eligible": 0,
     "family_history_cvd": 0,
+    "coronary_stent_or_bypass": 0,
+    "first_degree_relative_fh": 0,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Marine Parade",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 41,
-    "ldl_test_date": "2025-08-06"
+    "smoking_status": "Never"
   },
   {
     "patient_ref": "P0200",
@@ -4588,15 +3593,10 @@
     "ldl": 4.6,
     "fh_eligible": 0,
     "family_history_cvd": 1,
+    "coronary_stent_or_bypass": 1,
+    "first_degree_relative_fh": 1,
     "diabetes": 0,
     "hypertension": 0,
-    "smoking_status": "Never",
-    "clinic": "Ang Mo Kio",
-    "doctor": "Dr Ong",
-    "referral_status": "Not Applicable",
-    "referral_date": null,
-    "appointment_status": null,
-    "risk_score": 93,
-    "ldl_test_date": "2025-11-07"
+    "smoking_status": "Never"
   }
 ]

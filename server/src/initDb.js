@@ -35,6 +35,8 @@ const SCHEMA = [
      on_statin TINYINT NULL,
      fh_eligible TINYINT DEFAULT 0,
      family_history_cvd TINYINT DEFAULT 0,
+     coronary_stent_or_bypass TINYINT DEFAULT 0,
+     first_degree_relative_fh TINYINT DEFAULT 0,
      diabetes TINYINT DEFAULT 0,
      hypertension TINYINT DEFAULT 0,
      smoking_status VARCHAR(20),
@@ -97,18 +99,19 @@ async function seedPatients() {
   const data = JSON.parse(fs.readFileSync(file, "utf8"));
   const sql = `INSERT INTO patients
     (patient_ref,nric,name,dob,gender,ethnicity,nationality,contact,ldl,fh_eligible,
-     family_history_cvd,diabetes,hypertension,smoking_status,clinic,doctor,
+     family_history_cvd,coronary_stent_or_bypass,first_degree_relative_fh,diabetes,hypertension,smoking_status,clinic,doctor,
      referral_status,referral_date,appointment_status,risk_score,ldl_test_date)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`;
   const conn = await pool.getConnection();
   try {
     await conn.beginTransaction();
     for (const p of data) {
       await conn.execute(sql, [
         p.patient_ref, p.nric, p.name, p.dob || null, p.gender, p.ethnicity, p.nationality,
-        p.contact, p.ldl, p.fh_eligible, p.family_history_cvd, p.diabetes, p.hypertension,
-        p.smoking_status, p.clinic, p.doctor, p.referral_status, p.referral_date,
-        p.appointment_status, p.risk_score, p.ldl_test_date || null,
+        p.contact, p.ldl, p.fh_eligible, p.family_history_cvd, p.coronary_stent_or_bypass, p.first_degree_relative_fh,
+        p.diabetes, p.hypertension, p.smoking_status, p.clinic ?? null, p.doctor ?? null,
+        p.referral_status ?? null, p.referral_date ?? null, p.appointment_status ?? null,
+        p.risk_score ?? null, p.ldl_test_date || null,
       ]);
     }
     await conn.commit();
@@ -131,6 +134,8 @@ async function migrateSchema() {
   await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS dob DATE NULL");
   await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS view_otp VARCHAR(10) NULL");
   await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS view_otp_expires DATETIME NULL");
+  await query("ALTER TABLE patients ADD COLUMN IF NOT EXISTS coronary_stent_or_bypass TINYINT DEFAULT 0");
+  await query("ALTER TABLE patients ADD COLUMN IF NOT EXISTS first_degree_relative_fh TINYINT DEFAULT 0");
 }
 
 // Backfills a column for patients seeded before that column existed
@@ -149,6 +154,31 @@ async function backfillPatientColumn(column) {
         `UPDATE patients SET ${column} = ? WHERE patient_ref = ? AND ${column} IS NULL`,
         [p[column], p.patient_ref]
       );
+    }
+    await conn.commit();
+  } catch (e) {
+    await conn.rollback();
+    throw e;
+  } finally {
+    conn.release();
+  }
+}
+
+// Syncs a 0/1 flag column for patients seeded before that column existed.
+// Unlike backfillPatientColumn(), this overwrites unconditionally (not just
+// when NULL) — ADD COLUMN gives existing rows the schema default (0), which
+// backfillPatientColumn's "IS NULL" guard would never see as unset.
+// `column` is always a hardcoded literal passed from initDb() below, never
+// request input, so interpolating it into the SQL is safe.
+async function syncPatientFlag(column) {
+  const file = path.join(__dirname, "patients.json");
+  const data = JSON.parse(fs.readFileSync(file, "utf8"));
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
+    for (const p of data) {
+      if (!p[column]) continue;
+      await conn.execute(`UPDATE patients SET ${column} = ? WHERE patient_ref = ?`, [p[column], p.patient_ref]);
     }
     await conn.commit();
   } catch (e) {
@@ -179,6 +209,8 @@ async function initDb() {
   await seedPatients();
   await backfillPatientColumn("ldl_test_date");
   await backfillPatientColumn("dob");
+  await syncPatientFlag("coronary_stent_or_bypass");
+  await syncPatientFlag("first_degree_relative_fh");
   await seedDemoUser();
 }
 

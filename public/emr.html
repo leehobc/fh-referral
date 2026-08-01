@@ -95,12 +95,22 @@ async function api(path, opts){
   return data;
 }
 
+function ageFromDob(dob){
+  if(!dob) return "—";
+  const d = new Date(dob);
+  if(isNaN(d)) return "—";
+  const diffMs = Date.now() - d.getTime();
+  return Math.floor(diffMs / (365.25*24*3600*1000));
+}
+
 function render(p){
   if(!p){ el("chart").innerHTML = '<div class="chart"><div class="empty">No patient open. Search above to open one.</div></div>'; return; }
   const eligible = Number(p.ldl) >= 5.5;
   const flags = [
-    ["FH eligible", eligible, eligible?"amber":"grey"],
+    ["FH eligible (LDL≥5.5)", eligible, eligible?"amber":"grey"],
+    ["First-degree relative FH", Number(p.first_degree_relative_fh), Number(p.first_degree_relative_fh)?"amber":"grey"],
     ["Family history CVD", Number(p.family_history_cvd), Number(p.family_history_cvd)?"amber":"grey"],
+    ["Coronary stent/bypass", Number(p.coronary_stent_or_bypass), Number(p.coronary_stent_or_bypass)?"amber":"grey"],
     ["Diabetes", Number(p.diabetes), Number(p.diabetes)?"amber":"grey"],
     ["Hypertension", Number(p.hypertension), Number(p.hypertension)?"amber":"grey"],
   ];
@@ -109,26 +119,24 @@ function render(p){
       <div class="chart-head">
         <div>
           <div class="pname">${p.name}</div>
-          <div class="pmeta">${p.nric} · ${p.age}y · ${p.gender} · ${p.ethnicity} · ${p.patient_ref}</div>
-          <div class="pmeta">${p.clinic} · ${p.doctor}</div>
+          <div class="pmeta">${p.nric} · ${ageFromDob(p.dob)}y · ${p.gender} · ${p.ethnicity} · ${p.patient_ref}</div>
         </div>
         <div><span class="badge green">Active EMR context</span></div>
       </div>
 
       <div class="grid">
         <div class="cell"><div class="k">LDL-C</div><div class="v ${eligible?'hot':''}">${Number(p.ldl).toFixed(1)} mmol/L</div></div>
+        <div class="cell"><div class="k">Date of birth</div><div class="v">${p.dob ? new Date(p.dob).toLocaleDateString('en-GB') : '—'}</div></div>
         <div class="cell"><div class="k">Nationality</div><div class="v">${p.nationality||'—'}</div></div>
         <div class="cell"><div class="k">Contact</div><div class="v">${p.contact||'—'}</div></div>
-        <div class="cell"><div class="k">Smoking</div><div class="v">${p.smoking_status||'—'}</div></div>
-        <div class="cell"><div class="k">Risk score</div><div class="v">${p.risk_score}</div></div>
-        <div class="cell"><div class="k">Referral status</div><div class="v">${p.referral_status||'—'}</div></div>
+        <div class="cell"><div class="k">Referral status</div><div class="v">${p.referral_status||'Not yet referred'}</div></div>
       </div>
 
       <div class="section">
         <div class="k" style="font-size:12px;color:var(--soft);font-weight:600;margin-bottom:8px">Clinical flags</div>
         <div class="flags">
           ${flags.map(f=>`<span class="badge ${f[2]}">${f[0]}: ${yn(f[1])}</span>`).join("")}
-          <span class="badge grey">Smoking: ${p.smoking_status}</span>
+          <span class="badge grey">Smoking: ${p.smoking_status||'—'}</span>
         </div>
       </div>
 

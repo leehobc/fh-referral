@@ -1,6 +1,5 @@
 const { useState, useEffect, useCallback, useRef } = React;
 const API = window.API;
-const LDL_THRESHOLD = 5.5;
 
 /* ── icons ─────────────────────────────────────────────────── */
 const svg = (d, extra) => (
@@ -319,12 +318,37 @@ function Shell({ user, route, onSignOut, children }) {
    REFERRAL WIZARD  (checklist → Q&A → consent → fetch → form → done)
    This is the landing page — the eligibility checklist is the homepage.
    ══════════════════════════════════════════════════════════════ */
-const REQUIRED = [
-  { key: "resident", label: "Patient is a Singapore Citizen or Permanent Resident", hint: "Eligibility is limited to SC / PR." },
-  { key: "ldl", label: `LDL-C ≥ ${LDL_THRESHOLD} mmol/L — now, or documented in the past`, hint: "Historical or pre-treatment results count if well-documented." },
-  { key: "secondary", label: "Secondary causes considered or excluded", hint: "e.g. hypothyroidism, nephrotic syndrome, certain drugs, or diet." },
-  { key: "adult", label: "Patient is an adult able to give informed consent", hint: "Required before any referral proceeds." },
-];
+// Plain-language FH likelihood check, run automatically once the patient
+// record is retrieved from the EMR — replaces the old self-reported
+// checklist with something driven by the actual record. Deliberately a
+// met/not-met checklist rather than a weighted point score (e.g. DLCNS) —
+// a numeric score needs the reader to already know what the numbers mean,
+// which defeats the point of decision support at a glance.
+function assessFH(patient) {
+  const ldl = Number(patient.ldl) || 0;
+  const highLdl = ldl >= 6.5;
+  const elevatedLdl = ldl >= 5.5; // programme referral threshold
+  const firstDegreeFH = !!patient.first_degree_relative_fh;
+  const familyCvd = !!patient.family_history_cvd;
+  const personalCad = !!patient.coronary_stent_or_bypass;
+
+  const criteria = [
+    { label: `LDL-C (${ldl || "—"} mmol/L) at or above the 5.5 mmol/L referral threshold`, met: elevatedLdl },
+    { label: "First-degree relative with known or suspected FH", met: firstDegreeFH },
+    { label: "Family history of premature cardiovascular disease", met: familyCvd },
+    { label: "Personal history of coronary stent or bypass", met: personalCad },
+  ];
+  const metCount = criteria.filter((c) => c.met).length;
+
+  let recommendation, tone;
+  if (highLdl && (firstDegreeFH || personalCad)) { recommendation = "Strong indication for referral"; tone = "green"; }
+  else if (elevatedLdl && (firstDegreeFH || familyCvd || personalCad)) { recommendation = "Referral recommended"; tone = "green"; }
+  else if (elevatedLdl) { recommendation = "Meets LDL threshold — referral appropriate"; tone = "amber"; }
+  else if (firstDegreeFH || personalCad) { recommendation = "History present despite lower LDL — use clinical judgement"; tone = "amber"; }
+  else { recommendation = "Low likelihood from available data"; tone = "teal"; }
+
+  return { recommendation, tone, criteria, metCount };
+}
 const FAQS = [
   ["What is familial hypercholesterolaemia (FH)?", "FH is an inherited condition that raises LDL cholesterol from birth. In Singapore about 1 in 140 people carry a gene change that can cause it, and it is usually silent — no symptoms — so it is often missed."],
   ["How serious is it if untreated?", "Untreated FH can raise the risk of early heart disease by up to around 20 times. It responds well to treatment and lifestyle changes."],
@@ -337,7 +361,7 @@ const FAQS = [
   ["Where do my results go?", "Into your National Electronic Health Record, viewable via HealthHub, with the GAC report filed under your referral notes."],
 ];
 
-const WIZARD_STEPS = ["Consent", "Checklist", "Q&A", "Referral", "Submit"];
+const WIZARD_STEPS = ["Consent", "Retrieve", "Assessment", "Q&A", "Referral", "Submit"];
 function Progress({ step }) {
   const n = WIZARD_STEPS.length;
   const donePct = Math.max(0, Math.min(100, (step / (n - 1)) * 100));
@@ -355,15 +379,6 @@ function Progress({ step }) {
         ))}
       </div>
     </div>
-  );
-}
-function Check({ label, hint, checked, onChange, disabled }) {
-  return (
-    <label className="check" style={{ opacity: disabled ? 0.5 : 1, cursor: disabled ? "not-allowed" : "pointer" }}>
-      <input type="checkbox" checked={checked} disabled={disabled} onChange={(e) => onChange(e.target.checked)} />
-      <span><span style={{ fontSize: 15 }}>{label}</span>
-        {hint && <span className="small muted" style={{ display: "block", marginTop: 2 }}>{hint}</span>}</span>
-    </label>
   );
 }
 
@@ -465,29 +480,24 @@ function Consulting() {
 
 function ReferralWizard({ user }) {
   const [step, setStep] = useState(0);
-  const [checks, setChecks] = useState({ resident: false, ldl: false, secondary: false, adult: false });
   const [patient, setPatient] = useState(null);
   const [fetching, setFetching] = useState(false);
   const [fetchErr, setFetchErr] = useState("");
   const [result, setResult] = useState(null);
-  const [showChecklistWarning, setShowChecklistWarning] = useState(false);
-
-  const allReq = REQUIRED.every((c) => checks[c.key]);
 
   const getCurrent = async () => {
     setFetchErr(""); setFetching(true);
-    try { const { patient } = await API.emr.currentPatient(); setPatient(patient); }
+    try { const { patient } = await API.emr.currentPatient(); setPatient(patient); setStep(2); }
     catch (e) { setPatient(null); setFetchErr(e.message); } finally { setFetching(false); }
   };
   const simulateNext = async () => {
     setFetchErr(""); setFetching(true);
-    try { const { patient } = await API.emr.nextPatient(); setPatient(patient); }
+    try { const { patient } = await API.emr.nextPatient(); setPatient(patient); setStep(2); }
     catch (e) { setPatient(null); setFetchErr(e.message); } finally { setFetching(false); }
   };
 
   if (result) return <Submitted referral={result} onRestart={() => {
-    setStep(0); setChecks({ resident: false, ldl: false, secondary: false, adult: false });
-    setPatient(null); setResult(null);
+    setStep(0); setPatient(null); setResult(null);
   }} />;
 
   return (
@@ -510,60 +520,10 @@ function ReferralWizard({ user }) {
               <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines or defers</button>
             </div>
           </div>
-          <div style={{ marginTop: 18 }}><button className="btn-ghost" onClick={() => setStep(1)}>Back</button></div>
         </div>
       )}
 
       {step === 1 && (
-        <div>
-          <h2 className="title">Confirm eligibility</h2>
-          <p className="sub">Confirm the program criteria for this patient before starting a referral.</p>
-          <div className="card" style={{ marginBottom: 18 }}>
-            <div className="row-actions" style={{ justifyContent: "space-between" }}>
-              <b>Required criteria</b>
-              <Badge tone={allReq ? "green" : "amber"}>{allReq ? "All confirmed" : `${REQUIRED.filter(c => checks[c.key]).length} of 4`}</Badge>
-            </div>
-            <p className="sub" style={{ margin: "6px 0 10px" }}>All four must be confirmed to refer.</p>
-            {REQUIRED.map((c) => <Check key={c.key} {...c} checked={checks[c.key]} onChange={(v) => setChecks(s => ({ ...s, [c.key]: v }))} />)}
-          </div>
-          <div className="row-actions">
-            <button className="btn" onClick={() => allReq ? setStep(2) : setShowChecklistWarning(true)}>Continue to patient Q&amp;A</button>
-            {!allReq && <span className="small muted">Confirm all required criteria to continue.</span>}
-          </div>
-          {showChecklistWarning && (
-            <div className="modal-overlay" onClick={() => setShowChecklistWarning(false)}>
-              <div className="modal-box" style={{ maxWidth: 420, textAlign: "left" }} onClick={(e) => e.stopPropagation()}>
-                <button className="modal-close" aria-label="Close" onClick={() => setShowChecklistWarning(false)}>✕</button>
-                <h3 style={{ margin: "0 0 8px", fontSize: 18 }}>Confirm all required criteria first</h3>
-                <p className="sub" style={{ margin: "0 0 12px" }}>All four required criteria must be confirmed before continuing. Still missing:</p>
-                <ul style={{ margin: "0 0 18px", paddingLeft: 20 }}>
-                  {REQUIRED.filter((c) => !checks[c.key]).map((c) => (
-                    <li key={c.key} style={{ marginBottom: 6, fontSize: 14 }}>{c.label}</li>
-                  ))}
-                </ul>
-                <button className="btn" onClick={() => setShowChecklistWarning(false)}>Got it</button>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {step === 2 && (
-        <div>
-          <h2 className="title">Explain to the patient</h2>
-          <p className="sub">Use these to answer common questions and keep messaging consistent.</p>
-          <FaqAndAssistant />
-
-          <div className="row-actions" style={{ marginTop: 18 }}>
-            <button className="btn-ghost" onClick={() => setStep(1)}>Back</button>
-            <button className="btn" onClick={() => setStep(3)}>Retrieve patient record</button>
-            <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines or defers</button>
-          </div>
-        </div>
-      )}
-
-
-      {step === 3 && !patient && (
         <div>
           <h2 className="title">Retrieve patient record</h2>
           <p className="sub">Consent recorded. The tool now requests the patient currently open in the EMR — no manual lookup.</p>
@@ -579,13 +539,55 @@ function ReferralWizard({ user }) {
             </p>
             {fetchErr && <p className="err">{fetchErr}</p>}
           </div>
-          <div style={{ marginTop: 18 }}><button className="btn-ghost" onClick={() => setStep(2)}>Back</button></div>
+          <div style={{ marginTop: 18 }}><button className="btn-ghost" onClick={() => setStep(0)}>Back</button></div>
         </div>
       )}
 
-      {step === 3 && patient && (
+      {step === 2 && patient && (() => {
+        const a = assessFH(patient);
+        return (
+          <div>
+            <h2 className="title">Assessment</h2>
+            <p className="sub">Automated FH likelihood check from the retrieved EMR record — a decision-support aid, not a replacement for clinical judgement.</p>
+            <div className="card" style={{ marginBottom: 18 }}>
+              <div className="row-actions" style={{ justifyContent: "space-between" }}>
+                <b>{patient.name} · {patient.nric}</b>
+                <Badge tone={a.tone}>{a.recommendation}</Badge>
+              </div>
+              <p className="sub" style={{ margin: "6px 0 14px" }}>{a.metCount} of {a.criteria.length} criteria met, based on fields available from the EMR.</p>
+              {a.criteria.map((c) => (
+                <div key={c.label} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "8px 0", borderBottom: "1px solid var(--line)" }}>
+                  <span style={{ fontWeight: 700, fontSize: 15, color: c.met ? "var(--green)" : "var(--ink-soft)" }}>{c.met ? "✓" : "—"}</span>
+                  <span style={{ fontSize: 15 }}>{c.label}</span>
+                </div>
+              ))}
+            </div>
+            <div className="row-actions">
+              <button className="btn-ghost" onClick={() => { setPatient(null); setStep(1); }}>Back</button>
+              <button className="btn" onClick={() => setStep(3)}>Continue to patient Q&amp;A</button>
+              <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines or defers</button>
+            </div>
+          </div>
+        );
+      })()}
+
+      {step === 3 && (
+        <div>
+          <h2 className="title">Explain to the patient</h2>
+          <p className="sub">Use these to answer common questions and keep messaging consistent.</p>
+          <FaqAndAssistant />
+
+          <div className="row-actions" style={{ marginTop: 18 }}>
+            <button className="btn-ghost" onClick={() => setStep(2)}>Back</button>
+            <button className="btn" onClick={() => setStep(4)}>Continue to referral form</button>
+            <button className="btn-danger" onClick={() => setResult({ declined: true })}>Patient declines or defers</button>
+          </div>
+        </div>
+      )}
+
+      {step === 4 && patient && (
         <ReferralForm patient={patient} user={user}
-          onBack={() => setPatient(null)}
+          onBack={() => setStep(3)}
           onDone={(ref) => setResult(ref)} />
       )}
     </div>
@@ -678,7 +680,7 @@ function Submitted({ referral, onRestart }) {
   }
   return (
     <div>
-      <div className="topbar no-print" style={{ marginBottom: 18 }}><Progress step={4} /></div>
+      <div className="topbar no-print" style={{ marginBottom: 18 }}><Progress step={5} /></div>
       <div className="card no-print" style={{ marginBottom: 18 }}>
         <Badge tone="green">Referral submitted</Badge>
         <h2 className="title" style={{ marginTop: 14 }}>Sent to the Genetic Assessment Centre</h2>
