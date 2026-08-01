@@ -725,6 +725,25 @@ function ReferralPrint({ r }) {
 /* ══════════════════════════════════════════════════════════════
    REFERRALS
    ══════════════════════════════════════════════════════════════ */
+// Post-submission pipeline, purely for display here — status only ever
+// advances via a real GAC-side system in production (there's no such
+// system to integrate with in this build, so it stays at "Submitted").
+const REFERRAL_STAGES = ["Submitted", "GAC booked", "Pre-test counselling done", "Testing done", "Post-test counselling done"];
+
+function ReferralStageBar({ status }) {
+  const idx = Math.max(0, REFERRAL_STAGES.indexOf(status));
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <div style={{ display: "flex", gap: 3 }} title={status}>
+        {REFERRAL_STAGES.map((s, i) => (
+          <span key={s} style={{ width: 16, height: 6, borderRadius: 3, background: i <= idx ? "var(--teal)" : "var(--line)" }} />
+        ))}
+      </div>
+      <span className="small muted">{status}</span>
+    </div>
+  );
+}
+
 function Referrals() {
   const [q, setQ] = useState(""); const [list, setList] = useState([]); const [err, setErr] = useState("");
   const load = useCallback(() => { API.referrals.list(q).then((d) => setList(d.referrals)).catch((e) => setErr(e.message)); }, [q]);
@@ -739,12 +758,13 @@ function Referrals() {
       {err && <p className="err">{err}</p>}
       {list.length === 0 ? <p className="muted">No referrals yet.</p> : (
         <table className="table">
-          <thead><tr><th>Reference</th><th>Patient</th><th>NRIC</th><th>Status</th><th>When</th></tr></thead>
+          <thead><tr><th>Reference</th><th>Patient</th><th>NRIC</th><th>Progress</th><th>When</th></tr></thead>
           <tbody>
             {list.map((r) => (
               <tr key={r.reference}>
                 <td>{r.reference}</td><td>{r.patient_name}</td><td>{r.patient_nric}</td>
-                <td><Badge tone="green">{r.status}</Badge></td><td>{fmtDMYHM(r.created_at)}</td>
+                <td><ReferralStageBar status={r.status} /></td>
+                <td>{fmtDMYHM(r.created_at)}</td>
               </tr>
             ))}
           </tbody>
