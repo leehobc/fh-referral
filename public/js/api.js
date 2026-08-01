@@ -54,7 +54,10 @@
     referrals: {
       create: (payload) => request("/api/referrals", { method: "POST", body: payload }),
       list: (query) => request("/api/referrals" + (query ? "?query=" + encodeURIComponent(query) : "")),
-      get: (reference) => request("/api/referrals/" + encodeURIComponent(reference)),
+      // Viewing a referral's full details requires SMS-verifying with the
+      // patient first — there's no plain "get" anymore.
+      requestViewOtp: (reference) => request("/api/referrals/" + encodeURIComponent(reference) + "/request-otp", { method: "POST" }),
+      verifyViewOtp: (reference, otp) => request("/api/referrals/" + encodeURIComponent(reference) + "/verify-otp", { method: "POST", body: { otp } }),
     },
 
     stats: {

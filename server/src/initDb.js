@@ -69,6 +69,8 @@ const SCHEMA = [
      referrer_label VARCHAR(60),
      clinic VARCHAR(120),
      status VARCHAR(30) NOT NULL DEFAULT 'Submitted',
+     view_otp VARCHAR(10) NULL,
+     view_otp_expires DATETIME NULL,
      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      INDEX idx_ref_referrer (referrer_id),
      INDEX idx_ref_nric (patient_nric),
@@ -127,6 +129,8 @@ async function migrateSchema() {
   await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS ldl_test_location VARCHAR(120) NULL");
   await query("ALTER TABLE patients ADD COLUMN IF NOT EXISTS dob DATE NULL");
   await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS dob DATE NULL");
+  await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS view_otp VARCHAR(10) NULL");
+  await query("ALTER TABLE referrals ADD COLUMN IF NOT EXISTS view_otp_expires DATETIME NULL");
 }
 
 // Backfills a column for patients seeded before that column existed

@@ -722,6 +722,104 @@ function ReferralPrint({ r }) {
   );
 }
 
+// "View" button for a referral in the history list — gated behind an SMS
+// code the patient has to read out to the clinician, rather than a plain
+// drill-down. Three-step: confirm the patient has consented to the SMS
+// (PDPA — they're the one paying for/receiving it, so they should agree to
+// it first), request a code (sent to the patient's phone; this build has no
+// SMS gateway, so it's logged server-side and only echoed back in the
+// response outside production — same pattern as the no-mail-server "Forgot
+// password" flow), then verify it to reveal the full referral.
+function ViewReferralButton({ reference, patientName }) {
+  const [step, setStep] = useState("idle"); // idle | consent | enter | viewing
+  const [otp, setOtp] = useState("");
+  const [devOtp, setDevOtp] = useState("");
+  const [contactHint, setContactHint] = useState("");
+  const [referral, setReferral] = useState(null);
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const start = async () => {
+    setErr(""); setBusy(true);
+    try {
+      const r = await API.referrals.requestViewOtp(reference);
+      setContactHint(r.contactHint || ""); setDevOtp(r.otp || ""); setOtp("");
+      setStep("enter");
+    } catch (e) { setErr(e.message); }
+    finally { setBusy(false); }
+  };
+  const verify = async () => {
+    setErr(""); setBusy(true);
+    try {
+      const { referral } = await API.referrals.verifyViewOtp(reference, otp);
+      setReferral(referral); setStep("viewing");
+    } catch (e) { setErr(e.message); }
+    finally { setBusy(false); }
+  };
+  const close = () => { setStep("idle"); setOtp(""); setErr(""); setReferral(null); setDevOtp(""); };
+
+  return (
+    <>
+      <button className="btn-ghost btn-sm" onClick={() => { setErr(""); setStep("consent"); }} disabled={busy}>View</button>
+      {step === "idle" && err && <p className="small err" style={{ marginTop: 4 }}>{err}</p>}
+
+      {step === "consent" && (
+        <div className="modal-overlay" onClick={close}>
+          <div className="modal-box" style={{ maxWidth: 380, textAlign: "left" }} onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" aria-label="Close" onClick={close}>✕</button>
+            <h3 style={{ margin: "0 0 8px", fontSize: 18 }}>Confirm patient consent</h3>
+            <p className="sub" style={{ margin: "0 0 16px" }}>
+              Before a verification code is sent, please confirm {patientName || "the patient"} is
+              present and has agreed to receive an SMS to verify this request.
+            </p>
+            {err && <p className="err">{err}</p>}
+            <button className="btn btn-full" disabled={busy} onClick={start}>
+              {busy ? "Sending…" : "Patient consents — send code"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {step === "enter" && (
+        <div className="modal-overlay" onClick={close}>
+          <div className="modal-box" style={{ maxWidth: 380, textAlign: "left" }} onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" aria-label="Close" onClick={close}>✕</button>
+            <h3 style={{ margin: "0 0 8px", fontSize: 18 }}>Verify with patient</h3>
+            <p className="sub" style={{ margin: "0 0 12px" }}>
+              A verification code has been sent by SMS to the patient's phone{contactHint ? ` (${contactHint})` : ""}.
+              Ask them to read it out before viewing this referral.
+            </p>
+            {devOtp && (
+              <p className="small muted" style={{ margin: "0 0 12px" }}>
+                No SMS gateway is set up for this build — code (dev only): <b>{devOtp}</b>
+              </p>
+            )}
+            <Field label="Verification code" value={otp} onChange={setOtp} placeholder="6-digit code" />
+            {err && <p className="err">{err}</p>}
+            <button className="btn btn-full" disabled={busy || !otp.trim()} onClick={verify}>
+              {busy ? "Verifying…" : "Verify and view"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {step === "viewing" && referral && (
+        <div className="modal-overlay" onClick={close}>
+          <div className="modal-box" style={{ maxWidth: 640 }} onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" aria-label="Close" onClick={close}>✕</button>
+            <div style={{ maxHeight: "80vh", overflowY: "auto", overflowX: "hidden" }}>
+              <div className="row-actions no-print" style={{ marginBottom: 14 }}>
+                <button className="btn" onClick={() => window.print()}>Print copy</button>
+              </div>
+              <ReferralPrint r={referral} />
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 /* ══════════════════════════════════════════════════════════════
    REFERRALS
    ══════════════════════════════════════════════════════════════ */
@@ -758,13 +856,14 @@ function Referrals() {
       {err && <p className="err">{err}</p>}
       {list.length === 0 ? <p className="muted">No referrals yet.</p> : (
         <table className="table">
-          <thead><tr><th>Reference</th><th>Patient</th><th>NRIC</th><th>Progress</th><th>When</th></tr></thead>
+          <thead><tr><th>Reference</th><th>Patient</th><th>NRIC</th><th>Progress</th><th>When</th><th>Details</th></tr></thead>
           <tbody>
             {list.map((r) => (
               <tr key={r.reference}>
                 <td>{r.reference}</td><td>{r.patient_name}</td><td>{r.patient_nric}</td>
                 <td><ReferralStageBar status={r.status} /></td>
                 <td>{fmtDMYHM(r.created_at)}</td>
+                <td><ViewReferralButton reference={r.reference} patientName={r.patient_name} /></td>
               </tr>
             ))}
           </tbody>
