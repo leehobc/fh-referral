@@ -28,10 +28,15 @@ router.get("/overview", async (req, res) => {
               SUM(referral_status = 'Referred') AS referred
        FROM patients GROUP BY clinic ORDER BY eligible DESC`
     );
-    const recent = await query(
-      `SELECT reference,patient_name,patient_nric,status,created_at
-       FROM referrals ORDER BY created_at DESC LIMIT 6`
-    );
+    // Scoped to the requesting clinician's own clinic — referrals are
+    // patient-identifying (name, NRIC), so this must never span clinics.
+    const recent = req.user.clinic
+      ? await query(
+          `SELECT reference,patient_name,patient_nric,status,created_at
+           FROM referrals WHERE clinic = ? ORDER BY created_at DESC LIMIT 6`,
+          [req.user.clinic]
+        )
+      : [];
     res.json({
       cards: { totalPatients, eligible, referredPatients, pending, myReferrals },
       byClinic,
