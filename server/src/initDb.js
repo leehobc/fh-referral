@@ -109,7 +109,7 @@ async function seedPatients() {
     for (const p of data) {
       await conn.execute(sql, [
         p.patient_ref, p.nric, p.name, p.dob || null, p.gender, p.ethnicity, p.nationality,
-        p.contact, p.ldl, p.fh_eligible, p.family_history_cvd, p.coronary_stent_or_bypass, p.first_degree_relative_fh,
+        p.contact, p.ldl, p.fh_eligible, p.family_history_cvd, p.coronary_stent_or_bypass, p.first_degree_relative_fh ?? null,
         p.diabetes, p.hypertension, p.smoking_status, p.clinic ?? null, p.doctor ?? null,
         p.referral_status ?? null, p.referral_date ?? null, p.appointment_status ?? null,
         p.risk_score ?? null, p.ldl_test_date || null,

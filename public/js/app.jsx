@@ -323,7 +323,11 @@ function Shell({ user, route, onSignOut, children }) {
 // met/not-met checklist rather than a weighted point score (e.g. DLCNS) —
 // a numeric score needs the reader to already know what the numbers mean,
 // which defeats the point of decision support at a glance.
-function assessFH(patient) {
+// `firstDegreeFH` defaults to the EMR value but can be overridden — the
+// clinician may know more about family history than what's on record (or
+// the record may be stale), so this one criterion is editable in the UI
+// rather than purely computed.
+function assessFH(patient, firstDegreeFH = !!patient.first_degree_relative_fh) {
   // Hard programme rule, not a score input — the programme is limited to
   // Singapore Citizens and Permanent Residents, so this blocks a referral
   // outright regardless of how strong the clinical criteria below are.
@@ -332,16 +336,15 @@ function assessFH(patient) {
   const ldl = Number(patient.ldl) || 0;
   const highLdl = ldl >= 6.5;
   const elevatedLdl = ldl >= 5.5; // programme referral threshold
-  const firstDegreeFH = !!patient.first_degree_relative_fh;
   const familyCvd = !!patient.family_history_cvd;
   const personalCad = !!patient.coronary_stent_or_bypass;
 
   const criteria = [
-    { label: "Singapore Citizen or Permanent Resident", met: eligible },
-    { label: `LDL-C (${ldl || "—"} mmol/L) at or above the 5.5 mmol/L referral threshold`, met: elevatedLdl },
-    { label: "First-degree relative with known or suspected FH", met: firstDegreeFH },
-    { label: "Family history of premature cardiovascular disease", met: familyCvd },
-    { label: "Personal history of coronary stent or bypass", met: personalCad },
+    { key: "eligible", label: "Singapore Citizen or Permanent Resident", met: eligible },
+    { key: "ldl", label: `LDL-C (${ldl || "—"} mmol/L) at or above the 5.5 mmol/L referral threshold`, met: elevatedLdl },
+    { key: "familyCvd", label: "Family history of premature cardiovascular disease", met: familyCvd },
+    { key: "personalCad", label: "Personal history of coronary stent or bypass", met: personalCad },
+    { key: "firstDegreeFH", label: "First-degree relative with known or suspected FH", met: firstDegreeFH, editable: true },
   ];
   const metCount = criteria.filter((c) => c.met).length;
 
@@ -491,15 +494,19 @@ function ReferralWizard({ user }) {
   const [fetchErr, setFetchErr] = useState("");
   const [result, setResult] = useState(null);
   const [confirmOverride, setConfirmOverride] = useState(false);
+  // Clinician-editable override for the "first-degree relative with FH"
+  // criterion — starts at whatever the EMR record says, once a patient is
+  // fetched.
+  const [firstDegreeFH, setFirstDegreeFH] = useState(false);
 
   const getCurrent = async () => {
     setFetchErr(""); setFetching(true);
-    try { const { patient } = await API.emr.currentPatient(); setPatient(patient); setStep(2); }
+    try { const { patient } = await API.emr.currentPatient(); setPatient(patient); setFirstDegreeFH(!!patient.first_degree_relative_fh); setStep(2); }
     catch (e) { setPatient(null); setFetchErr(e.message); } finally { setFetching(false); }
   };
   const simulateNext = async () => {
     setFetchErr(""); setFetching(true);
-    try { const { patient } = await API.emr.nextPatient(); setPatient(patient); setStep(2); }
+    try { const { patient } = await API.emr.nextPatient(); setPatient(patient); setFirstDegreeFH(!!patient.first_degree_relative_fh); setStep(2); }
     catch (e) { setPatient(null); setFetchErr(e.message); } finally { setFetching(false); }
   };
 
@@ -516,7 +523,7 @@ function ReferralWizard({ user }) {
   };
 
   if (result) return <Submitted referral={result} onRestart={() => {
-    setStep(0); setPatient(null); setResult(null); setConfirmOverride(false);
+    setStep(0); setPatient(null); setResult(null); setConfirmOverride(false); setFirstDegreeFH(false);
   }} />;
 
   return (
@@ -563,7 +570,7 @@ function ReferralWizard({ user }) {
       )}
 
       {step === 2 && patient && (() => {
-        const a = assessFH(patient);
+        const a = assessFH(patient, firstDegreeFH);
         const suggested = a.tone === "green";
         return (
           <div>
@@ -576,9 +583,17 @@ function ReferralWizard({ user }) {
               </div>
               <p className="sub" style={{ margin: "6px 0 14px" }}>{a.metCount} of {a.criteria.length} criteria met, based on fields available from the EMR.</p>
               {a.criteria.map((c) => (
-                <div key={c.label} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "8px 0", borderBottom: "1px solid var(--line)" }}>
-                  <span style={{ fontWeight: 700, fontSize: 15, color: c.met ? "var(--green)" : "var(--ink-soft)" }}>{c.met ? "✓" : "—"}</span>
-                  <span style={{ fontSize: 15 }}>{c.label}</span>
+                <div key={c.key} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "8px 0", borderBottom: "1px solid var(--line)" }}>
+                  {c.editable ? (
+                    <input type="checkbox" checked={c.met} onChange={(e) => setFirstDegreeFH(e.target.checked)}
+                      style={{ marginTop: 3, width: 16, height: 16, flex: "0 0 auto", accentColor: "var(--teal)" }} />
+                  ) : (
+                    <span style={{ fontWeight: 700, fontSize: 15, color: c.met ? "var(--green)" : "var(--ink-soft)" }}>{c.met ? "✓" : "—"}</span>
+                  )}
+                  <span style={{ fontSize: 15 }}>
+                    {c.label}
+                    {c.editable && <span className="small muted" style={{ marginLeft: 8 }}></span>}
+                  </span>
                 </div>
               ))}
             </div>
@@ -639,7 +654,7 @@ function ReferralWizard({ user }) {
       )}
 
       {step === 4 && patient && (
-        <ReferralForm patient={patient} user={user}
+        <ReferralForm patient={patient} user={user} firstDegreeFH={firstDegreeFH}
           onBack={() => setStep(3)}
           onDone={(ref) => setResult(ref)} />
       )}
@@ -647,8 +662,8 @@ function ReferralWizard({ user }) {
   );
 }
 
-function ReferralForm({ patient, user, onBack, onDone }) {
-  const systemSuggested = assessFH(patient).tone === "green";
+function ReferralForm({ patient, user, firstDegreeFH, onBack, onDone }) {
+  const systemSuggested = assessFH(patient, firstDegreeFH).tone === "green";
   const [form, setForm] = useState({
     patient_name: patient.name, patient_nric: patient.nric, dob: patient.dob ? patient.dob.slice(0, 10) : "",
     sex: patient.gender, nationality: patient.nationality, contact: patient.contact,
