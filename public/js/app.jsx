@@ -407,7 +407,7 @@ function assessFH(patient, firstDegreeFH = false, ldlOverride = false) {
   return { recommendation, tone, criteria, metCount, eligible };
 }
 const FAQS = [
-  ["What is familial hypercholesterolaemia (FH)?", "FH is an inherited condition that raises LDL cholesterol from birth. In Singapore about 1 in 140 people carry a gene change that can cause it, and it is usually silent — no symptoms — so it is often missed."],
+  ["What is familial hypercholesterolaemia (FH)?", "FH is an inherited condition that raises LDL cholesterol from birth. In Singapore about 1 in 250 people carry a gene change that can cause it, and it is usually silent — no symptoms — so it is often missed."],
   ["How serious is it if untreated?", "Untreated FH can raise the risk of early heart disease by up to around 20 times. It responds well to treatment and lifestyle changes."],
   ["I have no symptoms — why test?", "FH has no warning signs; the first sign can be a heart attack. A genetic test confirms the cause and lets close relatives be checked early."],
   ["Why test if I already take statins?", "A confirmed diagnosis sharpens treatment and enables cascade screening of relatives, who each have about a 50% chance of carrying the same gene change. An LDL result counts even if it was high before treatment."],
@@ -748,7 +748,7 @@ function ReferralForm({ patient, user, firstDegreeFH, ldlOverride, onBack, onDon
           <Field label="Date of birth" type="date" value={form.dob} onChange={(v) => set("dob", v)} disabled />
           <Field label="Sex" value={form.sex} onChange={(v) => set("sex", v)} disabled />
           <Field label="Nationality" value={form.nationality} onChange={(v) => set("nationality", v)} disabled />
-          <Field label="LDL (mmol/L) *" value={form.ldl} onChange={(v) => set("ldl", v)} bad={tried && !String(form.ldl).trim()} />
+          <Field label="LDL (mmol/L) *" value={form.ldl} onChange={(v) => set("ldl", v)} bad={tried && !String(form.ldl).trim()} disabled />
           <Field label="LDL test date *" type="date" value={form.ldl_test_date} onChange={(v) => set("ldl_test_date", v)} bad={tried && !form.ldl_test_date} />
           <Field label="Testing location *" value={form.ldl_test_location} onChange={(v) => set("ldl_test_location", v)} bad={tried && !String(form.ldl_test_location).trim()} />
           <Select label="On statin *" value={form.on_statin} onChange={(v) => set("on_statin", v)} options={["Yes", "No"]} bad={tried && !form.on_statin} />
