@@ -32,6 +32,8 @@
     auth: {
       login: (clinician_id, password) =>
         request("/api/auth/login", { method: "POST", auth: false, body: { clinician_id, password } }),
+      verify2fa: (pendingToken, code) =>
+        request("/api/auth/verify-2fa", { method: "POST", auth: false, body: { pendingToken, code } }),
       register: (payload) =>
         request("/api/auth/register", { method: "POST", auth: false, body: payload }),
       forgot: (payload) =>

@@ -2,7 +2,13 @@
 const express = require("express");
 const crypto = require("crypto");
 const { query } = require("../db");
-const { hashPassword, verifyPassword, signToken } = require("../auth");
+const { hashPassword, verifyPassword, signToken, signPendingToken, verifyToken } = require("../auth");
+
+// Fixed mock verification code for the 2FA step — no real authenticator
+// app / SMS-TOTP is wired up in this build, so every login accepts the
+// same code once the password has already been verified (same pattern as
+// the fixed DEMO_OTP used for the referral-view SMS flow).
+const DEMO_2FA_CODE = "340587";
 
 const router = express.Router();
 
@@ -39,7 +45,9 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// POST /api/auth/login
+// POST /api/auth/login — first factor. On success this does NOT issue a
+// full session token; it returns a short-lived pending token that only
+// POST /api/auth/verify-2fa can redeem, once the second factor is checked.
 router.post("/login", async (req, res) => {
   const { clinician_id, password } = req.body || {};
   if (!clinician_id || !password)
@@ -48,11 +56,31 @@ router.post("/login", async (req, res) => {
     const [u] = await query("SELECT * FROM users WHERE clinician_id = ?", [clinician_id]);
     if (!u || !(await verifyPassword(password, u.password_hash)))
       return res.status(401).json({ error: "Invalid clinician ID or password." });
+    res.json({ mfaRequired: true, pendingToken: signPendingToken(u) });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Could not sign in." });
+  }
+});
+
+// POST /api/auth/verify-2fa — second factor. No real authenticator app /
+// SMS-TOTP is wired up in this build, so DEMO_2FA_CODE always works.
+router.post("/verify-2fa", async (req, res) => {
+  const { pendingToken, code } = req.body || {};
+  if (!pendingToken || !code) return res.status(400).json({ error: "Enter the verification code." });
+  const payload = verifyToken(pendingToken);
+  if (!payload || !payload.pending2fa)
+    return res.status(401).json({ error: "Session expired — sign in again." });
+  if (String(code).trim() !== DEMO_2FA_CODE)
+    return res.status(401).json({ error: "Incorrect verification code." });
+  try {
+    const [u] = await query("SELECT * FROM users WHERE id = ?", [payload.id]);
+    if (!u) return res.status(401).json({ error: "Session expired — sign in again." });
     await query("INSERT INTO audit_log (user_id,action) VALUES (?, 'login')", [u.id]);
     res.json({ token: signToken(u), user: publicUser(u) });
   } catch (e) {
     console.error(e);
-    res.status(500).json({ error: "Could not sign in." });
+    res.status(500).json({ error: "Could not verify code." });
   }
 });
 

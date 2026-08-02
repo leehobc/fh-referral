@@ -167,20 +167,38 @@ function Select({ label, value, onChange, options, bad, disabled }) {
 /* ══════════════════════════════════════════════════════════════
    AUTH PAGES
    ══════════════════════════════════════════════════════════════ */
+// Fixed mock code shown to whoever is running/demoing this build — matches
+// the server's DEMO_2FA_CODE. No real authenticator app / SMS-TOTP is wired
+// up, so this is the same code for every login, every time.
+const DEMO_2FA_CODE = "340587";
+
 function Login({ onAuthed }) {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
+  const [pendingToken, setPendingToken] = useState(null);
+  const [code, setCode] = useState("");
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
-  const submit = async () => {
+
+  const submitPassword = async () => {
     setErr("");
     if (!id || !pw) return setErr("Enter your clinician ID and password.");
     setBusy(true);
     try {
-      const { token, user } = await API.auth.login(id, pw);
+      const { pendingToken } = await API.auth.login(id, pw);
+      setPendingToken(pendingToken); setCode("");
+    } catch (e) { setErr(e.message); } finally { setBusy(false); }
+  };
+  const submitCode = async () => {
+    setErr("");
+    if (!code.trim()) return setErr("Enter the verification code.");
+    setBusy(true);
+    try {
+      const { token, user } = await API.auth.verify2fa(pendingToken, code.trim());
       API.setToken(token); onAuthed(user); navigate("/");
     } catch (e) { setErr(e.message); } finally { setBusy(false); }
   };
+
   return (
     <div className="auth-wrap">
       <div className="login-card">
@@ -200,18 +218,38 @@ function Login({ onAuthed }) {
             <span style={{ paddingTop: 8, fontSize: 14 }}>Submit referrals with fewer missing fields</span></div>
         </div>
         <div className="login-right">
-          <h2 className="title" style={{ fontSize: 22 }}>Sign in</h2>
-          <p className="sub">Secure clinician access only.</p>
-          <label className="label">Clinician ID</label>
-          <input className="input" value={id} onChange={(e) => setId(e.target.value)} />
-          <label className="label">Password</label>
-          <input className="input" type="password" value={pw} onChange={(e) => setPw(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && submit()} />
-          {err && <p className="err">{err}</p>}
-          <button className="btn btn-full" disabled={busy} onClick={submit}>{busy ? "Signing in…" : "Sign in"}</button>
-          <p style={{ textAlign: "center", margin: "14px 0 0" }}>
-            <a href="#/forgot">Forgot password?</a>
-          </p>
+          {!pendingToken ? (
+            <>
+              <h2 className="title" style={{ fontSize: 22 }}>Sign in</h2>
+              <p className="sub">Secure clinician access only.</p>
+              <label className="label">Clinician ID</label>
+              <input className="input" value={id} onChange={(e) => setId(e.target.value)} />
+              <label className="label">Password</label>
+              <input className="input" type="password" value={pw} onChange={(e) => setPw(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && submitPassword()} />
+              {err && <p className="err">{err}</p>}
+              <button className="btn btn-full" disabled={busy} onClick={submitPassword}>{busy ? "Checking…" : "Sign in"}</button>
+              <p style={{ textAlign: "center", margin: "14px 0 0" }}>
+                <a href="#/forgot">Forgot password?</a>
+              </p>
+            </>
+          ) : (
+            <>
+              <h2 className="title" style={{ fontSize: 22 }}>Two-factor verification</h2>
+              <p className="sub">Enter the 6-digit code from your authenticator app.</p>
+              <p className="small muted" style={{ background: "var(--teal-soft)", borderRadius: 10, padding: "10px 14px", margin: "0 0 16px" }}>
+                No authenticator app is wired up in this build — the demo code is always <b>{DEMO_2FA_CODE}</b>.
+              </p>
+              <label className="label">Verification code</label>
+              <input className="input" value={code} placeholder="6-digit code" onChange={(e) => setCode(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && submitCode()} />
+              {err && <p className="err">{err}</p>}
+              <button className="btn btn-full" disabled={busy} onClick={submitCode}>{busy ? "Verifying…" : "Verify and sign in"}</button>
+              <p style={{ textAlign: "center", margin: "14px 0 0" }}>
+                <a href="#" onClick={(e) => { e.preventDefault(); setPendingToken(null); setErr(""); }}>Back to sign in</a>
+              </p>
+            </>
+          )}
         </div>
       </div>
     </div>

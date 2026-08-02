@@ -16,6 +16,18 @@ function signToken(user) {
   );
 }
 
+// Short-lived token issued after password verification, before the 2FA
+// code is checked. Deliberately carries no `role` and is flagged
+// `pending2fa` so requireAuth() rejects it outright — it's only good for
+// completing POST /api/auth/verify-2fa, not for any protected route.
+function signPendingToken(user) {
+  return jwt.sign(
+    { id: user.id, clinician_id: user.clinician_id, pending2fa: true },
+    SECRET,
+    { expiresIn: "5m" }
+  );
+}
+
 function verifyToken(token) {
   try {
     return jwt.verify(token, SECRET);
@@ -24,4 +36,4 @@ function verifyToken(token) {
   }
 }
 
-module.exports = { hashPassword, verifyPassword, signToken, verifyToken };
+module.exports = { hashPassword, verifyPassword, signToken, signPendingToken, verifyToken };
