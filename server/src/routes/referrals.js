@@ -74,7 +74,7 @@ router.get("/", async (req, res) => {
 // page even though a patient was actually seen.
 router.post("/not-made", async (req, res) => {
   const b = req.body || {};
-  const reason = b.reason === "not_suggested" ? "not_suggested" : "declined";
+  const reason = ["not_suggested", "not_eligible"].includes(b.reason) ? b.reason : "declined";
   try {
     await query("INSERT INTO audit_log (user_id,action,meta) VALUES (?,?,?)", [
       req.user.id,

@@ -324,6 +324,11 @@ function Shell({ user, route, onSignOut, children }) {
 // a numeric score needs the reader to already know what the numbers mean,
 // which defeats the point of decision support at a glance.
 function assessFH(patient) {
+  // Hard programme rule, not a score input — the programme is limited to
+  // Singapore Citizens and Permanent Residents, so this blocks a referral
+  // outright regardless of how strong the clinical criteria below are.
+  const eligible = /citizen|permanent resident|\bpr\b/i.test(patient.nationality || "");
+
   const ldl = Number(patient.ldl) || 0;
   const highLdl = ldl >= 6.5;
   const elevatedLdl = ldl >= 5.5; // programme referral threshold
@@ -332,6 +337,7 @@ function assessFH(patient) {
   const personalCad = !!patient.coronary_stent_or_bypass;
 
   const criteria = [
+    { label: "Singapore Citizen or Permanent Resident", met: eligible },
     { label: `LDL-C (${ldl || "—"} mmol/L) at or above the 5.5 mmol/L referral threshold`, met: elevatedLdl },
     { label: "First-degree relative with known or suspected FH", met: firstDegreeFH },
     { label: "Family history of premature cardiovascular disease", met: familyCvd },
@@ -340,13 +346,14 @@ function assessFH(patient) {
   const metCount = criteria.filter((c) => c.met).length;
 
   let recommendation, tone;
-  if (highLdl && (firstDegreeFH || personalCad)) { recommendation = "Strong indication for referral"; tone = "green"; }
+  if (!eligible) { recommendation = "Not eligible — Singapore Citizens/PRs only"; tone = "red"; }
+  else if (highLdl && (firstDegreeFH || personalCad)) { recommendation = "Strong indication for referral"; tone = "green"; }
   else if (elevatedLdl && (firstDegreeFH || familyCvd || personalCad)) { recommendation = "Referral recommended"; tone = "green"; }
   else if (elevatedLdl) { recommendation = "Meets LDL threshold — referral appropriate"; tone = "green"; }
   else if (firstDegreeFH || personalCad) { recommendation = "History present despite lower LDL — use clinical judgement"; tone = "amber"; }
   else { recommendation = "Low likelihood from available data"; tone = "teal"; }
 
-  return { recommendation, tone, criteria, metCount };
+  return { recommendation, tone, criteria, metCount, eligible };
 }
 const FAQS = [
   ["What is familial hypercholesterolaemia (FH)?", "FH is an inherited condition that raises LDL cholesterol from birth. In Singapore about 1 in 140 people carry a gene change that can cause it, and it is usually silent — no symptoms — so it is often missed."],
@@ -496,15 +503,14 @@ function ReferralWizard({ user }) {
     catch (e) { setPatient(null); setFetchErr(e.message); } finally { setFetching(false); }
   };
 
-  // Ends the wizard without a referral (declined/deferred, or not suggested
-  // by the system). Nothing is written to the referrals table for these —
-  // logged separately so the patient still shows up in the history list.
+  // Ends the wizard without a referral (declined/deferred, not suggested by
+  // the system, or not eligible on nationality). Nothing is written to the
+  // referrals table for these — logged separately so the patient still
+  // shows up in the history list.
   const endWithoutReferral = (outcome) => {
     if (patient) {
-      API.referrals.logNotMade({
-        patient_nric: patient.nric, patient_name: patient.name,
-        reason: outcome.notSuggested ? "not_suggested" : "declined",
-      }).catch(() => {});
+      const reason = outcome.notEligible ? "not_eligible" : outcome.notSuggested ? "not_suggested" : "declined";
+      API.referrals.logNotMade({ patient_nric: patient.nric, patient_name: patient.name, reason }).catch(() => {});
     }
     setResult(outcome);
   };
@@ -576,33 +582,43 @@ function ReferralWizard({ user }) {
                 </div>
               ))}
             </div>
-            <div className="row-actions">
-              <button className="btn-ghost" onClick={() => { setPatient(null); setStep(1); }}>Back</button>
-              {suggested
-                ? <button className="btn" onClick={() => setStep(3)}>Continue to patient Q&amp;A</button>
-                : <>
-                    <button className="btn-danger" onClick={() => endWithoutReferral({ notSuggested: true })}>Not suggested by system — do not refer</button>
-                    <button className="btn-ghost" onClick={() => setConfirmOverride(true)}>Override — refer anyway</button>
-                  </>}
-              <button className="btn-danger" onClick={() => endWithoutReferral({ declined: true })}>Patient declines or defers</button>
-            </div>
 
-            {confirmOverride && (
-              <div className="modal-overlay" onClick={() => setConfirmOverride(false)}>
-                <div className="modal-box" style={{ maxWidth: 420, textAlign: "left" }} onClick={(e) => e.stopPropagation()}>
-                  <button className="modal-close" aria-label="Close" onClick={() => setConfirmOverride(false)}>✕</button>
-                  <h3 style={{ margin: "0 0 8px", fontSize: 18 }}>Confirm manual override</h3>
-                  <p className="sub" style={{ margin: "0 0 12px" }}>
-                    The automated assessment does not suggest a referral for {patient.name} based on the available
-                    EMR data. Please confirm you are proceeding on your own clinical judgement — this will be
-                    recorded against the referral.
-                  </p>
-                  <div className="row-actions">
-                    <button className="btn-ghost" onClick={() => setConfirmOverride(false)}>Cancel</button>
-                    <button className="btn" onClick={() => { setConfirmOverride(false); setStep(3); }}>Confirm — continue to Q&amp;A</button>
-                  </div>
-                </div>
+            {!a.eligible ? (
+              <div className="row-actions">
+                <button className="btn-ghost" onClick={() => { setPatient(null); setStep(1); }}>Back</button>
+                <button className="btn-danger" onClick={() => endWithoutReferral({ notEligible: true })}>Not eligible — do not refer</button>
               </div>
+            ) : (
+              <>
+                <div className="row-actions">
+                  <button className="btn-ghost" onClick={() => { setPatient(null); setStep(1); }}>Back</button>
+                  {suggested
+                    ? <button className="btn" onClick={() => setStep(3)}>Continue to patient Q&amp;A</button>
+                    : <>
+                        <button className="btn-danger" onClick={() => endWithoutReferral({ notSuggested: true })}>Not suggested by system — do not refer</button>
+                        <button className="btn-ghost" onClick={() => setConfirmOverride(true)}>Override — refer anyway</button>
+                      </>}
+                  <button className="btn-danger" onClick={() => endWithoutReferral({ declined: true })}>Patient declines or defers</button>
+                </div>
+
+                {confirmOverride && (
+                  <div className="modal-overlay" onClick={() => setConfirmOverride(false)}>
+                    <div className="modal-box" style={{ maxWidth: 420, textAlign: "left" }} onClick={(e) => e.stopPropagation()}>
+                      <button className="modal-close" aria-label="Close" onClick={() => setConfirmOverride(false)}>✕</button>
+                      <h3 style={{ margin: "0 0 8px", fontSize: 18 }}>Confirm manual override</h3>
+                      <p className="sub" style={{ margin: "0 0 12px" }}>
+                        The automated assessment does not suggest a referral for {patient.name} based on the available
+                        EMR data. Please confirm you are proceeding on your own clinical judgement — this will be
+                        recorded against the referral.
+                      </p>
+                      <div className="row-actions">
+                        <button className="btn-ghost" onClick={() => setConfirmOverride(false)}>Cancel</button>
+                        <button className="btn" onClick={() => { setConfirmOverride(false); setStep(3); }}>Confirm — continue to Q&amp;A</button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
           </div>
         );
@@ -698,15 +714,19 @@ function ReferralForm({ patient, user, onBack, onDone }) {
 
 function Submitted({ referral, onRestart }) {
   const [showInfo, setShowInfo] = useState(false);
-  if (referral.declined || referral.notSuggested) {
+  if (referral.declined || referral.notSuggested || referral.notEligible) {
     return (
       <div className="card" style={{ textAlign: "center" }}>
         <Badge tone="red">Referral not made</Badge>
         <h2 className="title" style={{ marginTop: 14 }}>
-          {referral.notSuggested ? "Not suggested by the automated assessment" : "Patient declined or deferred referral"}
+          {referral.notEligible ? "Not eligible for this programme"
+            : referral.notSuggested ? "Not suggested by the automated assessment"
+            : "Patient declined or deferred referral"}
         </h2>
         <p className="sub">
-          {referral.notSuggested
+          {referral.notEligible
+            ? "Programme eligibility is limited to Singapore Citizens and Permanent Residents. No referral was submitted."
+            : referral.notSuggested
             ? "Based on the EMR data available, the assessment did not find enough criteria met to suggest a referral for this patient. No referral was submitted."
             : "No referral was submitted."}
         </p>
@@ -928,7 +948,11 @@ function Referrals() {
                 <td>
                   {r.outcome === "referred"
                     ? <ReferralStageBar status={r.status} />
-                    : <Badge tone="red">{r.outcome === "not_suggested" ? "Not suggested — not referred" : "Declined / deferred"}</Badge>}
+                    : <Badge tone="red">
+                        {r.outcome === "not_eligible" ? "Not eligible (nationality)"
+                          : r.outcome === "not_suggested" ? "Not suggested — not referred"
+                          : "Declined / deferred"}
+                      </Badge>}
                 </td>
                 <td>{r.outcome === "referred" && r.system_suggested != null && Number(r.system_suggested) === 0 && <Badge tone="amber">Not suggested</Badge>}</td>
                 <td>{fmtDMYHM(r.created_at)}</td>
