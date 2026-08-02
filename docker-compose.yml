@@ -14,8 +14,8 @@ services:
       - fhnet
     # Not published to the host by default. Uncomment to inspect with a
     # DB client from your LAN (e.g. via phpMyAdmin / DBeaver).
-    # ports:
-    #   - "3307:3306"
+    ports:
+      - "3307:3306"
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 10s
