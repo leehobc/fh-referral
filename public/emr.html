@@ -108,7 +108,6 @@ function render(p){
   const eligible = Number(p.ldl) >= 5.5;
   const flags = [
     ["FH eligible (LDL≥5.5)", eligible, eligible?"amber":"grey"],
-    ["Family history CVD", Number(p.family_history_cvd), Number(p.family_history_cvd)?"amber":"grey"],
     ["Coronary stent/bypass", Number(p.coronary_stent_or_bypass), Number(p.coronary_stent_or_bypass)?"amber":"grey"],
     ["Diabetes", Number(p.diabetes), Number(p.diabetes)?"amber":"grey"],
     ["Hypertension", Number(p.hypertension), Number(p.hypertension)?"amber":"grey"],

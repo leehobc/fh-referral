@@ -377,7 +377,6 @@ function assessFH(patient, firstDegreeFH = false, ldlOverride = false) {
   const highLdl = ldl >= 6.5;
   const rawElevatedLdl = ldl >= 5.5; // programme referral threshold, from the EMR record
   const elevatedLdl = rawElevatedLdl || ldlOverride;
-  const familyCvd = !!patient.family_history_cvd;
   const personalCad = !!patient.coronary_stent_or_bypass;
 
   const criteria = [
@@ -390,7 +389,6 @@ function assessFH(patient, firstDegreeFH = false, ldlOverride = false) {
       met: elevatedLdl,
       editable: !rawElevatedLdl,
     },
-    { key: "familyCvd", label: "Family history of premature cardiovascular disease", met: familyCvd },
     { key: "personalCad", label: "Personal history of coronary stent or bypass", met: personalCad },
     { key: "firstDegreeFH", label: "First-degree relative with known FH", met: firstDegreeFH, editable: true },
   ];
@@ -398,8 +396,7 @@ function assessFH(patient, firstDegreeFH = false, ldlOverride = false) {
 
   // Referral is suggested if EITHER LDL-C ≥5.5 OR a first-degree relative
   // with known/suspected FH is present — blocked only when both are absent.
-  // Family history of CVD and personal CAD history are shown for context
-  // but don't factor into this gate.
+  // Personal CAD history is shown for context but doesn't factor into this gate.
   let recommendation, tone;
   if (!eligible) { recommendation = "Not eligible — Singapore Citizens/PRs only"; tone = "red"; }
   else if (elevatedLdl && firstDegreeFH) { recommendation = highLdl ? "Strong indication for referral" : "Referral recommended"; tone = "green"; }
