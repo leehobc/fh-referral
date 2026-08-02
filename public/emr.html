@@ -108,7 +108,6 @@ function render(p){
   const eligible = Number(p.ldl) >= 5.5;
   const flags = [
     ["FH eligible (LDL≥5.5)", eligible, eligible?"amber":"grey"],
-    ["First-degree relative FH", Number(p.first_degree_relative_fh), Number(p.first_degree_relative_fh)?"amber":"grey"],
     ["Family history CVD", Number(p.family_history_cvd), Number(p.family_history_cvd)?"amber":"grey"],
     ["Coronary stent/bypass", Number(p.coronary_stent_or_bypass), Number(p.coronary_stent_or_bypass)?"amber":"grey"],
     ["Diabetes", Number(p.diabetes), Number(p.diabetes)?"amber":"grey"],
@@ -136,7 +135,6 @@ function render(p){
         <div class="k" style="font-size:12px;color:var(--soft);font-weight:600;margin-bottom:8px">Clinical flags</div>
         <div class="flags">
           ${flags.map(f=>`<span class="badge ${f[2]}">${f[0]}: ${yn(f[1])}</span>`).join("")}
-          <span class="badge grey">Smoking: ${p.smoking_status||'—'}</span>
         </div>
       </div>
 

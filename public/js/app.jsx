@@ -348,13 +348,15 @@ function assessFH(patient, firstDegreeFH = !!patient.first_degree_relative_fh) {
   ];
   const metCount = criteria.filter((c) => c.met).length;
 
+  // Both LDL-C ≥5.5 and a first-degree relative with known/suspected FH are
+  // required together — family history and personal CAD history are shown
+  // for context but don't substitute for either one being missing.
   let recommendation, tone;
   if (!eligible) { recommendation = "Not eligible — Singapore Citizens/PRs only"; tone = "red"; }
-  else if (highLdl && (firstDegreeFH || personalCad)) { recommendation = "Strong indication for referral"; tone = "green"; }
-  else if (elevatedLdl && (firstDegreeFH || familyCvd || personalCad)) { recommendation = "Referral recommended"; tone = "green"; }
-  else if (elevatedLdl) { recommendation = "Meets LDL threshold — referral appropriate"; tone = "green"; }
-  else if (firstDegreeFH || personalCad) { recommendation = "History present despite lower LDL — use clinical judgement"; tone = "amber"; }
-  else { recommendation = "Low likelihood from available data"; tone = "teal"; }
+  else if (elevatedLdl && firstDegreeFH) { recommendation = highLdl ? "Strong indication for referral" : "Referral recommended"; tone = "green"; }
+  else if (!elevatedLdl && !firstDegreeFH) { recommendation = "LDL below threshold and no first-degree relative with FH — referral not indicated"; tone = "amber"; }
+  else if (!elevatedLdl) { recommendation = "LDL below the 5.5 mmol/L threshold — referral not indicated"; tone = "amber"; }
+  else { recommendation = "No first-degree relative with known FH — referral not indicated"; tone = "amber"; }
 
   return { recommendation, tone, criteria, metCount, eligible };
 }
