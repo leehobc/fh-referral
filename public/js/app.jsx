@@ -866,7 +866,7 @@ function ReferralPrint({ r }) {
 // SMS gateway, so it's logged server-side and only echoed back in the
 // response outside production — same pattern as the no-mail-server "Forgot
 // password" flow), then verify it to reveal the full referral.
-function ViewReferralButton({ reference, patientName }) {
+function ViewReferralButton({ reference }) {
   const [step, setStep] = useState("idle"); // idle | consent | enter | viewing
   const [otp, setOtp] = useState("");
   const [devOtp, setDevOtp] = useState("");
@@ -905,7 +905,7 @@ function ViewReferralButton({ reference, patientName }) {
             <button className="modal-close" aria-label="Close" onClick={close}>✕</button>
             <h3 style={{ margin: "0 0 8px", fontSize: 18 }}>Confirm patient consent</h3>
             <p className="sub" style={{ margin: "0 0 16px" }}>
-              Before a verification code is sent, please confirm {patientName || "the patient"} is
+              Before a verification code is sent, please confirm the patient is
               present and has agreed to receive an SMS to verify this request.
             </p>
             {err && <p className="err">{err}</p>}
@@ -1003,7 +1003,7 @@ function Referrals() {
                       </Badge>}
                 </td>
                 <td>{fmtDMYHM(r.created_at)}</td>
-                <td>{r.outcome === "referred" && <ViewReferralButton reference={r.reference} patientName={r.patient_name} />}</td>
+                <td>{r.outcome === "referred" && <ViewReferralButton reference={r.reference} />}</td>
               </tr>
             ))}
           </tbody>
