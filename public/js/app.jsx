@@ -344,19 +344,20 @@ function assessFH(patient, firstDegreeFH = !!patient.first_degree_relative_fh) {
     { key: "ldl", label: `LDL-C (${ldl || "—"} mmol/L) at or above the 5.5 mmol/L referral threshold`, met: elevatedLdl },
     { key: "familyCvd", label: "Family history of premature cardiovascular disease", met: familyCvd },
     { key: "personalCad", label: "Personal history of coronary stent or bypass", met: personalCad },
-    { key: "firstDegreeFH", label: "First-degree relative with known or suspected FH", met: firstDegreeFH, editable: true },
+    { key: "firstDegreeFH", label: "First-degree relative with known FH", met: firstDegreeFH, editable: true },
   ];
   const metCount = criteria.filter((c) => c.met).length;
 
-  // Both LDL-C ≥5.5 and a first-degree relative with known/suspected FH are
-  // required together — family history and personal CAD history are shown
-  // for context but don't substitute for either one being missing.
+  // Referral is suggested if EITHER LDL-C ≥5.5 OR a first-degree relative
+  // with known/suspected FH is present — blocked only when both are absent.
+  // Family history of CVD and personal CAD history are shown for context
+  // but don't factor into this gate.
   let recommendation, tone;
   if (!eligible) { recommendation = "Not eligible — Singapore Citizens/PRs only"; tone = "red"; }
   else if (elevatedLdl && firstDegreeFH) { recommendation = highLdl ? "Strong indication for referral" : "Referral recommended"; tone = "green"; }
-  else if (!elevatedLdl && !firstDegreeFH) { recommendation = "LDL below threshold and no first-degree relative with FH — referral not indicated"; tone = "amber"; }
-  else if (!elevatedLdl) { recommendation = "LDL below the 5.5 mmol/L threshold — referral not indicated"; tone = "amber"; }
-  else { recommendation = "No first-degree relative with known FH — referral not indicated"; tone = "amber"; }
+  else if (elevatedLdl) { recommendation = "Meets LDL threshold — referral appropriate"; tone = "green"; }
+  else if (firstDegreeFH) { recommendation = "First-degree relative with FH — referral appropriate"; tone = "green"; }
+  else { recommendation = "LDL below threshold and no first-degree relative with FH — referral not indicated"; tone = "amber"; }
 
   return { recommendation, tone, criteria, metCount, eligible };
 }
@@ -495,7 +496,6 @@ function ReferralWizard({ user }) {
   const [fetching, setFetching] = useState(false);
   const [fetchErr, setFetchErr] = useState("");
   const [result, setResult] = useState(null);
-  const [confirmOverride, setConfirmOverride] = useState(false);
   // Clinician-editable override for the "first-degree relative with FH"
   // criterion — starts at whatever the EMR record says, once a patient is
   // fetched.
@@ -525,7 +525,7 @@ function ReferralWizard({ user }) {
   };
 
   if (result) return <Submitted referral={result} onRestart={() => {
-    setStep(0); setPatient(null); setResult(null); setConfirmOverride(false); setFirstDegreeFH(false);
+    setStep(0); setPatient(null); setResult(null); setFirstDegreeFH(false);
   }} />;
 
   return (
@@ -592,50 +592,25 @@ function ReferralWizard({ user }) {
                   ) : (
                     <span style={{ fontWeight: 700, fontSize: 15, color: c.met ? "var(--green)" : "var(--ink-soft)" }}>{c.met ? "✓" : "—"}</span>
                   )}
-                  <span style={{ fontSize: 15 }}>
-                    {c.label}
-                    {c.editable && <span className="small muted" style={{ marginLeft: 8 }}></span>}
-                  </span>
+                  <span style={{ fontSize: 15 }}>{c.label}</span>
                 </div>
               ))}
             </div>
 
-            {!a.eligible ? (
+            {suggested ? (
               <div className="row-actions">
                 <button className="btn-ghost" onClick={() => { setPatient(null); setStep(1); }}>Back</button>
-                <button className="btn-danger" onClick={() => endWithoutReferral({ notEligible: true })}>Not eligible — do not refer</button>
+                <button className="btn" onClick={() => setStep(3)}>Continue to patient Q&amp;A</button>
+                <button className="btn-danger" onClick={() => endWithoutReferral({ declined: true })}>Patient declines or defers</button>
               </div>
             ) : (
-              <>
-                <div className="row-actions">
-                  <button className="btn-ghost" onClick={() => { setPatient(null); setStep(1); }}>Back</button>
-                  {suggested
-                    ? <button className="btn" onClick={() => setStep(3)}>Continue to patient Q&amp;A</button>
-                    : <>
-                        <button className="btn-danger" onClick={() => endWithoutReferral({ notSuggested: true })}>Not suggested by system — do not refer</button>
-                        <button className="btn-ghost" onClick={() => setConfirmOverride(true)}>Override — refer anyway</button>
-                      </>}
-                  <button className="btn-danger" onClick={() => endWithoutReferral({ declined: true })}>Patient declines or defers</button>
-                </div>
-
-                {confirmOverride && (
-                  <div className="modal-overlay" onClick={() => setConfirmOverride(false)}>
-                    <div className="modal-box" style={{ maxWidth: 420, textAlign: "left" }} onClick={(e) => e.stopPropagation()}>
-                      <button className="modal-close" aria-label="Close" onClick={() => setConfirmOverride(false)}>✕</button>
-                      <h3 style={{ margin: "0 0 8px", fontSize: 18 }}>Confirm manual override</h3>
-                      <p className="sub" style={{ margin: "0 0 12px" }}>
-                        The automated assessment does not suggest a referral for {patient.name} based on the available
-                        EMR data. Please confirm you are proceeding on your own clinical judgement — this will be
-                        recorded against the referral.
-                      </p>
-                      <div className="row-actions">
-                        <button className="btn-ghost" onClick={() => setConfirmOverride(false)}>Cancel</button>
-                        <button className="btn" onClick={() => { setConfirmOverride(false); setStep(3); }}>Confirm — continue to Q&amp;A</button>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </>
+              <div className="row-actions">
+                <button className="btn-ghost" onClick={() => { setPatient(null); setStep(1); }}>Back</button>
+                <button className="btn-danger" onClick={() => endWithoutReferral(!a.eligible ? { notEligible: true } : { notSuggested: true })}>
+                  {!a.eligible ? "Not eligible — do not refer" : "Not suggested by system — do not refer"}
+                </button>
+                <button className="btn-danger" onClick={() => endWithoutReferral({ declined: true })}>Patient declines or defers</button>
+              </div>
             )}
           </div>
         );
