@@ -1,6 +1,7 @@
 // Referral routes — create a referral, list history, fetch one.
 const express = require("express");
 const crypto = require("crypto");
+const multer = require("multer");
 const { query } = require("../db");
 const { requireAuth } = require("../middleware");
 
@@ -9,26 +10,47 @@ router.use(requireAuth);
 
 const makeRef = () => "FH-" + crypto.randomBytes(3).toString("hex").toUpperCase();
 
+// The referral form submits as multipart/form-data (not JSON) so the LDL
+// override's supporting document can ride along in the same request. Kept
+// in memory rather than on disk — server/ isn't a persisted volume in the
+// Docker setup (only public/ is bind-mounted), so anything written to disk
+// here would vanish on the next rebuild; storing the file bytes straight in
+// the (volume-backed) database avoids that.
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
+
+// Multipart fields always arrive as strings — this reads a "true"/"false"
+// checkbox value back into a tri-state 1/0/null for the DB column.
+const parseFlag = (v) => (v === undefined || v === null || v === "" ? null : (v === "true" || v === "1" ? 1 : 0));
+
 // POST /api/referrals
-router.post("/", async (req, res) => {
+router.post("/", upload.single("ldl_proof"), async (req, res) => {
   const b = req.body || {};
   const required = ["patient_nric", "patient_name", "contact", "ldl", "ldl_test_date"];
   const missing = required.filter((k) => !String(b[k] ?? "").trim());
   if (missing.length) return res.status(400).json({ error: `Missing required fields: ${missing.join(", ")}` });
+
+  const ldlOverride = parseFlag(b.ldl_override) === 1;
+  if (ldlOverride && !req.file)
+    return res.status(400).json({ error: "Supporting documentation is required for an LDL threshold override." });
 
   const reference = makeRef();
   try {
     await query(
       `INSERT INTO referrals
         (reference,patient_nric,patient_name,dob,sex,nationality,contact,ldl,ldl_test_date,ldl_test_location,total_chol,
-         on_statin,notes,referrer_id,referrer_label,clinic,status,system_suggested)
-       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, 'Submitted', ?)`,
+         on_statin,notes,referrer_id,referrer_label,clinic,status,system_suggested,
+         ldl_override,ldl_override_proof,ldl_override_proof_name,ldl_override_proof_type)
+       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?, 'Submitted', ?, ?,?,?,?)`,
       [
         reference, b.patient_nric, b.patient_name, b.dob || null, b.sex || null,
         b.nationality || null, b.contact, b.ldl, b.ldl_test_date, b.ldl_test_location || null, b.total_chol || null,
         b.on_statin || null, b.notes || null, req.user.id,
         b.referrer_label || req.user.clinician_id, b.clinic || null,
-        typeof b.system_suggested === "boolean" ? (b.system_suggested ? 1 : 0) : null,
+        parseFlag(b.system_suggested),
+        parseFlag(b.ldl_override),
+        req.file ? req.file.buffer : null,
+        req.file ? req.file.originalname : null,
+        req.file ? req.file.mimetype : null,
       ]
     );
     // Reflect the referral back onto the patient record where we can match it.
@@ -38,7 +60,10 @@ router.post("/", async (req, res) => {
     );
     await query("INSERT INTO audit_log (user_id,action,meta) VALUES (?,?,?)",
       [req.user.id, "referral_created", JSON.stringify({ reference, nric: b.patient_nric })]);
-    const [row] = await query("SELECT * FROM referrals WHERE reference = ?", [reference]);
+    const [row] = await query(
+      "SELECT id,reference,patient_nric,patient_name,dob,sex,nationality,contact,ldl,ldl_test_date,ldl_test_location,total_chol,on_statin,notes,referrer_id,referrer_label,clinic,status,system_suggested,ldl_override,ldl_override_proof_name,ldl_override_proof_type,created_at FROM referrals WHERE reference = ?",
+      [reference]
+    );
     res.status(201).json({ referral: row });
   } catch (e) {
     console.error(e);
@@ -170,6 +195,10 @@ router.post("/:reference/verify-otp", async (req, res) => {
 
     // Single-use.
     await query("UPDATE referrals SET view_otp = NULL, view_otp_expires = NULL WHERE reference = ?", [req.params.reference]);
+    // The proof document is a LONGBLOB — flag whether one exists rather than
+    // shipping the raw bytes back in this JSON response.
+    row.ldl_proof_attached = !!row.ldl_override_proof;
+    delete row.ldl_override_proof;
     res.json({ referral: row });
   } catch (e) {
     console.error(e);

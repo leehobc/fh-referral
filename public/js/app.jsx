@@ -323,11 +323,13 @@ function Shell({ user, route, onSignOut, children }) {
 // met/not-met checklist rather than a weighted point score (e.g. DLCNS) —
 // a numeric score needs the reader to already know what the numbers mean,
 // which defeats the point of decision support at a glance.
-// `firstDegreeFH` defaults to the EMR value but can be overridden — the
-// clinician may know more about family history than what's on record (or
-// the record may be stale), so this one criterion is editable in the UI
-// rather than purely computed.
-function assessFH(patient, firstDegreeFH = !!patient.first_degree_relative_fh) {
+// `firstDegreeFH` is entirely clinician-entered rather than sourced from the
+// EMR record — always starts unchecked, the clinician ticks it themselves.
+// `ldlOverride` lets the clinician mark the LDL criterion met even when the
+// EMR figure is below threshold, when they hold external proof of a
+// qualifying result — the UI only shows that checkbox when the EMR LDL is
+// itself below 5.5, and requires an uploaded document when it's used.
+function assessFH(patient, firstDegreeFH = false, ldlOverride = false) {
   // Hard programme rule, not a score input — the programme is limited to
   // Singapore Citizens and Permanent Residents, so this blocks a referral
   // outright regardless of how strong the clinical criteria below are.
@@ -335,13 +337,21 @@ function assessFH(patient, firstDegreeFH = !!patient.first_degree_relative_fh) {
 
   const ldl = Number(patient.ldl) || 0;
   const highLdl = ldl >= 6.5;
-  const elevatedLdl = ldl >= 5.5; // programme referral threshold
+  const rawElevatedLdl = ldl >= 5.5; // programme referral threshold, from the EMR record
+  const elevatedLdl = rawElevatedLdl || ldlOverride;
   const familyCvd = !!patient.family_history_cvd;
   const personalCad = !!patient.coronary_stent_or_bypass;
 
   const criteria = [
     { key: "eligible", label: "Singapore Citizen or Permanent Resident", met: eligible },
-    { key: "ldl", label: `LDL-C (${ldl || "—"} mmol/L) at or above the 5.5 mmol/L referral threshold`, met: elevatedLdl },
+    {
+      key: "ldl",
+      label: rawElevatedLdl
+        ? `LDL-C (${ldl || "—"} mmol/L) at or above the 5.5 mmol/L referral threshold`
+        : `LDL-C (${ldl || "—"} mmol/L) below the 5.5 mmol/L threshold — override if external proof of a qualifying result is available`,
+      met: elevatedLdl,
+      editable: !rawElevatedLdl,
+    },
     { key: "familyCvd", label: "Family history of premature cardiovascular disease", met: familyCvd },
     { key: "personalCad", label: "Personal history of coronary stent or bypass", met: personalCad },
     { key: "firstDegreeFH", label: "First-degree relative with known FH", met: firstDegreeFH, editable: true },
@@ -500,15 +510,18 @@ function ReferralWizard({ user }) {
   // criterion — starts at whatever the EMR record says, once a patient is
   // fetched.
   const [firstDegreeFH, setFirstDegreeFH] = useState(false);
+  // Clinician override for the LDL criterion when the EMR figure is below
+  // threshold but external proof of a qualifying result exists.
+  const [ldlOverride, setLdlOverride] = useState(false);
 
   const getCurrent = async () => {
     setFetchErr(""); setFetching(true);
-    try { const { patient } = await API.emr.currentPatient(); setPatient(patient); setFirstDegreeFH(!!patient.first_degree_relative_fh); setStep(2); }
+    try { const { patient } = await API.emr.currentPatient(); setPatient(patient); setFirstDegreeFH(false); setLdlOverride(false); setStep(2); }
     catch (e) { setPatient(null); setFetchErr(e.message); } finally { setFetching(false); }
   };
   const simulateNext = async () => {
     setFetchErr(""); setFetching(true);
-    try { const { patient } = await API.emr.nextPatient(); setPatient(patient); setFirstDegreeFH(!!patient.first_degree_relative_fh); setStep(2); }
+    try { const { patient } = await API.emr.nextPatient(); setPatient(patient); setFirstDegreeFH(false); setLdlOverride(false); setStep(2); }
     catch (e) { setPatient(null); setFetchErr(e.message); } finally { setFetching(false); }
   };
 
@@ -525,7 +538,7 @@ function ReferralWizard({ user }) {
   };
 
   if (result) return <Submitted referral={result} onRestart={() => {
-    setStep(0); setPatient(null); setResult(null); setFirstDegreeFH(false);
+    setStep(0); setPatient(null); setResult(null); setFirstDegreeFH(false); setLdlOverride(false);
   }} />;
 
   return (
@@ -572,7 +585,7 @@ function ReferralWizard({ user }) {
       )}
 
       {step === 2 && patient && (() => {
-        const a = assessFH(patient, firstDegreeFH);
+        const a = assessFH(patient, firstDegreeFH, ldlOverride);
         const suggested = a.tone === "green";
         return (
           <div>
@@ -587,7 +600,8 @@ function ReferralWizard({ user }) {
               {a.criteria.map((c) => (
                 <div key={c.key} style={{ display: "flex", gap: 10, alignItems: "flex-start", padding: "8px 0", borderBottom: "1px solid var(--line)" }}>
                   {c.editable ? (
-                    <input type="checkbox" checked={c.met} onChange={(e) => setFirstDegreeFH(e.target.checked)}
+                    <input type="checkbox" checked={c.met}
+                      onChange={(e) => (c.key === "ldl" ? setLdlOverride(e.target.checked) : setFirstDegreeFH(e.target.checked))}
                       style={{ marginTop: 3, width: 16, height: 16, flex: "0 0 auto", accentColor: "var(--teal)" }} />
                   ) : (
                     <span style={{ fontWeight: 700, fontSize: 15, color: c.met ? "var(--green)" : "var(--ink-soft)" }}>{c.met ? "✓" : "—"}</span>
@@ -631,7 +645,7 @@ function ReferralWizard({ user }) {
       )}
 
       {step === 4 && patient && (
-        <ReferralForm patient={patient} user={user} firstDegreeFH={firstDegreeFH}
+        <ReferralForm patient={patient} user={user} firstDegreeFH={firstDegreeFH} ldlOverride={ldlOverride}
           onBack={() => setStep(3)}
           onDone={(ref) => setResult(ref)} />
       )}
@@ -639,8 +653,11 @@ function ReferralWizard({ user }) {
   );
 }
 
-function ReferralForm({ patient, user, firstDegreeFH, onBack, onDone }) {
-  const systemSuggested = assessFH(patient, firstDegreeFH).tone === "green";
+const LDL_OVERRIDE_NOTE = "Doctor manually overrode the LDL-C threshold — external proof of a qualifying result (≥5.5 mmol/L) has been sighted and is attached.";
+const FIRST_DEGREE_FH_NOTE = "Patient has a first-degree relative with known FH.";
+
+function ReferralForm({ patient, user, firstDegreeFH, ldlOverride, onBack, onDone }) {
+  const systemSuggested = assessFH(patient, firstDegreeFH, ldlOverride).tone === "green";
   const [form, setForm] = useState({
     patient_name: patient.name, patient_nric: patient.nric, dob: patient.dob ? patient.dob.slice(0, 10) : "",
     sex: patient.gender, nationality: patient.nationality, contact: patient.contact,
@@ -650,18 +667,29 @@ function ReferralForm({ patient, user, firstDegreeFH, onBack, onDone }) {
     // to the patient record.
     ldl_test_location: "Singapore", total_chol: patient.total_chol ?? "",
     on_statin: patient.on_statin == null ? "" : (patient.on_statin ? "Yes" : "No"),
-    referrer_label: user.clinician_id, clinic: user.clinic || patient.clinic, notes: "",
+    referrer_label: user.clinician_id, clinic: user.clinic || patient.clinic,
+    notes: [firstDegreeFH && FIRST_DEGREE_FH_NOTE, ldlOverride && LDL_OVERRIDE_NOTE].filter(Boolean).join("\n"),
   });
   const [tried, setTried] = useState(false); const [busy, setBusy] = useState(false); const [err, setErr] = useState("");
+  const [proofFile, setProofFile] = useState(null);
   const set = (k, v) => setForm((f) => ({ ...f, [k]: v }));
-  const required = ["patient_name", "patient_nric", "contact", "ldl", "ldl_test_date", "on_statin", "referrer_label", "clinic"];
+  const required = ["patient_name", "patient_nric", "contact", "ldl", "ldl_test_date", "ldl_test_location", "on_statin", "referrer_label", "clinic"];
   const missing = required.filter((k) => !String(form[k]).trim());
+  const proofMissing = ldlOverride && !proofFile;
 
   const submit = async () => {
     setTried(true); setErr("");
-    if (missing.length) return;
+    if (missing.length || proofMissing) return;
     setBusy(true);
-    try { const { referral } = await API.referrals.create({ ...form, system_suggested: systemSuggested }); onDone(referral); }
+    try {
+      const fd = new FormData();
+      Object.entries(form).forEach(([k, v]) => fd.append(k, v ?? ""));
+      fd.append("system_suggested", String(systemSuggested));
+      fd.append("ldl_override", String(!!ldlOverride));
+      if (proofFile) fd.append("ldl_proof", proofFile);
+      const { referral } = await API.referrals.create(fd);
+      onDone(referral);
+    }
     catch (e) { setErr(e.message); } finally { setBusy(false); }
   };
 
@@ -674,6 +702,7 @@ function ReferralForm({ patient, user, firstDegreeFH, onBack, onDone }) {
           <div className="row-actions">
             <Badge tone="green">Autofilled from EMR</Badge>
             {!systemSuggested && <Badge tone="amber">Not suggested by system</Badge>}
+            {ldlOverride && <Badge tone="amber">LDL threshold overridden</Badge>}
           </div>
           {tried && missing.length > 0 && <span className="err">{missing.length} required field(s) missing</span>}
         </div>
@@ -686,7 +715,7 @@ function ReferralForm({ patient, user, firstDegreeFH, onBack, onDone }) {
           <Field label="Nationality" value={form.nationality} onChange={(v) => set("nationality", v)} disabled />
           <Field label="LDL (mmol/L) *" value={form.ldl} onChange={(v) => set("ldl", v)} bad={tried && !String(form.ldl).trim()} />
           <Field label="LDL test date *" type="date" value={form.ldl_test_date} onChange={(v) => set("ldl_test_date", v)} bad={tried && !form.ldl_test_date} />
-          <Field label="Testing location" value={form.ldl_test_location} onChange={(v) => set("ldl_test_location", v)} />
+          <Field label="Testing location *" value={form.ldl_test_location} onChange={(v) => set("ldl_test_location", v)} bad={tried && !String(form.ldl_test_location).trim()} />
           <Select label="On statin *" value={form.on_statin} onChange={(v) => set("on_statin", v)} options={["Yes", "No"]} bad={tried && !form.on_statin} />
           <Field label="Total cholesterol" value={form.total_chol} onChange={(v) => set("total_chol", v)} />
           <Field label="Referring clinician" value={form.referrer_label} onChange={(v) => set("referrer_label", v)} disabled />
@@ -694,6 +723,17 @@ function ReferralForm({ patient, user, firstDegreeFH, onBack, onDone }) {
         </div>
         <label className="label" style={{ marginTop: 14 }}>Clinical notes (optional)</label>
         <textarea className="input" value={form.notes} onChange={(e) => set("notes", e.target.value)} placeholder="Family history, supporting features, relevant findings…" />
+
+        {ldlOverride && (
+          <div style={{ marginBottom: 16 }}>
+            <label className="label">Supporting document for LDL override *</label>
+            <input type="file" accept=".pdf,.jpg,.jpeg,.png"
+              onChange={(e) => setProofFile(e.target.files[0] || null)} />
+            {proofFile && <p className="small muted" style={{ marginTop: 6 }}>Selected: {proofFile.name}</p>}
+            {tried && proofMissing && <p className="err">Attach the supporting document before submitting.</p>}
+          </div>
+        )}
+
         {err && <p className="err">{err}</p>}
         <div className="row-actions">
           <button className="btn-ghost" onClick={onBack}>Back</button>
@@ -757,8 +797,8 @@ function Submitted({ referral, onRestart }) {
 function ReferralPrint({ r }) {
   const Row = ({ k, v }) => (
     <div style={{ display: "flex", padding: "8px 0", borderBottom: "1px solid var(--line)" }}>
-      <div style={{ width: 180, color: "var(--ink-soft)", fontSize: 14, fontWeight: 600 }}>{k}</div>
-      <div style={{ fontSize: 15 }}>{v}</div>
+      <div style={{ width: 180, flex: "0 0 180px", color: "var(--ink-soft)", fontSize: 14, fontWeight: 600 }}>{k}</div>
+      <div style={{ flex: 1, minWidth: 0, fontSize: 15, whiteSpace: "pre-wrap" }}>{v}</div>
     </div>
   );
   return (

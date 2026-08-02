@@ -6,12 +6,15 @@
   const clearToken = () => localStorage.removeItem(TOKEN_KEY);
 
   async function request(path, { method = "GET", body, auth = true } = {}) {
-    const headers = { "Content-Type": "application/json" };
+    // FormData (used for the referral form, which can carry a file) sets
+    // its own multipart Content-Type with boundary — must NOT be set here.
+    const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
+    const headers = isFormData ? {} : { "Content-Type": "application/json" };
     if (auth && getToken()) headers.Authorization = "Bearer " + getToken();
     const res = await fetch(path, {
       method,
       headers,
-      body: body ? JSON.stringify(body) : undefined,
+      body: isFormData ? body : (body ? JSON.stringify(body) : undefined),
     });
     let data = {};
     try { data = await res.json(); } catch { /* no body */ }
