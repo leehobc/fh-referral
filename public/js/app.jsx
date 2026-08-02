@@ -924,25 +924,6 @@ function ViewReferralButton({ reference, patientName }) {
 /* ══════════════════════════════════════════════════════════════
    REFERRALS
    ══════════════════════════════════════════════════════════════ */
-// Post-submission pipeline, purely for display here — status only ever
-// advances via a real GAC-side system in production (there's no such
-// system to integrate with in this build, so it stays at "Submitted").
-const REFERRAL_STAGES = ["Submitted", "GAC booked", "Pre-test counselling done", "Testing done", "Post-test counselling done"];
-
-function ReferralStageBar({ status }) {
-  const idx = Math.max(0, REFERRAL_STAGES.indexOf(status));
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-      <div style={{ display: "flex", gap: 3 }} title={status}>
-        {REFERRAL_STAGES.map((s, i) => (
-          <span key={s} style={{ width: 16, height: 6, borderRadius: 3, background: i <= idx ? "var(--teal)" : "var(--line)" }} />
-        ))}
-      </div>
-      <span className="small muted">{status}</span>
-    </div>
-  );
-}
-
 function Referrals() {
   const [q, setQ] = useState(""); const [list, setList] = useState([]); const [err, setErr] = useState("");
   const load = useCallback(() => {
@@ -972,21 +953,20 @@ function Referrals() {
       {err && <p className="err">{err}</p>}
       {list.length === 0 ? <p className="muted">No referrals yet.</p> : (
         <table className="table">
-          <thead><tr><th>Reference</th><th>Patient</th><th>NRIC</th><th>Outcome</th><th>System</th><th>When</th><th>Details</th></tr></thead>
+          <thead><tr><th>Reference</th><th>NRIC</th><th>Outcome</th><th>When</th><th>Details</th></tr></thead>
           <tbody>
             {list.map((r) => (
               <tr key={r.reference || `nm-${r.id}`}>
-                <td>{r.reference || "—"}</td><td>{r.patient_name}</td><td>{r.patient_nric}</td>
+                <td>{r.reference || "—"}</td><td>{r.patient_nric}</td>
                 <td>
                   {r.outcome === "referred"
-                    ? <ReferralStageBar status={r.status} />
+                    ? <Badge tone="teal">{r.status}</Badge>
                     : <Badge tone="red">
                         {r.outcome === "not_eligible" ? "Not eligible (nationality)"
                           : r.outcome === "not_suggested" ? "Not suggested — not referred"
                           : "Declined / deferred"}
                       </Badge>}
                 </td>
-                <td>{r.outcome === "referred" && r.system_suggested != null && Number(r.system_suggested) === 0 && <Badge tone="amber">Not suggested</Badge>}</td>
                 <td>{fmtDMYHM(r.created_at)}</td>
                 <td>{r.outcome === "referred" && <ViewReferralButton reference={r.reference} patientName={r.patient_name} />}</td>
               </tr>
