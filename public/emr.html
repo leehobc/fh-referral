@@ -72,7 +72,7 @@
         <input id="q" placeholder="Patient ID (e.g. P0001), NRIC (e.g. S1234567A), or name" />
         <button onclick="openPatient()">Open patient</button>
       </div>
-      <div class="hint">Tip: try <b>P0001</b> (eligible) or any patient ID from the seeded database.</div>
+      <div class="hint">Tip: try <b>P0001</b> (eligible) or any patient ID (up to <b>P0200</b>) from the seeded database.</div>
       <div class="err" id="err"></div>
     </div>
 
@@ -149,7 +149,7 @@ function render(p){
 async function openPatient(){
   el("err").textContent = "";
   const identifier = el("q").value.trim();
-  if(!identifier){ el("err").textContent = "Enter a patient ID, NRIC, or name."; return; }
+  if(!identifier){ el("err").textContent = "Enter a patient ID or name."; return; }
   try{
     const { patient } = await api("/api/emr/context", { method:"POST", body: JSON.stringify({ identifier }) });
     render(patient);
