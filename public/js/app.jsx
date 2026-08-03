@@ -611,7 +611,7 @@ function ReferralWizard({ user }) {
               The website calls the EMR API for the patient open in this consultation and autofills the referral from the record it returns.
             </p>
             <p className="small muted" style={{ marginTop: 8 }}>
-              Open a patient in the <a href="/emr" target="_blank">demo EMR</a> first, or <a href="#" onClick={(e) => { e.preventDefault(); simulateNext(); }}>simulate one</a>.
+              Open a patient in the <a href="/emr" target="_blank">EMR</a> first, or <a href="#" onClick={(e) => { e.preventDefault(); simulateNext(); }}>open a random patient</a>.
             </p>
             {fetchErr && <p className="err">{fetchErr}</p>}
           </div>
@@ -711,10 +711,11 @@ function ReferralForm({ patient, user, firstDegreeFH, ldlOverride, onBack, onDon
   const required = ["patient_name", "patient_nric", "contact", "ldl", "ldl_test_date", "ldl_test_location", "on_statin", "referrer_label", "clinic"];
   const missing = required.filter((k) => !String(form[k]).trim());
   const proofMissing = ldlOverride && !proofFile;
+  const ldlTooLow = !!String(form.ldl).trim() && Number(form.ldl) < 5.5;
 
   const submit = async () => {
     setTried(true); setErr("");
-    if (missing.length || proofMissing) return;
+    if (missing.length || proofMissing || ldlTooLow) return;
     setBusy(true);
     try {
       const fd = new FormData();
@@ -748,7 +749,7 @@ function ReferralForm({ patient, user, firstDegreeFH, ldlOverride, onBack, onDon
           <Field label="Date of birth" type="date" value={form.dob} onChange={(v) => set("dob", v)} disabled />
           <Field label="Sex" value={form.sex} onChange={(v) => set("sex", v)} disabled />
           <Field label="Nationality" value={form.nationality} onChange={(v) => set("nationality", v)} disabled />
-          <Field label="LDL (mmol/L) *" value={form.ldl} onChange={(v) => set("ldl", v)} bad={tried && !String(form.ldl).trim()} disabled />
+          <Field label="LDL (mmol/L) *" value={form.ldl} onChange={(v) => set("ldl", v)} bad={tried && (!String(form.ldl).trim() || ldlTooLow)} />
           <Field label="LDL test date *" type="date" value={form.ldl_test_date} onChange={(v) => set("ldl_test_date", v)} bad={tried && !form.ldl_test_date} />
           <Field label="Testing location *" value={form.ldl_test_location} onChange={(v) => set("ldl_test_location", v)} bad={tried && !String(form.ldl_test_location).trim()} />
           <Select label="On statin *" value={form.on_statin} onChange={(v) => set("on_statin", v)} options={["Yes", "No"]} bad={tried && !form.on_statin} />
@@ -756,6 +757,7 @@ function ReferralForm({ patient, user, firstDegreeFH, ldlOverride, onBack, onDon
           <Field label="Referring clinician" value={form.referrer_label} onChange={(v) => set("referrer_label", v)} disabled />
           <Field label="Clinic" value={form.clinic} onChange={(v) => set("clinic", v)} disabled />
         </div>
+        {tried && ldlTooLow && <p className="err" style={{ marginTop: -10 }}>LDL must be at least 5.5 mmol/L to submit a referral.</p>}
         <label className="label" style={{ marginTop: 14 }}>Clinical notes (optional)</label>
         <textarea className="input" value={form.notes} onChange={(e) => set("notes", e.target.value)} placeholder="Family history, supporting features, relevant findings…" />
 
