@@ -56,7 +56,7 @@ Paediatric patients
 Under-18s are not excluded by the criteria, but LDL-C cut-offs to suspect FH differ from adults, and most guidelines vary the cut-off by family history.
 Refer to a relevant specialist (e.g. paediatric endocrinology), especially if lipid-lowering therapy is warranted.
 
-Referral workflow in this tool: Consent → Checklist → Q&A (explain to patient) → Referral (retrieve patient record from EMR) → Submit. Formal consent for genetic testing is taken at the GAC, not at the point of referral.
+Referral workflow in this tool: Consent → Retrieve patient record from EMR → Assessment (automated FH likelihood check against the referral criteria) → Q&A (explain to patient) → Referral form → Submit. Formal consent for genetic testing is taken at the GAC, not at the point of referral.
 
 Background for explaining the programme to patients
 

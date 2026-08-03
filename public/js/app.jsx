@@ -1083,9 +1083,9 @@ function App() {
 
   if (!ready) return <div className="auth-wrap"><p className="muted">Loading…</p></div>;
 
-  // Unauthenticated routes
+  // Unauthenticated routes. Accounts are admin-created (no self-service
+  // registration UI), so there's no "/register" branch here.
   if (!user) {
-    if (route.path === "/register") return <Register onAuthed={setUser} />;
     if (route.path === "/forgot") return <Forgot />;
     if (route.path === "/reset") return <ResetPassword token={route.query.token} />;
     return <Login onAuthed={setUser} />;
