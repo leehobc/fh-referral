@@ -167,11 +167,6 @@ function Select({ label, value, onChange, options, bad, disabled }) {
 /* ══════════════════════════════════════════════════════════════
    AUTH PAGES
    ══════════════════════════════════════════════════════════════ */
-// Fixed mock code shown to whoever is running/demoing this build — matches
-// the server's DEMO_2FA_CODE. No real authenticator app / SMS-TOTP is wired
-// up, so this is the same code for every login, every time.
-const DEMO_2FA_CODE = "340587";
-
 function Login({ onAuthed }) {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
@@ -237,9 +232,6 @@ function Login({ onAuthed }) {
             <>
               <h2 className="title" style={{ fontSize: 22 }}>Two-factor verification</h2>
               <p className="sub">Enter the 6-digit code from your authenticator app.</p>
-              <p className="small muted" style={{ background: "var(--teal-soft)", borderRadius: 10, padding: "10px 14px", margin: "0 0 16px" }}>
-                No authenticator app is wired up in this build — the demo code is always <b>{DEMO_2FA_CODE}</b>.
-              </p>
               <label className="label">Verification code</label>
               <input className="input" value={code} placeholder="6-digit code" onChange={(e) => setCode(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && submitCode()} />
