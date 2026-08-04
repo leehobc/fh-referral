@@ -603,7 +603,7 @@ function ReferralWizard({ user }) {
               The website calls the EMR API for the patient open in this consultation and autofills the referral from the record it returns.
             </p>
             <p className="small muted" style={{ marginTop: 8 }}>
-              Open a patient in the <a href="/emr" target="_blank">EMR</a> first, or <a href="#" onClick={(e) => { e.preventDefault(); simulateNext(); }}>open a random patient</a>.
+              Open a patient in the <a href="/emr" target="_blank">EMR</a> first.
             </p>
             {fetchErr && <p className="err">{fetchErr}</p>}
           </div>

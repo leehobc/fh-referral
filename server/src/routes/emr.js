@@ -11,9 +11,22 @@ const { requireAuth } = require("../middleware");
 
 const router = express.Router();
 const LDL_THRESHOLD = 5.5;
+const IDLE_MS = 30 * 60 * 1000; // auto-close the open patient after 30 min idle
 
 // Which patient is currently open in the demo EMR.
 let emrContext = { nric: null };
+let idleTimer = null;
+
+// Any read/write of the context counts as activity and pushes the auto-close
+// out another 30 minutes — mirrors a real EMR session timeout, so a chart
+// left open unattended doesn't stay "active" (and readable via the referral
+// tool's EMR API) indefinitely.
+function touchIdleTimer() {
+  if (idleTimer) clearTimeout(idleTimer);
+  idleTimer = emrContext.nric
+    ? setTimeout(() => { emrContext = { nric: null }; idleTimer = null; }, IDLE_MS)
+    : null;
+}
 
 async function getByNric(nric) {
   const [p] = await query("SELECT * FROM patients WHERE nric = ?", [nric]);
@@ -37,6 +50,7 @@ async function findPatient(identifier) {
 // What patient is open in the EMR right now.
 router.get("/context", async (req, res) => {
   if (!emrContext.nric) return res.json({ patient: null });
+  touchIdleTimer();
   res.json({ patient: await getByNric(emrContext.nric) });
 });
 
@@ -45,12 +59,14 @@ router.post("/context", async (req, res) => {
   const p = await findPatient(req.body && req.body.identifier);
   if (!p) return res.status(404).json({ error: "No patient found for that ID / NRIC / name." });
   emrContext = { nric: p.nric };
+  touchIdleTimer();
   res.json({ patient: p });
 });
 
 // Close the patient (clear context).
 router.delete("/context", (req, res) => {
   emrContext = { nric: null };
+  touchIdleTimer();
   res.json({ ok: true });
 });
 
@@ -61,6 +77,7 @@ router.get("/current-patient", requireAuth, async (req, res) => {
     return res.status(404).json({ error: "No patient is open in the EMR. Open one in the demo EMR first." });
   const p = await getByNric(emrContext.nric);
   if (!p) return res.status(404).json({ error: "The EMR patient could not be read." });
+  touchIdleTimer();
   res.json({ patient: p, source: "EMR (demo context)" });
 });
 
@@ -68,6 +85,7 @@ router.get("/current-patient", requireAuth, async (req, res) => {
 router.post("/current-patient/next", requireAuth, async (req, res) => {
   const [r] = await query("SELECT nric FROM patients ORDER BY RAND() LIMIT 1");
   if (r) emrContext = { nric: r.nric };
+  touchIdleTimer();
   res.json({ patient: await getByNric(emrContext.nric), source: "EMR (demo context)" });
 });
 
